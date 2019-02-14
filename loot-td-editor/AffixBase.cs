@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+
 namespace loot_td
 {
 
@@ -31,6 +32,7 @@ namespace loot_td
             AffixBonuses = new List<AffixBonus>();
             SpawnWeight = new Dictionary<GroupType, int>();
             GroupTypes = new List<GroupType>();
+            SpawnWeight.Add(GroupType.NO_GROUP, 0);
         }
 
         public AffixBase(AffixBase a)
@@ -58,21 +60,23 @@ namespace loot_td
             GroupTypes = new List<GroupType>(a.GroupTypes);
         }
 
+        [JsonIgnore]
         public string ListString { get { return GetBonusTypesString(); } }
 
         public string GetBonusTypesString()
         {
-            string x = "(";
+            string x = "";
             foreach (var a in AffixBonuses)
             {
                 x += a.BonusType.ToString();
                 x += ", ";
             }
-            x.TrimEnd(',');
-            x += ")";
+            x = x.TrimEnd(' ');
+            x = x.TrimEnd(',');
             return x;
         }
 
+        [JsonIgnore]
         public string GetBonusCountString { get { return AffixBonuses.Count.ToString(); } }
     }
 

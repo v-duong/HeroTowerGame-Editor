@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define TD_EDITOR
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;

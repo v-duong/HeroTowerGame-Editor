@@ -33,23 +33,17 @@
             <Button Content="ADD" Click="AddButtonClick"/>
             <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick"/>
             <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick"/>
-            <ListBox Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AffixesList">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock>
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat=" {0} {1} {2}">
-                                    <Binding Path="Id"/>
-                                    <Binding Path="Name"/>
-                                    <Binding Path="ListString"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AffixesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=ListString}" Header="Bonuses" Width="110"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Grid>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Margin="5,5,5,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="1*"/>
@@ -77,7 +71,7 @@
             <Label Grid.Column="2" Grid.Row="0" Content="Affix Type"/>
             <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding ElementName=AffixesList,Path=SelectedItem.AffixType}" IsReadOnly="True" Background="LightGray"></TextBox>
         </Grid>
-        <Grid Grid.Column="1" Grid.Row="1">
+        <Grid Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="12*"/>
@@ -95,10 +89,45 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <Button Grid.Column="2" Content="ADD BONUS" Click="AddBonusButtonClick"/>
-            <Button Grid.Column="3" Content="REMOVE BONUS" Click="RemoveBonusButtonClick"/>
-            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" Name="BonusGrid" CurrentCellChanged="BonusGrid_CurrentCellChanged" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*">
-            </DataGrid>
+            <Button Grid.Column="2" Content="Add Bonus" Click="AddBonusButtonClick"/>
+            <Button Grid.Column="3" Content="Remove Bonus" Click="RemoveBonusButtonClick"/>
+            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" CurrentCellChanged="BonusGrid_CurrentCellChanged"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"/>
+
+        </Grid>
+        <Grid Grid.Column="2" Margin="5,5,5,5">
+
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="1" Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="12*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Add" Click="AddWeightButtonClick"/>
+            <Button Grid.Column="1" Content="Edit" Click="EditWeightButtonClick"/>
+            <Button Grid.Column="2" Content="Remove" Click="RemoveWeightButtonClick"/>
+            <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged}" Name="WeightGrid"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"/>
+        </Grid>
+        <ListBox Grid.Column="3" Name="GroupList" ItemsSource="{Binding}">
+            
+        </ListBox>
+        <Grid Grid.Column="3" Grid.Row="1" Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="12*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Content="Add" Click="GroupAddButtonClick"/>
+            <Button Grid.Column="1" Content="Remove" Click="GroupRemoveButtonClick"/>
+            <ListBox Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.GroupTypes, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="GroupTagList">
+            </ListBox>
         </Grid>
     </Grid>
 </UserControl>

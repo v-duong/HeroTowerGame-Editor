@@ -9,7 +9,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Save as JSON" />
+                <MenuItem Header="_Save as JSON" Click="SaveOneJsonClick"/>
                 <MenuItem Header="_Save all JSON" />
                 <MenuItem Header="_Save as Binary " />
                 <MenuItem Header="_Save all Binary " />
@@ -20,13 +20,13 @@
                 <MenuItem Header="_JSON Paths" Click="JsonSettingsClick"/>
             </MenuItem>
         </Menu>
-        <TabControl>
+        <TabControl Name="Cat1TabControl">
             <TabItem Header="_Items">
             </TabItem>
             <TabItem Header="_Archetypes">
             </TabItem>
             <TabItem Header="_Affixes">
-                <TabControl>
+                <TabControl Name="AffixesTabControl">
                     <TabItem Header="_Prefix">
                         <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor">
                             

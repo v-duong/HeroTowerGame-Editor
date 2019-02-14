@@ -93,12 +93,16 @@
     <Compile Include="F:\Unity Projects\eeGame\Assets\Scripts\Common\GroupType.cs">
       <Link>GroupType.cs</Link>
     </Compile>
+    <Compile Include="ObservableDictionary.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="JSONSettingsWindow.xaml.cs">
       <DependentUpon>JSONSettingsWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="AffixEditor.xaml.cs">
       <DependentUpon>AffixEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SpawnWeightEntryWindow.xaml.cs">
+      <DependentUpon>SpawnWeightEntryWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -121,6 +125,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="AffixEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SpawnWeightEntryWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
