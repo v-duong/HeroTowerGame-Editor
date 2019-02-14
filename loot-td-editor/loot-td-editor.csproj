@@ -82,7 +82,7 @@
     </ApplicationDefinition>
     <Compile Include="AbilityBase.cs" />
     <Compile Include="AffixBase.cs" />
-    <Compile Include="Class1.cs" />
+    <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="EquipmentBase.cs" />
     <Compile Include="F:\Unity Projects\eeGame\Assets\Scripts\Common\BonusType.cs">
       <Link>BonusType.cs</Link>

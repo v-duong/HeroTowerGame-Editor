@@ -28,11 +28,15 @@
             <TabItem Header="_Affixes">
                 <TabControl>
                     <TabItem Header="_Prefix">
-                        <local:AffixEditor AffixType="PREFIX" x:Name="PrefixEditor">
+                        <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor">
                             
                         </local:AffixEditor>
                     </TabItem>
-                    <TabItem Header="_Suffix"></TabItem>
+                    <TabItem Header="_Suffix">
+                        <local:AffixEditor AffixProp="SUFFIX" x:Name="SuffixEditor">
+
+                        </local:AffixEditor>
+                    </TabItem>
                     <TabItem Header="_Enchantment"></TabItem>
                     <TabItem Header="_Innate"></TabItem>
                 </TabControl>

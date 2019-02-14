@@ -28,10 +28,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Content="ADD" Click="AddButtonClick"></Button>
-            <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClick"></Button>
-            <ListBox Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AffixesList">
+            <Button Content="ADD" Click="AddButtonClick"/>
+            <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick"/>
+            <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick"/>
+            <ListBox Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AffixesList">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock>
@@ -74,10 +76,29 @@
             <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3"  Text="{Binding ElementName=AffixesList,Path=SelectedItem.SpawnLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="SpawnLevelText"></xctk:IntegerUpDown>
             <Label Grid.Column="2" Grid.Row="0" Content="Affix Type"/>
             <TextBox Grid.Column="3" Grid.Row="0" Text="{Binding ElementName=AffixesList,Path=SelectedItem.AffixType}" IsReadOnly="True" Background="LightGray"></TextBox>
-           
-        </Grid>      
-        <StackPanel Grid.Column="1" Grid.Row="1">
-            
-        </StackPanel>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="12*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Name="CountText">
+                <TextBlock.Text>
+                    <MultiBinding StringFormat=" Count: {0}">
+                        <Binding ElementName="AffixesList" Path="SelectedItem.GetBonusCountString" Mode="OneWay"/>
+                    </MultiBinding>
+                </TextBlock.Text>
+            </TextBlock>
+            <Button Grid.Column="2" Content="ADD BONUS" Click="AddBonusButtonClick"/>
+            <Button Grid.Column="3" Content="REMOVE BONUS" Click="RemoveBonusButtonClick"/>
+            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" Name="BonusGrid" CurrentCellChanged="BonusGrid_CurrentCellChanged" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*">
+            </DataGrid>
+        </Grid>
     </Grid>
 </UserControl>
