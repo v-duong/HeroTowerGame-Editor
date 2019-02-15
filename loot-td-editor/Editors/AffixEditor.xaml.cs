@@ -7,6 +7,8 @@ using System.Windows.Controls;
 using System.Diagnostics;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Globalization;
+using System.Windows.Data;
 
 namespace loot_td_editor
 {
@@ -17,7 +19,7 @@ namespace loot_td_editor
 
     public partial class AffixEditor : UserControl
     {
-        public List<AffixBase> Affixes = new List<AffixBase>();
+        public List<AffixBase> Affixes;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
 
         private int currentID = 0;
@@ -30,16 +32,24 @@ namespace loot_td_editor
 
         // Using a DependencyProperty as the backing store for AffixProp.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty AffixPropProperty =
-            DependencyProperty.Register("AffixProp", typeof(string), typeof(AffixEditor));
+            DependencyProperty.Register("AffixProp", typeof(string), typeof(AffixEditor), new PropertyMetadata("", new PropertyChangedCallback(OnPropChange)));
 
-
+        public static void OnPropChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            AffixEditor a = d as AffixEditor;
+            a.InitializeAffixes();
+        }
 
         public AffixType affixContext;
         private bool isContextSet = false;
 
         public void InitializeAffixes()
         {
-            
+            if (!isContextSet)
+            {
+                Enum.TryParse(AffixProp, out AffixType aff);
+                affixContext = aff;
+            }
             string fileName;
             if (Properties.Settings.Default.JsonLoadPath == "")
                 return;
@@ -61,22 +71,26 @@ namespace loot_td_editor
                     return;
             }
             string filePath = Properties.Settings.Default.JsonLoadPath + "\\affixes\\" + fileName;
+            Debug.WriteLine("Initialized " + fileName);
             if (!System.IO.File.Exists(filePath))
+            {
+                Affixes = new List<AffixBase>();
+                AffixesList.ItemsSource = Affixes;
                 return;
+            }
             string json = System.IO.File.ReadAllText(filePath);
             Affixes = JsonConvert.DeserializeObject<List<AffixBase>>(json);
+            AffixesList.ItemsSource = Affixes;
+            if (Affixes.Count >= 1)
+                currentID = Affixes[Affixes.Count - 1].Id + 1;
+            else
+                currentID = 0;
         }
 
         public AffixEditor()
         {
             InitializeComponent();
-            InitializeAffixes();
-            AffixesList.ItemsSource = Affixes;
             GroupList.ItemsSource = GroupTypes;
-            if (Affixes.Count >= 1)
-                currentID = Affixes[Affixes.Count - 1].Id+1;
-            else
-                currentID = 0;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -155,6 +169,8 @@ namespace loot_td_editor
         {
             SpawnWeightEntryWindow s = new SpawnWeightEntryWindow();
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
+            if (temp == null)
+                return;
             s.dic = temp.SpawnWeight;
             s.ShowDialog();
             WeightGrid.Items.Refresh();
@@ -165,8 +181,10 @@ namespace loot_td_editor
             if (WeightGrid.SelectedItem == null)
                 return;
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
-            KeyValuePair<GroupType, int> x = (KeyValuePair<GroupType, int>)WeightGrid.SelectedItem;
-            SpawnWeightEntryWindow s = new SpawnWeightEntryWindow(x.Key, x.Value)
+            if (temp == null)
+                return;
+
+            SpawnWeightEntryWindow s = new SpawnWeightEntryWindow((AffixWeight)WeightGrid.SelectedItem)
             {
                 dic = temp.SpawnWeight
             };
@@ -179,8 +197,7 @@ namespace loot_td_editor
             if (WeightGrid.SelectedItem == null)
                 return;
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
-            KeyValuePair<GroupType,int> x = (KeyValuePair<GroupType, int>)WeightGrid.SelectedItem;
-            temp.SpawnWeight.Remove(x.Key);
+            temp.SpawnWeight.Remove((AffixWeight)WeightGrid.SelectedItem);
             WeightGrid.Items.Refresh();
         }
 
@@ -204,5 +221,25 @@ namespace loot_td_editor
             temp.GroupTypes.Remove((GroupType)GroupTagList.SelectedItem);
             GroupTagList.Items.Refresh();
         }
+
+    }
+
+    public class BonusDataValidationRule : ValidationRule
+    {
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            BindingGroup g = (BindingGroup)value;
+
+            foreach (AffixBonus x in g.Items)
+            {
+                if (x.MinValue > x.MaxValue)
+                    return new ValidationResult(false, "MinValue cannot be higher than MaxValue");
+                if (x.ModifyType == ModifyType.MULTIPLY && (x.MinValue < 0 || x.MaxValue < 0))
+                    return new ValidationResult(false, "Multiply values cannot be negative");
+            }
+
+            return ValidationResult.ValidResult;
+        }
     }
 }
+

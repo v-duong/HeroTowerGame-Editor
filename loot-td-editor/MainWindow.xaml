@@ -5,12 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:loot_td_editor"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="MainWindow" Height="900" Width="1440">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
                 <MenuItem Header="_Save as JSON" Click="SaveOneJsonClick"/>
-                <MenuItem Header="_Save all JSON" />
+                <MenuItem Header="_Save all JSON" Click="SaveJsonAll"/>
                 <MenuItem Header="_Save as Binary " />
                 <MenuItem Header="_Save all Binary " />
                 <Separator />
@@ -21,24 +21,35 @@
             </MenuItem>
         </Menu>
         <TabControl Name="Cat1TabControl">
-            <TabItem Header="_Items">
+            <TabItem Header="_Equipment">
+                <TabControl Name="EquipTabControl">
+                    <TabItem Header="_Armor">
+                        <local:EquipmentEditor EquipProp="Armor"  x:Name="ArmorEditor" />
+                    </TabItem>
+                    <TabItem Header="_Weapons">
+                        <local:EquipmentEditor EquipProp="Weapon"  x:Name="WeaponEditor" />
+                    </TabItem>
+                    <TabItem Header="_Accessory">
+                        <local:EquipmentEditor EquipProp="Accessory"  x:Name="AccessoryEditor" />
+                    </TabItem>
+                </TabControl>
             </TabItem>
             <TabItem Header="_Archetypes">
             </TabItem>
             <TabItem Header="_Affixes">
                 <TabControl Name="AffixesTabControl">
                     <TabItem Header="_Prefix">
-                        <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor">
-                            
-                        </local:AffixEditor>
+                        <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor"/>
                     </TabItem>
                     <TabItem Header="_Suffix">
-                        <local:AffixEditor AffixProp="SUFFIX" x:Name="SuffixEditor">
-
-                        </local:AffixEditor>
+                        <local:AffixEditor AffixProp="SUFFIX" x:Name="SuffixEditor"/>
                     </TabItem>
-                    <TabItem Header="_Enchantment"></TabItem>
-                    <TabItem Header="_Innate"></TabItem>
+                    <TabItem Header="_Enchantment">
+                        <local:AffixEditor AffixProp="ENCHANTMENT" x:Name="EnchantmentEditor"/>
+                    </TabItem>
+                    <TabItem Header="_Innate">
+                        <local:AffixEditor AffixProp="INNATE" x:Name="InnateEditor"/>
+                    </TabItem>
                 </TabControl>
             </TabItem>
         </TabControl>

@@ -23,16 +23,22 @@ namespace loot_td
         [JsonProperty]
         public List<AffixBonus> AffixBonuses { get; }
         [JsonProperty]
-        public Dictionary<GroupType, int> SpawnWeight { get; }
-        [JsonProperty]
+        public List<AffixWeight> SpawnWeight { get; }
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<GroupType> GroupTypes { get; }
+
+        [JsonIgnore]
+        public string ListString { get { return GetBonusTypesString(); } }
+
+        [JsonIgnore]
+        public string GetBonusCountString { get { return AffixBonuses.Count.ToString(); } }
 
         public AffixBase()
         {
             AffixBonuses = new List<AffixBonus>();
-            SpawnWeight = new Dictionary<GroupType, int>();
+            SpawnWeight = new List<AffixWeight>();
             GroupTypes = new List<GroupType>();
-            SpawnWeight.Add(GroupType.NO_GROUP, 0);
+            AffixWeight g = new AffixWeight();
         }
 
         public AffixBase(AffixBase a)
@@ -56,12 +62,11 @@ namespace loot_td
                 AffixBonuses.Add(bonus);
             }
 
-            SpawnWeight = new Dictionary<GroupType, int>(a.SpawnWeight);
+            SpawnWeight = new List<AffixWeight>(a.SpawnWeight);
             GroupTypes = new List<GroupType>(a.GroupTypes);
         }
 
-        [JsonIgnore]
-        public string ListString { get { return GetBonusTypesString(); } }
+
 
         public string GetBonusTypesString()
         {
@@ -76,8 +81,18 @@ namespace loot_td
             return x;
         }
 
-        [JsonIgnore]
-        public string GetBonusCountString { get { return AffixBonuses.Count.ToString(); } }
+        public static int WeightContainsType(List<AffixWeight> s, GroupType type)
+        {
+            int i = 0;
+            foreach(AffixWeight x in s)
+            {
+                if (x.type == type)
+                    return i;
+                i++;
+            }
+            return -1;
+        }
+
     }
 
     public class AffixBonus
@@ -92,6 +107,15 @@ namespace loot_td
         public int MinValue { get; set; }
         [JsonProperty]
         public int MaxValue { get; set; }
+    }
+
+    public class AffixWeight
+    {
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public GroupType type { get; set; }
+        [JsonProperty]
+        public int weight {get; set;}
     }
 
     public enum AffixType

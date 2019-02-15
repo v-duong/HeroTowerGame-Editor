@@ -41,6 +41,9 @@
     <Reference Include="Ookii.Dialogs.Wpf, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ookii.Dialogs.Wpf.1.0.0\lib\net45\Ookii.Dialogs.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Prism, Version=7.1.0.431, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.1.0.431\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Design" />
@@ -84,6 +87,9 @@
     <Compile Include="AffixBase.cs" />
     <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="EquipmentBase.cs" />
+    <Compile Include="Editors\EquipmentEditor.xaml.cs">
+      <DependentUpon>EquipmentEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="F:\Unity Projects\eeGame\Assets\Scripts\Common\BonusType.cs">
       <Link>BonusType.cs</Link>
     </Compile>
@@ -98,12 +104,16 @@
     <Compile Include="JSONSettingsWindow.xaml.cs">
       <DependentUpon>JSONSettingsWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="AffixEditor.xaml.cs">
+    <Compile Include="Editors\AffixEditor.xaml.cs">
       <DependentUpon>AffixEditor.xaml</DependentUpon>
     </Compile>
     <Compile Include="SpawnWeightEntryWindow.xaml.cs">
       <DependentUpon>SpawnWeightEntryWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Editors\EquipmentEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,7 +134,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="AffixEditor.xaml">
+    <Page Include="Editors\AffixEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

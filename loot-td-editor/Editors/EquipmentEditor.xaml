@@ -1,0 +1,147 @@
+﻿<UserControl x:Class="loot_td_editor.EquipmentEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:loot_td_editor"
+             xmlns:loottd="clr-namespace:loot_td"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="1250">
+    
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="24*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Content="ADD" Click="AddButtonClick"/>
+            <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick"/>
+            <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick"/>
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="EquipList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="90"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=EquipSlot}" Header="Slot" Width="90"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Group}" Header="Type" Width="90"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Column="1" Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1.35*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="1.35*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="ID"></Label>
+                <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=EquipList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsReadOnly="True"></xctk:IntegerUpDown>
+                <Label Content="Name" Grid.Row="1"></Label>
+                <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=EquipList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                <Label Content="DropLevel" Grid.Row="2"></Label>
+                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=EquipList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
+                <Label Content="EquipSlot" Grid.Column="3"></Label>
+                <ComboBox ItemsSource="{Binding}" Name="EquipSlotBox" Grid.Column="4" SelectedValue="{Binding ElementName=EquipList,Path=SelectedItem.EquipSlot, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></ComboBox>
+                <Label Content="Type" Grid.Column="3" Grid.Row="1"></Label>
+                <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=EquipList,Path=SelectedItem.Group, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="GroupTypeBox" Grid.Column="4" Grid.Row="1"></ComboBox>
+                <Label Content="Has Innate?" Grid.Column="3" Grid.Row="3"></Label>
+                <CheckBox Grid.Column="4" Grid.Row="3" VerticalAlignment="Center" Name="HasInnateBox" Checked="HasInnateBox_Checked" Unchecked="HasInnateBox_Unchecked" IsChecked="{Binding ElementName=EquipList, Path=SelectedItem.HasInnate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+                <Label Content="InnateAffix" Grid.Column="3" Grid.Row="4"></Label>
+                <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=EquipList,Path=SelectedItem.InnateAffixId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="InnateBox" Grid.Column="4" Grid.Row="4" DisplayMemberPath="Name" SelectedValuePath="Id" IsEnabled="{Binding ElementName=HasInnateBox, Path=IsChecked}"></ComboBox>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="25"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Defense Values" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Row="1" Margin="2">
+                    <Label Content="Armor" Height="30"></Label>
+                    <Label Content="Shield" Height="30"></Label>
+                    <Label Content="Dodge" Height="30"></Label>
+                    <Label Content="MagicDodge" Height="30"></Label>
+                    <Label Content="Regen" Height="30"></Label>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Grid.Row="1" Margin="2">
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Armor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Shield, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Dodge, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MagicDodge, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Regen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+                </StackPanel>
+                <Label Content="Offense Values" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Row="1" Grid.Column="2" Margin="2">
+                    <Label Content="minDamage" Height="30"></Label>
+                    <Label Content="maxDamage" Height="30"></Label>
+                    <Label Content="CriticalChance" Height="30"></Label>
+                    <Label Content="WeaponRange" Height="30"></Label>
+                </StackPanel>
+                <StackPanel Grid.Column="3" Grid.Row="1" Margin="2">
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MinDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MaxDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.CriticalChance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.WeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+                </StackPanel>
+                <Label Content="Stat Requirements" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Row="1" Grid.Column="4" Margin="2">
+                    <Label Content="StrReq" Height="30"></Label>
+                    <Label Content="IntReq" Height="30"></Label>
+                    <Label Content="AgiReq" Height="30"></Label>
+                    <Label Content="WillReq" Height="30"></Label>
+                </StackPanel>
+                <StackPanel Grid.Column="5" Grid.Row="1" Margin="2">
+                    <xctk:IntegerUpDown Minimum="0" Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.StrengthReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.IntelligenceReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown  Minimum="0" Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.AgilityReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown  Minimum="0" Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.WillReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></xctk:IntegerUpDown>
+                </StackPanel>
+                <Button Grid.Row="2" Content="Set Armor Values" Click="SetArmorValuesClick"></Button>
+                <Button Grid.Row="2" Grid.Column="2" Content="Set Offense Values" Click="SetOffenseValuesClick"></Button>
+                <Button Grid.Row="2" Grid.Column="4" Content="Set Req Values" Click="SetReqValuesClick"></Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

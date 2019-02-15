@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using loot_td;
 
 namespace loot_td_editor
 {
@@ -22,8 +23,8 @@ namespace loot_td_editor
     {
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
 
-        private GroupType initialType;
-        public Dictionary<GroupType, int> dic;
+        public List<AffixWeight> dic;
+        public AffixWeight editTarget;
         public bool isEdit = false;
 
         public SpawnWeightEntryWindow()
@@ -32,14 +33,12 @@ namespace loot_td_editor
             Groups.ItemsSource = GroupTypes;
         }
 
-        public SpawnWeightEntryWindow(GroupType t, int i)
+        public SpawnWeightEntryWindow(AffixWeight w)
         {
-            initialType = t;
             InitializeComponent();
             Groups.ItemsSource = GroupTypes;
 
-            Groups.SelectedItem = t;
-            WeightInteger.Value = i;
+            editTarget = w;
             isEdit = true;
         }
 
@@ -55,32 +54,40 @@ namespace loot_td_editor
 
         private void ConfirmClick(object sender, RoutedEventArgs e)
         {
+            
+            if (Groups.SelectedItem == null)
+            {
+                MessageBox.Show("Type not selected", "Error", MessageBoxButton.OK);
+                return;
+            }
             GroupType selectedType = GetSelectedType();
-
+            int t = AffixBase.WeightContainsType(dic, selectedType);
             if( WeightInteger.Value == null )
             {
                 MessageBox.Show("Value NaN", "Error", MessageBoxButton.OK);
                 return;
             }
 
-            if (dic.ContainsKey(selectedType))
+            if (t != -1)
             {
-                if (isEdit && initialType == selectedType)
-                {
-                    dic[initialType] = (int)WeightInteger.Value;
-                    this.Close();
-                    return;
-                }
-                else
-                {
                     MessageBox.Show("Key Already Exists", "Error", MessageBoxButton.OK);
                     return;
-                }
             } else
             {
                 if (isEdit)
-                    dic.Remove(initialType);
-                dic.Add(selectedType, (int)WeightInteger.Value);
+                {
+                    editTarget.type = selectedType;
+                    editTarget.weight = (int)WeightInteger.Value;
+                }
+                else
+                {
+                    AffixWeight w = new AffixWeight()
+                    {
+                        type = selectedType,
+                        weight = (int)WeightInteger.Value
+                    };
+                    dic.Insert(0,w);
+                }
                 this.Close();
                 return;
             }

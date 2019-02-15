@@ -29,7 +29,7 @@ public class AbilityBase
     public readonly float weaponMultiplierScaling;
     [JsonProperty]
     public readonly List<AbilityBaseDamageEntry> baseDamage;
-    [JsonProperty]
+    [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
     public readonly List<GroupType> groupTypes;
 }
 

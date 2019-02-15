@@ -23,9 +23,15 @@ namespace loot_td_editor
     /// </summary>
     public partial class MainWindow : Window
     {
+
         public MainWindow()
         {
             InitializeComponent();
+            Debug.WriteLine("Setting innatesLists");
+
+            ArmorEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
+            WeaponEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
+            AccessoryEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
         }
 
         private void JsonSettingsClick(object sender, RoutedEventArgs e)
@@ -40,37 +46,74 @@ namespace loot_td_editor
             if (t.Header is "_Affixes")
             {
                 t = AffixesTabControl.SelectedItem as TabItem;
-            }
-            switch (t.Header.ToString()) {
-                case "_Prefix":
-                    SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes);
-                    break;
-                case "_Suffix":
-                    SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes);
-                    break;
-                case "_Enchantment":
-                    SaveAffixJson(AffixType.ENCHANTMENT, SuffixEditor.Affixes);
-                    break;
-                case "_Innate":
-                    SaveAffixJson(AffixType.INNATE, SuffixEditor.Affixes);
-                    break;
-                default:
-                    return;
+
+                switch (t.Header.ToString())
+                {
+                    case "_Prefix":
+                        SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes);
+                        break;
+                    case "_Suffix":
+                        SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes);
+                        break;
+                    case "_Enchantment":
+                        SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes);
+                        break;
+                    case "_Innate":
+                        SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes);
+                        break;
+                    default:
+                        return;
+                }
+            } else if (t.Header is "_Equipment")
+            {
+                t = EquipTabControl.SelectedItem as TabItem;
+
+                switch (t.Header.ToString())
+                {
+                    case "_Armor":
+                        SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments);
+                        break;
+                    case "_Weapon":
+                        SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments);
+                        break;
+                    case "_Accessory":
+                        SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments);
+                        break;
+                    default:
+                        return;
+                }
             }
         }
 
         private void SaveAffixJson(AffixType type, List<AffixBase> affixList)
         {
-            string fileName = type.ToString().ToLower() + ".json";
+            string fileName = type.ToString().ToLower();
+            string filePath = "\\affixes\\" + fileName;
+            SaveToJson<AffixBase>(filePath, affixList);
+        }
+
+        private void SaveToJson<T>(string path , List<T> list)
+        {
             if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath is "")
             {
                 MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
                 return;
             }
-            string filePath = Properties.Settings.Default.JsonSavePath + "\\affixes\\" + fileName;
-            string o = JsonConvert.SerializeObject(affixList);
-            System.IO.File.WriteAllText(filePath, o);
-            Debug.WriteLine(o);
+            string s = Properties.Settings.Default.JsonSavePath + path + ".json";
+            string o = JsonConvert.SerializeObject(list);
+            System.IO.File.WriteAllText(s, o);
+        }
+
+        private void SaveJsonAll(object sender, RoutedEventArgs e)
+        {
+            SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments);
+            SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments);
+            SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments);
+            SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes);
+            SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes);
+            SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes);
+            SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes);
+            MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
         }
     }
 }
