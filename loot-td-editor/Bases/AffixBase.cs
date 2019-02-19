@@ -38,7 +38,6 @@ namespace loot_td
             AffixBonuses = new List<AffixBonus>();
             SpawnWeight = new List<AffixWeight>();
             GroupTypes = new List<GroupType>();
-            AffixWeight g = new AffixWeight();
         }
 
         public AffixBase(AffixBase a)
@@ -62,7 +61,16 @@ namespace loot_td
                 AffixBonuses.Add(bonus);
             }
 
-            SpawnWeight = new List<AffixWeight>(a.SpawnWeight);
+            SpawnWeight = new List<AffixWeight>();
+            foreach (var b in a.SpawnWeight)
+            {
+                AffixWeight w = new AffixWeight
+                {
+                    type = b.type,
+                    weight = b.weight
+                };
+                SpawnWeight.Add(w);
+            }
             GroupTypes = new List<GroupType>(a.GroupTypes);
         }
 

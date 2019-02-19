@@ -40,6 +40,9 @@ namespace loot_td_editor
 
             editTarget = w;
             isEdit = true;
+
+            Groups.SelectedItem = w.type;
+            WeightInteger.Value = w.weight;
         }
 
         public GroupType GetSelectedType()
