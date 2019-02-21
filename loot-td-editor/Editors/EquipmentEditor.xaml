@@ -101,16 +101,16 @@
                 <StackPanel Grid.Row="1" Margin="2">
                     <Label Content="Armor" Height="30"></Label>
                     <Label Content="Shield" Height="30"></Label>
-                    <Label Content="Dodge" Height="30"></Label>
-                    <Label Content="MagicDodge" Height="30"></Label>
-                    <Label Content="Regen" Height="30"></Label>
+                    <Label Content="DodgeRating" Height="30"></Label>
+                    <Label Content="ResolveRating" Height="30"></Label>
+                    <Label Content="SellValue" Height="30"></Label>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Grid.Row="1" Margin="2">
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Armor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Shield, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
-                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Dodge, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
-                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MagicDodge, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
-                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Regen, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.DodgeRating, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.ResolveRating, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.SellValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
                 </StackPanel>
                 <Label Content="Offense Values" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
                 <StackPanel Grid.Row="1" Grid.Column="2" Margin="2">

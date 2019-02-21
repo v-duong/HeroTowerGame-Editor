@@ -21,7 +21,7 @@ namespace loot_td
         private int _shield;
         private int _dodge;
         private int _magicDodge;
-        private float _regen;
+        private int _regen;
         private int _minDamage;
         private int _maxDamage;
         private float _criticalChance;
@@ -42,11 +42,11 @@ namespace loot_td
         [JsonProperty]
         public int Shield { get => _shield; set => SetProperty(ref _shield, value); }
         [JsonProperty]
-        public int Dodge { get => _dodge; set => SetProperty(ref _dodge, value); }
+        public int DodgeRating { get => _dodge; set => SetProperty(ref _dodge, value); }
         [JsonProperty]
-        public int MagicDodge { get => _magicDodge; set => SetProperty(ref _magicDodge, value); }
+        public int ResolveRating { get => _magicDodge; set => SetProperty(ref _magicDodge, value); }
         [JsonProperty]
-        public float Regen { get => _regen; set => SetProperty(ref _regen, value); }
+        public int SellValue { get => _regen; set => SetProperty(ref _regen, value); }
         [JsonProperty]
         public int MinDamage { get => _minDamage; set => SetProperty(ref _minDamage, value); }
         [JsonProperty]
@@ -86,9 +86,9 @@ namespace loot_td
             DropLevel = a.DropLevel;
             Armor = a.Armor;
             Shield = a.Shield;
-            Dodge = a.Dodge;
-            MagicDodge = a.MagicDodge;
-            Regen = a.Regen;
+            DodgeRating = a.DodgeRating;
+            ResolveRating = a.ResolveRating;
+            SellValue = a.SellValue;
             MinDamage = a.MinDamage;
             MaxDamage = a.MaxDamage;
             CriticalChance = a.CriticalChance;

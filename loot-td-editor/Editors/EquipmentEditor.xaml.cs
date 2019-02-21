@@ -23,12 +23,12 @@ namespace loot_td_editor
     /// </summary>
     public partial class EquipmentEditor : UserControl
     {
-        public static int armorScaling = 10;
-        public static int shieldScaling = 20;
-        public static int regenScaling = 2;
-        public static float dodgeScaling = 0.2f;
-        public static float magicDodgeScaling = 0.12f;
+        public static float armorScaling = 10f;
+        public static float shieldScaling = 15f;
+        public static float dodgeRatingScaling = 8f;
+        public static float resolveRatingScaling = 5.5f;
         public static float hybridMult = 0.5f;
+        public static float willHybridMult = 0.75f;
 
         public static float mainAttrScaling = 2.5f;
         public static float subAttrScaling = 1.0f;
@@ -167,42 +167,63 @@ namespace loot_td_editor
             CalculateReqValues(t);
         }
 
+        private int GetScaledDefense(int droplevel, int hybridtype, float scaling)
+        {
+            if (hybridtype == 0)
+            {
+                return (int)Math.Floor(scaling * droplevel);
+            } else if (hybridtype == 1)
+            {
+                return (int)Math.Floor(droplevel * scaling * hybridMult);
+            } else if (hybridtype == 2)
+            {
+                return (int)Math.Floor(droplevel * scaling * willHybridMult);
+            }
+            return 0;
+
+        }
+
         private void CalculateArmorValues(EquipmentBase b)
         {
             b.Armor = 0;
             b.Shield = 0;
-            b.Dodge = 0;
-            b.MagicDodge = 0;
-            b.Regen = 0;
+            b.DodgeRating = 0;
+            b.ResolveRating = 0;
+            b.SellValue = 0;
             switch (b.Group)
             {
                 case GroupType.STR_ARMOR:
-                    b.Armor = b.DropLevel * armorScaling;
+                    b.Armor = GetScaledDefense(b.DropLevel, 0, armorScaling);
                     break;
                 case GroupType.INT_ARMOR:
-                    b.Shield = b.DropLevel * shieldScaling;
+                    b.Shield = GetScaledDefense(b.DropLevel, 0, shieldScaling);
+                    break;
+                case GroupType.AGI_ARMOR:
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling);
                     break;
                 case GroupType.STR_AGI_ARMOR:
-                    b.Armor = (int)Math.Floor( b.DropLevel * armorScaling * hybridMult );
-                    b.Dodge = (int)Math.Floor(b.DropLevel * dodgeScaling);
-                    b.MagicDodge = (int)Math.Floor(b.DropLevel * magicDodgeScaling);
+                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling);
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling);
                     break;
                 case GroupType.STR_WILL_ARMOR:
-                    b.Armor = (int)Math.Floor(b.DropLevel * armorScaling * hybridMult);
-                    b.Regen = b.DropLevel * regenScaling;
+                    b.Armor = GetScaledDefense(b.DropLevel, 2, armorScaling);
+                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
                     break;
                 case GroupType.STR_INT_ARMOR:
-                    b.Armor = (int)Math.Floor(b.DropLevel * armorScaling * hybridMult);
-                    b.Shield = (int)Math.Floor(b.DropLevel * shieldScaling * hybridMult);
+                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling);
+                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling);
                     break;
                 case GroupType.INT_AGI_ARMOR:
-                    b.Shield = (int)Math.Floor(b.DropLevel * shieldScaling * hybridMult);
-                    b.Dodge = (int)Math.Floor(b.DropLevel * dodgeScaling);
-                    b.MagicDodge = (int)Math.Floor(b.DropLevel * magicDodgeScaling);
+                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling);
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling);
                     break;
                 case GroupType.INT_WILL_ARMOR:
-                    b.Shield = (int)Math.Floor(b.DropLevel * shieldScaling * hybridMult);
-                    b.Regen = b.DropLevel * regenScaling;
+                    b.Shield = GetScaledDefense(b.DropLevel, 2, shieldScaling);
+                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
+                    break;
+                case GroupType.AGI_WILL_ARMOR:
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling);
+                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
                     break;
                 default:
                     return;
@@ -215,33 +236,45 @@ namespace loot_td_editor
             b.AgilityReq = 0;
             b.IntelligenceReq = 0;
             b.WillReq = 0;
+
+            int mainreq = (int)Math.Floor(b.DropLevel * mainAttrScaling + startingAttr);
+            int hybridmain = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr); 
+            int hybridsub = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr); 
+
             switch (b.Group)
             {
                 case GroupType.STR_ARMOR:
-                    b.StrengthReq = (int)Math.Floor(b.DropLevel * mainAttrScaling + startingAttr);
+                    b.StrengthReq = mainreq;
                     break;
                 case GroupType.INT_ARMOR:
-                    b.IntelligenceReq = (int)Math.Floor(b.DropLevel * mainAttrScaling + startingAttr);
+                    b.IntelligenceReq = mainreq;
+                    break;
+                case GroupType.AGI_ARMOR:
+                    b.AgilityReq = mainreq;
                     break;
                 case GroupType.STR_AGI_ARMOR:
-                    b.StrengthReq = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
-                    b.AgilityReq = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr);
+                    b.StrengthReq = hybridmain;
+                    b.AgilityReq = hybridmain;
                     break;
                 case GroupType.STR_WILL_ARMOR:
-                    b.StrengthReq = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
-                    b.WillReq = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr);
+                    b.StrengthReq = hybridmain;
+                    b.WillReq = hybridsub;
                     break;
                 case GroupType.STR_INT_ARMOR:
-                    b.StrengthReq = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
-                    b.IntelligenceReq = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
+                    b.StrengthReq = hybridmain;
+                    b.IntelligenceReq = hybridmain;
                     break;
                 case GroupType.INT_AGI_ARMOR:
-                    b.IntelligenceReq = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
-                    b.AgilityReq = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr);
+                    b.IntelligenceReq = hybridmain;
+                    b.AgilityReq = hybridmain;
                     break;
                 case GroupType.INT_WILL_ARMOR:
-                    b.IntelligenceReq = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
-                    b.WillReq = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr);
+                    b.IntelligenceReq = hybridmain;
+                    b.WillReq = hybridsub;
+                    break;
+                case GroupType.AGI_WILL_ARMOR:
+                    b.AgilityReq = hybridmain;
+                    b.WillReq = hybridsub;
                     break;
                 default:
                     return;
