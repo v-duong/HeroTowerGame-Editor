@@ -1,13 +1,12 @@
 ﻿using loot_td;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Diagnostics;
-using Newtonsoft.Json;
-using System.Linq;
-using System.Globalization;
 using System.Windows.Data;
 
 namespace loot_td_editor
@@ -15,7 +14,7 @@ namespace loot_td_editor
     /// <summary>
     /// Interaction logic for UserControl1.xaml
     /// </summary>
-    /// 
+    ///
 
     public partial class AffixEditor : UserControl
     {
@@ -58,15 +57,19 @@ namespace loot_td_editor
                 case AffixType.PREFIX:
                     fileName = "prefix.json";
                     break;
+
                 case AffixType.SUFFIX:
                     fileName = "suffix.json";
                     break;
+
                 case AffixType.ENCHANTMENT:
                     fileName = "enchantment.json";
                     break;
+
                 case AffixType.INNATE:
                     fileName = "innate.json";
                     break;
+
                 default:
                     return;
             }
@@ -162,7 +165,6 @@ namespace loot_td_editor
         private void BonusGrid_CurrentCellChanged(object sender, EventArgs e)
         {
             AffixesList.Items.Refresh();
-            
         }
 
         private void AddWeightButtonClick(object sender, RoutedEventArgs e)
@@ -221,7 +223,6 @@ namespace loot_td_editor
             temp.GroupTypes.Remove((GroupType)GroupTagList.SelectedItem);
             GroupTagList.Items.Refresh();
         }
-
     }
 
     public class BonusDataValidationRule : ValidationRule
@@ -242,4 +243,3 @@ namespace loot_td_editor
         }
     }
 }
-

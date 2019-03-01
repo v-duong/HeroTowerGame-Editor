@@ -1,0 +1,191 @@
+﻿<UserControl x:Class="loot_td_editor.Editors.ArchetypeEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:loot_td_editor.Editors"
+             xmlns:localx="clr-namespace:loot_td_editor"
+             xmlns:loottd="clr-namespace:loot_td"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="1250">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="3*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="24*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="ADD" Click="AddButtonClick" />
+            <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick" />
+            <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick" />
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ArchetypesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="ArchetypesList_SelectionChanged">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=DropLevel}" Header="DropLevel" Width="50" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="1.25*" />
+                <ColumnDefinition Width="5" />
+                <ColumnDefinition Width="1.15*" />
+                <ColumnDefinition Width="0.6*" />
+                <ColumnDefinition Width="45" />
+            </Grid.ColumnDefinitions>
+            <Label Content="ID" />
+            <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsReadOnly="True"></xctk:IntegerUpDown>
+            <Label Content="Name" Grid.Row="1" />
+            <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <Label Content="DropLevel" Grid.Row="2"></Label>
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
+            <Label Content="Stars" Grid.Row="3"></Label>
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Stars, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"></xctk:IntegerUpDown>
+            <Label Content="Text" Grid.Row="4"></Label>
+            <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.Text, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <Label Content="HealthGrowth" Grid.Column="3"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.HealthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="HpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <Label Content="SoulPointGrowth" Grid.Column="3" Grid.Row="1"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SoulPointGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="SpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <Label Content="StrengthGrowth" Grid.Column="3" Grid.Row="2"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.StrengthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="StrGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <Label Content="IntelligenceGrowth" Grid.Column="3" Grid.Row="3"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.IntelligenceGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="IntGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <Label Content="AgilityGrowth" Grid.Column="3" Grid.Row="4"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.AgilityGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="AgiGrow" Increment="0.1" FormatString="F2"> </xctk:DoubleUpDown>
+            <Label Content="WillGrowth" Grid.Column="3" Grid.Row="5"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="5" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.WillGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="WillGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+
+            <Label Name="HealthL" Content="" FontWeight="Bold" Grid.Column="5"></Label>
+            <Label Name="SoulL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="1"></Label>
+            <Label Name="StrL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="2"></Label>
+            <Label Name="IntL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="3"></Label>
+            <Label Name="AgiL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="4"></Label>
+            <Label Name="WillL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="5"></Label>
+        </Grid>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="24*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Content="ADD" Click="AddButtonClickNode" />
+                <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClickNode" />
+                <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClickNode" />
+                <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="NodesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                    <ListView.View>
+                        <GridView AllowsColumnReorder="False">
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="100" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Type}" Header="NodeType" Width="80" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="25" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Content="ID" />
+                    <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=NodesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  ValueChanged="CanvasEdit"/>
+                    <Label Content="Type" Grid.Column="2" />
+                    <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedItem="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <Label Content="Name" Grid.Row="1" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding ElementName=NodesList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                    <Label Content="Desc" Grid.Row="2" />
+                    <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="3" Text="{Binding ElementName=NodesList,Path=SelectedItem.Desc, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                    <Label Content="initalLevel" Grid.Row="3"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.InitialLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"/>
+                    <Label Content="maxLevel" Grid.Row="3"   Grid.Column="2"/>
+                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"/>
+                    <Label Content="PosX" Grid.Row="4"   Grid.Column="0"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit"/>
+                    <Label Content="PosY" Grid.Row="4"   Grid.Column="2"/>
+                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit"/>
+                    <Label Content="Ability" Grid.Row="5"   Grid.Column="0"/>
+                    <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedItem="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                </Grid>
+                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" >
+                </DataGrid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Button Content="ADD" Click="AddButtonClickChild" />
+                    <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClickChild" />
+                    <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="Id"></ComboBox>
+                    <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Children, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,5,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Name="ChildList" SelectionChanged="ArchetypesList_SelectionChanged">
+
+                    </ListView>
+                </Grid>
+            </Grid>
+        </Grid>
+        <Canvas Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Name="NodeTree" >
+
+        </Canvas>
+    </Grid>
+</UserControl>

@@ -85,6 +85,11 @@
     </ApplicationDefinition>
     <Compile Include="Bases\AbilityBase.cs" />
     <Compile Include="Bases\AffixBase.cs" />
+    <Compile Include="Bases\ArchetypeBase.cs" />
+    <Compile Include="Bases\ArchetypeSkillNode.cs" />
+    <Compile Include="Editors\ArchetypeEditor.xaml.cs">
+      <DependentUpon>ArchetypeEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="Bases\EquipmentBase.cs" />
     <Compile Include="Editors\EquipmentEditor.xaml.cs">
@@ -110,6 +115,10 @@
     <Compile Include="SpawnWeightEntryWindow.xaml.cs">
       <DependentUpon>SpawnWeightEntryWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="Editors\ArchetypeEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Editors\EquipmentEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

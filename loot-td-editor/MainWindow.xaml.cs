@@ -82,6 +82,9 @@ namespace loot_td_editor
                     default:
                         return;
                 }
+            } else if (t.Header is "_Archetypes")
+            {
+                SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes);
             }
         }
 
@@ -113,6 +116,8 @@ namespace loot_td_editor
             SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes);
             SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes);
             SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes);
+            //SaveToJson<AbilityBase>("\\abilities\\abilities", AbilityEditor.Abilities);
+            SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes);
             MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
         }
     }

@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:loot_td_editor"
+        xmlns:localed="clr-namespace:loot_td_editor.Editors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1440">
+        Title="MainWindow" Height="960" Width="1600">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -35,6 +36,9 @@
                 </TabControl>
             </TabItem>
             <TabItem Header="_Archetypes">
+                <localed:ArchetypeEditor x:Name="ArchetypeEditor"/>
+            </TabItem>
+            <TabItem Header="_Abilities">
             </TabItem>
             <TabItem Header="_Affixes">
                 <TabControl Name="AffixesTabControl">

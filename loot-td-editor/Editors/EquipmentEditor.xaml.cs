@@ -1,20 +1,11 @@
-﻿using System;
+﻿using loot_td;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using loot_td;
-using Newtonsoft.Json;
 
 namespace loot_td_editor
 {
@@ -64,8 +55,6 @@ namespace loot_td_editor
             if (Properties.Settings.Default.JsonLoadPath == "")
                 return;
 
-
-          
             string filePath = Properties.Settings.Default.JsonLoadPath + "\\items\\" + fileName;
             Debug.WriteLine(filePath);
             if (!System.IO.File.Exists(filePath))
@@ -83,7 +72,6 @@ namespace loot_td_editor
                 currentID = 0;
         }
 
-
         public EquipmentEditor()
         {
             InitializeComponent();
@@ -93,7 +81,6 @@ namespace loot_td_editor
 
         public void AddButtonClick()
         {
-
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -156,7 +143,6 @@ namespace loot_td_editor
 
         private void SetOffenseValuesClick(object sender, RoutedEventArgs e)
         {
-
         }
 
         private void SetReqValuesClick(object sender, RoutedEventArgs e)
@@ -172,15 +158,16 @@ namespace loot_td_editor
             if (hybridtype == 0)
             {
                 return (int)Math.Floor(scaling * droplevel);
-            } else if (hybridtype == 1)
+            }
+            else if (hybridtype == 1)
             {
                 return (int)Math.Floor(droplevel * scaling * hybridMult);
-            } else if (hybridtype == 2)
+            }
+            else if (hybridtype == 2)
             {
                 return (int)Math.Floor(droplevel * scaling * willHybridMult);
             }
             return 0;
-
         }
 
         private void CalculateArmorValues(EquipmentBase b)
@@ -195,36 +182,45 @@ namespace loot_td_editor
                 case GroupType.STR_ARMOR:
                     b.Armor = GetScaledDefense(b.DropLevel, 0, armorScaling);
                     break;
+
                 case GroupType.INT_ARMOR:
                     b.Shield = GetScaledDefense(b.DropLevel, 0, shieldScaling);
                     break;
+
                 case GroupType.AGI_ARMOR:
                     b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling);
                     break;
+
                 case GroupType.STR_AGI_ARMOR:
                     b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling);
                     b.DodgeRating = GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling);
                     break;
+
                 case GroupType.STR_WILL_ARMOR:
                     b.Armor = GetScaledDefense(b.DropLevel, 2, armorScaling);
                     b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
                     break;
+
                 case GroupType.STR_INT_ARMOR:
                     b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling);
                     b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling);
                     break;
+
                 case GroupType.INT_AGI_ARMOR:
                     b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling);
                     b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling);
                     break;
+
                 case GroupType.INT_WILL_ARMOR:
                     b.Shield = GetScaledDefense(b.DropLevel, 2, shieldScaling);
                     b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
                     break;
+
                 case GroupType.AGI_WILL_ARMOR:
                     b.DodgeRating = GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling);
                     b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
                     break;
+
                 default:
                     return;
             }
@@ -238,44 +234,53 @@ namespace loot_td_editor
             b.WillReq = 0;
 
             int mainreq = (int)Math.Floor(b.DropLevel * mainAttrScaling + startingAttr);
-            int hybridmain = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr); 
-            int hybridsub = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr); 
+            int hybridmain = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
+            int hybridsub = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr);
 
             switch (b.Group)
             {
                 case GroupType.STR_ARMOR:
                     b.StrengthReq = mainreq;
                     break;
+
                 case GroupType.INT_ARMOR:
                     b.IntelligenceReq = mainreq;
                     break;
+
                 case GroupType.AGI_ARMOR:
                     b.AgilityReq = mainreq;
                     break;
+
                 case GroupType.STR_AGI_ARMOR:
                     b.StrengthReq = hybridmain;
                     b.AgilityReq = hybridmain;
                     break;
+
                 case GroupType.STR_WILL_ARMOR:
                     b.StrengthReq = hybridmain;
                     b.WillReq = hybridsub;
                     break;
+
                 case GroupType.STR_INT_ARMOR:
                     b.StrengthReq = hybridmain;
                     b.IntelligenceReq = hybridmain;
                     break;
+
                 case GroupType.INT_AGI_ARMOR:
                     b.IntelligenceReq = hybridmain;
                     b.AgilityReq = hybridmain;
                     break;
+
                 case GroupType.INT_WILL_ARMOR:
                     b.IntelligenceReq = hybridmain;
                     b.WillReq = hybridsub;
                     break;
+
                 case GroupType.AGI_WILL_ARMOR:
                     b.AgilityReq = hybridmain;
                     b.WillReq = hybridsub;
                     break;
+
                 default:
                     return;
             }
@@ -283,8 +288,6 @@ namespace loot_td_editor
 
         private void EquipSlotBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
         }
     }
-
 }

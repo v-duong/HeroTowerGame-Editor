@@ -8,40 +8,40 @@ using Newtonsoft.Json.Converters;
 public class AbilityBase
 {
     [JsonProperty]
-    public readonly int id;
+    public int id;
     [JsonProperty]
-    public readonly string name;
+    public string name;
     [JsonConverter(typeof(StringEnumConverter))][JsonProperty]
-    public readonly AbilityType abilityType;
+    public AbilityType abilityType;
     [JsonConverter(typeof(StringEnumConverter))][JsonProperty]
-    public readonly AbilityShotType abilityShotType;
+    public AbilityShotType abilityShotType;
     [JsonProperty]
-    public readonly float baseCooldown;
+    public float baseCooldown;
     [JsonProperty]
-    public readonly float baseTargetRange;
+    public float baseTargetRange;
     [JsonProperty]
-    public readonly float baseProjectileSpeed;
+    public float baseProjectileSpeed;
     [JsonProperty]
-    public readonly float baseProjectileSize;
+    public float baseProjectileSize;
     [JsonProperty]
-    public readonly float baseWeaponMultiplier;
+    public float baseWeaponMultiplier;
     [JsonProperty]
-    public readonly float weaponMultiplierScaling;
+    public float weaponMultiplierScaling;
     [JsonProperty]
-    public readonly List<AbilityBaseDamageEntry> baseDamage;
+    public List<AbilityBaseDamageEntry> baseDamage;
     [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-    public readonly List<GroupType> groupTypes;
+    public List<GroupType> groupTypes;
 }
 
 [Serializable]
 public class AbilityBaseDamageEntry
 {
     [JsonConverter(typeof(StringEnumConverter))][JsonProperty]
-    public readonly ElementType elementType;
+    public ElementType elementType;
     [JsonProperty]
-    public readonly int baseMin;
+    public int baseMin;
     [JsonProperty]
-    public readonly int baseMax;
+    public int baseMax;
 }
 
 
