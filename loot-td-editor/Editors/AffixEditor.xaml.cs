@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace loot_td_editor
 
     public partial class AffixEditor : UserControl
     {
-        public List<AffixBase> Affixes;
+        public ObservableCollection<AffixBase> Affixes;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
 
         private int currentID = 0;
@@ -77,13 +78,22 @@ namespace loot_td_editor
             Debug.WriteLine("Initialized " + fileName);
             if (!System.IO.File.Exists(filePath))
             {
-                Affixes = new List<AffixBase>();
+                Affixes = new ObservableCollection<AffixBase>();
                 AffixesList.ItemsSource = Affixes;
                 return;
             }
             string json = System.IO.File.ReadAllText(filePath);
-            Affixes = JsonConvert.DeserializeObject<List<AffixBase>>(json);
+            Affixes = JsonConvert.DeserializeObject<ObservableCollection<AffixBase>>(json);
+
+            foreach (AffixBase k in Affixes)
+            {
+                if (k.IdName == null)
+                    k.IdName = "";
+            }
             AffixesList.ItemsSource = Affixes;
+
+
+
             if (Affixes.Count >= 1)
                 currentID = Affixes[Affixes.Count - 1].Id + 1;
             else
@@ -111,7 +121,7 @@ namespace loot_td_editor
                 Tier = 1
             };
             Affixes.Add(temp);
-            AffixesList.Items.Refresh();
+            //AffixesList.Items.Refresh();
             currentID++;
         }
 
@@ -124,7 +134,7 @@ namespace loot_td_editor
                 Id = currentID,
             };
             Affixes.Add(temp);
-            AffixesList.Items.Refresh();
+            //AffixesList.Items.Refresh();
             currentID++;
         }
 
@@ -133,7 +143,7 @@ namespace loot_td_editor
             if (AffixesList.SelectedItem == null)
                 return;
             Affixes.Remove((AffixBase)AffixesList.SelectedItem);
-            AffixesList.Items.Refresh();
+            //AffixesList.Items.Refresh();
         }
 
         private void AddBonusButtonClick(object sender, RoutedEventArgs e)
@@ -159,12 +169,12 @@ namespace loot_td_editor
 
         private void BonusGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
-            AffixesList.Items.Refresh();
+            //AffixesList.Items.Refresh();
         }
 
         private void BonusGrid_CurrentCellChanged(object sender, EventArgs e)
         {
-            AffixesList.Items.Refresh();
+            //AffixesList.Items.Refresh();
         }
 
         private void AddWeightButtonClick(object sender, RoutedEventArgs e)

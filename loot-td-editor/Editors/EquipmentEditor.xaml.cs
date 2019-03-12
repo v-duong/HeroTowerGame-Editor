@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -14,10 +15,10 @@ namespace loot_td_editor
     /// </summary>
     public partial class EquipmentEditor : UserControl
     {
-        public static float armorScaling = 10f;
-        public static float shieldScaling = 15f;
-        public static float dodgeRatingScaling = 8f;
-        public static float resolveRatingScaling = 5.5f;
+        public static float armorScaling = 3f;
+        public static float shieldScaling = 4.5f;
+        public static float dodgeRatingScaling = 2.3f;
+        public static float resolveRatingScaling = 1.12f;
         public static float hybridMult = 0.5f;
         public static float willHybridMult = 0.75f;
 
@@ -26,7 +27,7 @@ namespace loot_td_editor
         public static float hybridFactor = 1.6f;
         public static int startingAttr = 10;
 
-        public List<AffixBase> innatesList { get; set; }
+        public ObservableCollection<AffixBase> innatesList { get; set; }
         public List<EquipmentBase> Equipments;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
         public IList<EquipSlotType> EquipSlotTypes { get { return Enum.GetValues(typeof(EquipSlotType)).Cast<EquipSlotType>().ToList<EquipSlotType>(); } }
@@ -65,6 +66,13 @@ namespace loot_td_editor
             }
             string json = System.IO.File.ReadAllText(filePath);
             Equipments = JsonConvert.DeserializeObject<List<EquipmentBase>>(json);
+
+            foreach(EquipmentBase k in Equipments)
+            {
+                if (k.Description == null)
+                    k.Description = "";
+            }
+
             EquipList.ItemsSource = Equipments;
             if (Equipments.Count >= 1)
                 currentID = Equipments[Equipments.Count - 1].Id + 1;
@@ -89,7 +97,7 @@ namespace loot_td_editor
             {
                 Id = currentID,
                 Name = "UNTITLED NEW",
-                InnateAffixId = -1
+                InnateAffixId = null
             };
             Equipments.Add(temp);
             EquipList.Items.Refresh();
@@ -121,7 +129,7 @@ namespace loot_td_editor
         {
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             t.HasInnate = true;
-            t.InnateAffixId = 0;
+            t.InnateAffixId = "";
             InnateBox.SelectedIndex = 0;
         }
 
@@ -129,7 +137,7 @@ namespace loot_td_editor
         {
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             t.HasInnate = false;
-            t.InnateAffixId = -1;
+            t.InnateAffixId = null;
             InnateBox.SelectedIndex = -1;
         }
 
@@ -157,15 +165,15 @@ namespace loot_td_editor
         {
             if (hybridtype == 0)
             {
-                return (int)Math.Floor(scaling * droplevel);
+                return (int)Math.Floor(Helpers.EquipScalingFormula(droplevel) * scaling + 10);
             }
             else if (hybridtype == 1)
             {
-                return (int)Math.Floor(droplevel * scaling * hybridMult);
+                return (int)Math.Floor((Helpers.EquipScalingFormula(droplevel) * scaling + 10) * hybridMult);
             }
             else if (hybridtype == 2)
             {
-                return (int)Math.Floor(droplevel * scaling * willHybridMult);
+                return (int)Math.Floor((Helpers.EquipScalingFormula(droplevel) * scaling + 10) * willHybridMult);
             }
             return 0;
         }
@@ -288,6 +296,39 @@ namespace loot_td_editor
 
         private void EquipSlotBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+        }
+
+        private void InnateBox_DropDownOpened(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ScalingMult_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
+            if (t == null)
+                return;
+            CalculateArmorValues(t);
+        }
+
+        private void UseScalingBox_Checked(object sender, RoutedEventArgs e)
+        {
+            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
+            
+            if (ScalingMult != null)
+                ScalingMult.Value = 1;
+
+            if (t == null)
+                return;
+
+            CalculateArmorValues(t);
+            CalculateReqValues(t);
+        }
+
+        private void UseScalingBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
+            ScalingMult.Value = 1;
         }
     }
 }

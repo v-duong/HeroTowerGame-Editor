@@ -2,9 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 
@@ -15,7 +17,7 @@ namespace loot_td_editor.Editors
     /// </summary>
     public partial class ArchetypeEditor : UserControl
     {
-        public List<ArchetypeBase> Archetypes;
+        public ObservableCollection<ArchetypeBase> Archetypes;
         private int currentID;
 
         public void InitializeList()
@@ -26,12 +28,19 @@ namespace loot_td_editor.Editors
             Debug.WriteLine("Initialized archetypes");
             if (!System.IO.File.Exists(filePath))
             {
-                Archetypes = new List<ArchetypeBase>();
+                Archetypes = new ObservableCollection<ArchetypeBase>();
                 ArchetypesList.ItemsSource = Archetypes;
                 return;
             }
             string json = System.IO.File.ReadAllText(filePath);
-            Archetypes = JsonConvert.DeserializeObject<List<ArchetypeBase>>(json);
+            Archetypes = JsonConvert.DeserializeObject<ObservableCollection<ArchetypeBase>>(json);
+
+            foreach(ArchetypeBase k in Archetypes)
+            {
+                if (k.IdName == null)
+                    k.IdName = "";
+            }
+
             ArchetypesList.ItemsSource = Archetypes;
             if (Archetypes.Count >= 1)
                 currentID = Archetypes[Archetypes.Count - 1].Id + 1;
@@ -53,7 +62,7 @@ namespace loot_td_editor.Editors
                 Name = "UNTITLED NEW",
             };
             Archetypes.Add(temp);
-            ArchetypesList.Items.Refresh();
+            //ArchetypesList.Items.Refresh();
             currentID++;
         }
 
@@ -64,7 +73,7 @@ namespace loot_td_editor.Editors
             ArchetypeBase temp = ArchetypeBase.DeepClone((ArchetypeBase)ArchetypesList.SelectedItem);
             temp.Id = currentID;
             Archetypes.Add(temp);
-            ArchetypesList.Items.Refresh();
+            //ArchetypesList.Items.Refresh();
             currentID++;
         }
 
@@ -73,7 +82,7 @@ namespace loot_td_editor.Editors
             if (ArchetypesList.SelectedItem == null)
                 return;
             Archetypes.Remove((ArchetypeBase)ArchetypesList.SelectedItem);
-            ArchetypesList.Items.Refresh();
+            //ArchetypesList.Items.Refresh();
         }
 
         private void AddButtonClickNode(object sender, RoutedEventArgs e)
@@ -130,14 +139,14 @@ namespace loot_td_editor.Editors
         {
             if (ArchetypesList.SelectedItem == null)
                 return;
-            if (NodesList.SelectedItem == null || ChildNum.SelectedItem == null)
+            if (NodesList.SelectedItem == null || ChildNum.SelectedValue == null)
                 return;
 
             ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
             ArchetypeSkillNode selectedNode = (ArchetypeSkillNode)NodesList.SelectedItem;
-            if (selectedNode.Children.Contains((int)ChildNum.SelectedItem))
+            if (selectedNode.Children.Contains((int)ChildNum.SelectedValue))
                 return;
-            selectedNode.Children.Add((int)ChildNum.SelectedItem);
+            selectedNode.Children.Add((int)ChildNum.SelectedValue);
             ChildList.Items.Refresh();
             DrawCanvas();
         }
@@ -160,7 +169,41 @@ namespace loot_td_editor.Editors
             selectedNode.Children.Remove((int)ChildList.SelectedItem);
             ChildList.Items.Refresh();
             DrawCanvas();
+        }
 
+        private void DrawGrid()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Line l = new Line()
+                {
+                    Stroke = System.Windows.Media.Brushes.LightBlue,
+                    X1 = 0,
+                    Y1 = 0,
+                    X2 = NodeTree.ActualWidth,
+                    Y2 = 0
+                };
+                NodeTree.Children.Add(l);
+                Canvas.SetLeft(l, 0);
+                Canvas.SetBottom(l, 0 + 25 + i * 100);
+                Canvas.SetZIndex(l, -2);
+            }
+
+            for (int i = -4; i < 4; i++)
+            {
+                Line l = new Line()
+                {
+                    Stroke = System.Windows.Media.Brushes.LightBlue,
+                    X1 = 0,
+                    Y1 = 0,
+                    X2 = 0,
+                    Y2 = -NodeTree.ActualHeight
+                };
+                NodeTree.Children.Add(l);
+                Canvas.SetLeft(l, NodeTree.ActualWidth / 2 + i * 100);
+                Canvas.SetBottom(l, 0);
+                Canvas.SetZIndex(l, -2);
+            }
         }
 
         private void DrawCanvas()
@@ -168,6 +211,8 @@ namespace loot_td_editor.Editors
             int spacing = 100;
 
             NodeTree.Children.Clear();
+
+            DrawGrid();
 
             if (ArchetypesList.SelectedItem == null)
                 return;
@@ -184,8 +229,14 @@ namespace loot_td_editor.Editors
                     Height = 50,
                     Width = 50,
                     Stroke = System.Windows.Media.Brushes.Black,
-                    Fill = System.Windows.Media.Brushes.Gray
+                    Fill = System.Windows.Media.Brushes.LightGray
                 };
+
+                r.MouseLeftButtonDown += mouseDown;
+                r.MouseLeftButtonUp += mouseUp;
+                r.MouseMove += rect_MouseMove;
+
+                r.DataContext = node;
 
                 TextBlock t = new TextBlock
                 {
@@ -194,7 +245,8 @@ namespace loot_td_editor.Editors
                     Text = node.Id.ToString(),
                     FontSize = 24,
                     FontWeight = FontWeights.Bold,
-                    TextAlignment = TextAlignment.Center
+                    TextAlignment = TextAlignment.Center,
+                    IsHitTestVisible = false
                 };
 
                 NodeTree.Children.Add(r);
@@ -222,7 +274,7 @@ namespace loot_td_editor.Editors
                                 X2 = (c.NodePosition.x - node.NodePosition.x) * spacing,
                                 Y2 = 0 + (node.NodePosition.y - c.NodePosition.y) * spacing
                             };
-                            
+
                             NodeTree.Children.Add(l);
                             Canvas.SetLeft(l, NodeTree.ActualWidth / 2 + node.NodePosition.x * spacing);
                             Canvas.SetZIndex(l, -1);
@@ -238,6 +290,44 @@ namespace loot_td_editor.Editors
                     }
                 }
             }
+        }
+
+        private void mouseDown(object sender, MouseEventArgs e)
+        {
+            var element = (Rectangle)sender;
+            element.CaptureMouse();
+        }
+
+        private void mouseUp(object sender, MouseEventArgs e)
+        {
+            var rect = (Rectangle)sender;
+            rect.ReleaseMouseCapture();
+
+            if (rect.DataContext != null)
+            {
+                ArchetypeSkillNode a = (ArchetypeSkillNode)rect.DataContext;
+                a.NodePosition.x = (int)Math.Round((Canvas.GetLeft(rect) - NodeTree.ActualWidth / 2) / 100, 0);
+                a.NodePosition.y = (int)Math.Round(Canvas.GetBottom(rect) / 100, 0);
+            }
+
+            DrawCanvas();
+        }
+
+        private void rect_MouseMove(object sender, MouseEventArgs e)
+        {
+            var rect = (Rectangle)sender;
+
+            if (!rect.IsMouseCaptured) return;
+
+            // get the position of the mouse relative to the Canvas
+            var mousePos = e.GetPosition(NodeTree);
+
+            // center the rect on the mouse
+            double left = mousePos.X - (rect.ActualWidth / 2);
+            double top = -mousePos.Y + (NodeTree.ActualHeight) + (rect.ActualHeight / 2);
+
+            Canvas.SetLeft(rect, Math.Round((left + 10) / 100, 0) * 100 - 10);
+            Canvas.SetBottom(rect, Math.Round((top - 50) / 100, 0) * 100);
         }
 
         private void DoubleUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -293,15 +383,27 @@ namespace loot_td_editor.Editors
             ChildNum.ItemsSource = selected.NodeList;
         }
 
-        
-    }
-
-    public static class Helpers
-    {
-        public static T DeepClone<T>(T o)
+        private void TypeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            string s = JsonConvert.SerializeObject(o);
-            return JsonConvert.DeserializeObject<T>(s);
+            ComboBox box = (ComboBox)sender;
+            if (box.SelectedValue == null || ArchetypesList.SelectedItem == null || NodesList.SelectedItem == null)
+                return;
+            ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
+            ArchetypeSkillNode node = (ArchetypeSkillNode)NodesList.SelectedItem;
+            if ((NodeType)e.AddedItems[0] == NodeType.ABILITY)
+            {
+                NodeAbilityList.IsReadOnly = false;
+                NodeAbilityList.IsHitTestVisible = true;
+                NodeAbilityList.Focusable = true;
+            }
+            else
+            {
+                NodeAbilityList.IsHitTestVisible = false;
+                NodeAbilityList.Focusable = false;
+                NodeAbilityList.IsReadOnly = true;
+                NodeAbilityList.SelectedItem = null;
+                node.AbilityId = null;
+            }
         }
     }
 }

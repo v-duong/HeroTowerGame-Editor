@@ -13,6 +13,8 @@ namespace loot_td
         [JsonProperty]
         public int Id { get; set; }
         [JsonProperty]
+        public string IdName { get; set; }
+        [JsonProperty]
         public string Name { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -36,6 +38,7 @@ namespace loot_td
 
         public AffixBase()
         {
+            IdName = "";
             AffixBonuses = new List<AffixBonus>();
             SpawnWeight = new List<AffixWeight>();
             GroupTypes = new List<GroupType>();

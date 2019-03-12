@@ -8,7 +8,7 @@
              xmlns:loottd="clr-namespace:loot_td"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
-             d:DesignHeight="600" d:DesignWidth="1250">
+             d:DesignHeight="800" d:DesignWidth="1400">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -39,6 +39,7 @@
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="100" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="100" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=DropLevel}" Header="DropLevel" Width="50" />
                     </GridView>
                 </ListView.View>
@@ -60,20 +61,35 @@
                 <ColumnDefinition Width="75" />
                 <ColumnDefinition Width="1.25*" />
                 <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="1.15*" />
-                <ColumnDefinition Width="0.6*" />
-                <ColumnDefinition Width="45" />
+                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="60" />
             </Grid.ColumnDefinitions>
             <Label Content="ID" />
             <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsReadOnly="True"></xctk:IntegerUpDown>
-            <Label Content="Name" Grid.Row="1" />
-            <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-            <Label Content="DropLevel" Grid.Row="2"></Label>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
-            <Label Content="Stars" Grid.Row="3"></Label>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Stars, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"></xctk:IntegerUpDown>
+            <Label Content="IdName" Grid.Row="1" />
+            <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <Label Content="Name" Grid.Row="2" />
+            <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            
+            <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="75" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="55" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <Label Content="DropLevel" Grid.Column="0"></Label>
+                <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
+                <Label Content="Stars" Grid.Column="3"></Label>
+                <xctk:IntegerUpDown Grid.Column="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Stars, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"></xctk:IntegerUpDown>
+            </Grid>
+
             <Label Content="Text" Grid.Row="4"></Label>
-            <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.Text, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <TextBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="1" Grid.RowSpan="1" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.Text, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <Label Content="SpawnWeight" Grid.Column="0" Grid.Row="5"></Label>
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"></xctk:IntegerUpDown>
             <Label Content="HealthGrowth" Grid.Column="3"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.HealthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="HpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
             <Label Content="SoulPointGrowth" Grid.Column="3" Grid.Row="1"></Label>
@@ -118,6 +134,7 @@
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="100" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Type}" Header="NodeType" Width="80" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityId}" Header="NodeType" Width="80" />
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -147,7 +164,7 @@
                     <Label Content="ID" />
                     <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=NodesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  ValueChanged="CanvasEdit"/>
                     <Label Content="Type" Grid.Column="2" />
-                    <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedItem="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="TypeBox_SelectionChanged"/>
                     <Label Content="Name" Grid.Row="1" />
                     <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="3" Text="{Binding ElementName=NodesList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
                     <Label Content="Desc" Grid.Row="2" />
@@ -157,11 +174,11 @@
                     <Label Content="maxLevel" Grid.Row="3"   Grid.Column="2"/>
                     <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"/>
                     <Label Content="PosX" Grid.Row="4"   Grid.Column="0"/>
-                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit" Name="Px"/>
                     <Label Content="PosY" Grid.Row="4"   Grid.Column="2"/>
-                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit"/>
+                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit" Name="Py"/>
                     <Label Content="Ability" Grid.Row="5"   Grid.Column="0"/>
-                    <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedItem="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="Name"/>
                 </Grid>
                 <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" >
                 </DataGrid>
@@ -179,12 +196,11 @@
                     <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClickChild" />
                     <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="Id"></ComboBox>
                     <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Children, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,5,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Name="ChildList" SelectionChanged="ArchetypesList_SelectionChanged">
-
                     </ListView>
                 </Grid>
             </Grid>
         </Grid>
-        <Canvas Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Name="NodeTree" >
+        <Canvas Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Name="NodeTree" ClipToBounds="True">
 
         </Canvas>
     </Grid>

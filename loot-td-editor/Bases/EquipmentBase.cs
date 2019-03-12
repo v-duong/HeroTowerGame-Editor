@@ -7,7 +7,9 @@ namespace loot_td
     public class EquipmentBase : BindableBase
     {
         private int _id;
+        private string _idName;
         private string _name;
+        private string _description;
         private int _willReq;
         private int _agilityReq;
         private int _intelligenceReq;
@@ -24,14 +26,20 @@ namespace loot_td
         private EquipSlotType _equipSlot;
         private GroupType _group;
         private bool _hasInnate;
-        private int _innateAffixId;
+        private string _innateAffixId;
         private int _dropLevel;
+        private int _spawnWeight;
 
         [JsonProperty]
         public int Id { get => _id; set => SetProperty(ref _id, value); }
+        [JsonProperty]
+        public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
 
         [JsonProperty]
         public string Name { get => _name; set => SetProperty(ref _name, value); }
+
+        [JsonProperty]
+        public string Description { get => _description; set => SetProperty(ref _description, value); }
 
         [JsonProperty]
         public int DropLevel { get => _dropLevel; set => SetProperty(ref _dropLevel, value); }
@@ -87,15 +95,22 @@ namespace loot_td
         public bool HasInnate { get => _hasInnate; set => SetProperty(ref _hasInnate, value); }
 
         [JsonProperty]
-        public int InnateAffixId { get => _innateAffixId; set => SetProperty(ref _innateAffixId, value); }
+        public string InnateAffixId { get => _innateAffixId; set => SetProperty(ref _innateAffixId, value); }
+
+        [JsonProperty]
+        public int SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
 
         public EquipmentBase()
         {
+            Description = "";
+            IdName = "";
         }
 
         public EquipmentBase(EquipmentBase a)
         {
             Id = a.Id;
+            IdName = a.IdName;
+            Description = a.Description;
             Name = a.Name;
             DropLevel = a.DropLevel;
             Armor = a.Armor;

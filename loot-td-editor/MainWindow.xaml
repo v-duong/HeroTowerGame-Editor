@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:loot_td_editor"
         xmlns:localed="clr-namespace:loot_td_editor.Editors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="960" Width="1600">
+        Title="MainWindow" Height="960" Width="1600"
+        WindowStartupLocation="CenterScreen" >
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
@@ -39,6 +40,7 @@
                 <localed:ArchetypeEditor x:Name="ArchetypeEditor"/>
             </TabItem>
             <TabItem Header="_Abilities">
+                <localed:AbilityEditor x:Name="AbilityEditor"/>
             </TabItem>
             <TabItem Header="_Affixes">
                 <TabControl Name="AffixesTabControl">

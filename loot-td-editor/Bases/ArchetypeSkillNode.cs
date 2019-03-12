@@ -14,8 +14,8 @@ namespace loot_td
         private int _initialLevel;
         private int _maxLevel;
         private NodeType _type;
-        private List<ArchetypeNodeBonus> _bonuses;
-        private int _ability;
+        private List<ScalingBonusProperty> _bonuses;
+        private string _ability;
         private Vector2 _nodePosition;
         private string _iconPath;
         private List<int> _requirements;
@@ -40,10 +40,10 @@ namespace loot_td
         public NodeType Type { get => _type; set =>  SetProperty( ref _type, value); }
 
         [JsonProperty]
-        public List<ArchetypeNodeBonus> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
+        public List<ScalingBonusProperty> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
 
         [JsonProperty]
-        public int AbilityId { get => _ability; set =>  SetProperty( ref _ability, value); }
+        public string AbilityId { get => _ability; set =>  SetProperty( ref _ability, value); }
 
         [JsonProperty]
         public Vector2 NodePosition { get => _nodePosition; set =>  SetProperty( ref _nodePosition, value); }
@@ -59,13 +59,13 @@ namespace loot_td
             NodePosition = new Vector2(0,0);
             Desc = "";
             Children = new List<int>();
-            Bonuses = new List<ArchetypeNodeBonus>();
+            Bonuses = new List<ScalingBonusProperty>();
             IconPath = "";
             MaxLevel = 1;
         }
     }
 
-    public class ArchetypeNodeBonus
+    public class ScalingBonusProperty
     {
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -96,12 +96,16 @@ namespace loot_td
         public int bonusLevels;
     }
 
-    public class Vector2
+    public class Vector2 : BindableBase
     {
+
         [JsonProperty]
-        public int x { get; set; }
+        public int x { get => _x; set => SetProperty(ref _x, value); }
         [JsonProperty]
-        public int y { get; set; }
+        public int y { get => _y; set => SetProperty(ref _y, value); }
+
+        private int _x;
+        private int _y;
 
         public Vector2(int x, int y)
         {

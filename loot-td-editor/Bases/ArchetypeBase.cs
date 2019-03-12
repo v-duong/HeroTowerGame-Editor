@@ -9,6 +9,8 @@ namespace loot_td
     {
         private int id;
 
+        private string idName;
+
         private string name;
 
         private string text;
@@ -16,6 +18,8 @@ namespace loot_td
         private int stars;
 
         private int dropLevel;
+
+        private int spawnWeight;
 
         private float healthGrowth;
 
@@ -31,6 +35,9 @@ namespace loot_td
 
         [JsonProperty]
         public int Id { get => id; set => SetProperty( ref id , value ); }
+
+        [JsonProperty]
+        public string IdName { get => idName; set => SetProperty(ref idName, value); }
 
         [JsonProperty]
         public string Name { get => name; set =>  SetProperty( ref name, value); }
@@ -63,12 +70,16 @@ namespace loot_td
         public float WillGrowth { get => willGrowth; set =>  SetProperty( ref willGrowth, value); }
 
         [JsonProperty]
+        public int SpawnWeight { get => spawnWeight; set => SetProperty(ref spawnWeight, value); }
+
+        [JsonProperty]
         public List<ArchetypeSkillNode> NodeList { get; }
 
 
         public ArchetypeBase()
         {
             Text = "";
+            IdName = "";
             NodeList = new List<ArchetypeSkillNode>();
             DropLevel = 1;
             Stars = 1;
