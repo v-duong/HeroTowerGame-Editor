@@ -166,7 +166,7 @@ public class ShouldSerializeContractResolver : DefaultContractResolver
     {
         JsonProperty property = base.CreateProperty(member, memberSerialization);
 
-        if (property.PropertyName == "BaseAbilityPower" || property.PropertyName == "AbilityScaling")
+        if (property.PropertyName == "BaseAbilityPower" || property.PropertyName == "AbilityScaling" || property.PropertyName == "MinMult" || property.PropertyName == "MaxMult")
         {
             property.ShouldSerialize =
                 instance =>

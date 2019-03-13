@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace loot_td
 {
-
     [Serializable]
     public class AbilityBase : BindableBase
     {
@@ -31,7 +30,7 @@ namespace loot_td
 
         private float weaponMultiplier;
         private float weaponMultiplierScaling;
-        private List<AbilityDamageBase> damageLevels;
+        private Dictionary<ElementType, AbilityDamageBase> damageLevels;
         private float flatDamageMultiplier;
         private float baseAbilityPower;
         private float abilityScaling;
@@ -70,7 +69,7 @@ namespace loot_td
         public float TargetRange { get => targetRange; set => SetProperty(ref targetRange, value); }
 
         [JsonProperty]
-        public AbilityTargetType TargetsAllies { get => targetsAllies; set => SetProperty(ref targetsAllies, value); }
+        public AbilityTargetType TargetType { get => targetsAllies; set => SetProperty(ref targetsAllies, value); }
 
         [JsonProperty]
         public float ProjectileSpeed { get => projectileSpeed; set => SetProperty(ref projectileSpeed, value); }
@@ -97,16 +96,16 @@ namespace loot_td
         public float WeaponMultiplierScaling { get => weaponMultiplierScaling; set => SetProperty(ref weaponMultiplierScaling, value); }
 
         [JsonProperty]
-        public List<AbilityDamageBase> DamageLevels { get => damageLevels; set => SetProperty(ref damageLevels, value); }
+        public Dictionary<ElementType, AbilityDamageBase> DamageLevels { get => damageLevels; set => SetProperty(ref damageLevels, value); }
 
         [JsonProperty]
         public float FlatDamageMultiplier { get => flatDamageMultiplier; set => SetProperty(ref flatDamageMultiplier, value); }
 
         [JsonProperty]
-        public float BaseAbilityPower { get => baseAbilityPower; set => SetProperty(ref baseAbilityPower, value); }
+        public float BaseAbilityPower { get => baseAbilityPower; set => SetAndCalc(ref baseAbilityPower, value); }
 
         [JsonProperty]
-        public float AbilityScaling { get => abilityScaling; set => SetProperty(ref abilityScaling, value); }
+        public float AbilityScaling { get => abilityScaling; set => SetAndCalc(ref abilityScaling, value); }
 
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public List<GroupType> GroupTypes { get => groupTypes; set => SetProperty(ref groupTypes, value); }
@@ -128,7 +127,7 @@ namespace loot_td
 
         public AbilityBase()
         {
-            DamageLevels = new List<AbilityDamageBase>();
+            DamageLevels = new Dictionary<ElementType, AbilityDamageBase>();
             GroupTypes = new List<GroupType>();
             WeaponRestrictions = new List<GroupType>();
             BonusProperties = new List<ScalingBonusProperty>();
@@ -137,20 +136,85 @@ namespace loot_td
             Description = "";
         }
 
+        [JsonIgnore] public AbilityDamageBase GetPhysical { get => GetElementDamage(ElementType.NONE);  set => damageLevels[ElementType.NONE] = value; }
+        [JsonIgnore] public AbilityDamageBase GetFire { get => GetElementDamage(ElementType.FIRE); set => damageLevels[ElementType.FIRE] = value;  }
+        [JsonIgnore] public AbilityDamageBase GetCold { get => GetElementDamage(ElementType.COLD); set => damageLevels[ElementType.COLD] = value; }
+        [JsonIgnore] public AbilityDamageBase GetLightning { get => GetElementDamage(ElementType.LIGHTNING); set => damageLevels[ElementType.LIGHTNING] = value; }
+        [JsonIgnore] public AbilityDamageBase GetEarth { get => GetElementDamage(ElementType.EARTH); set => damageLevels[ElementType.EARTH] = value; }
+        [JsonIgnore] public AbilityDamageBase GetDivine { get => GetElementDamage(ElementType.DIVINE); set => damageLevels[ElementType.DIVINE] = value; }
+        [JsonIgnore] public AbilityDamageBase GetVoid { get => GetElementDamage(ElementType.VOID); set => damageLevels[ElementType.VOID] = value; }
+
+        [JsonIgnore] public bool HasPhysical { get => damageLevels.ContainsKey(ElementType.NONE); }
+        [JsonIgnore] public bool HasFire { get => damageLevels.ContainsKey(ElementType.FIRE); }
+        [JsonIgnore] public bool HasCold { get => damageLevels.ContainsKey(ElementType.COLD); }
+        [JsonIgnore] public bool HasLightning { get => damageLevels.ContainsKey(ElementType.LIGHTNING); }
+        [JsonIgnore] public bool HasEarth { get => damageLevels.ContainsKey(ElementType.EARTH); }
+        [JsonIgnore] public bool HasDivine { get => damageLevels.ContainsKey(ElementType.DIVINE); }
+        [JsonIgnore] public bool HasVoid { get => damageLevels.ContainsKey(ElementType.VOID); }
+
+        private void SetAndCalc(ref float r, float v)
+        {
+            SetProperty( ref r, v);
+            if (damageLevels.Count == 0)
+                return;
+            foreach(AbilityDamageBase b in damageLevels.Values)
+            {
+                if (b == null)
+                    continue;
+                b.CalculateDamage(BaseAbilityPower, AbilityScaling);
+            }
+        }
+
+        private AbilityDamageBase GetElementDamage(ElementType e)
+        {
+            if (damageLevels.ContainsKey(e))
+                return damageLevels[e];
+            else
+                return null;
+        }
     }
 
     [Serializable]
     public class AbilityDamageBase : BindableBase
     {
-        private ElementType elementType;
-        private List<Vector2> damage;
-
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty]
-        public ElementType ElementType { get => elementType; set => SetProperty(ref elementType, value); }
+        private List<DamageStore> damage;
+        private float minMult;
+        private float maxMult;
 
         [JsonProperty]
-        public List<Vector2> Damage { get => damage; set => SetProperty(ref damage, value); }
+        public List<DamageStore> Damage { get => damage; set => SetProperty(ref damage, value); }
+
+        [JsonProperty]
+        public float MinMult { get => minMult; set => SetProperty(ref minMult, value); }
+
+        [JsonProperty]
+        public float MaxMult { get => maxMult; set => SetProperty(ref maxMult, value); }
+
+        public AbilityDamageBase()
+        {
+            MinMult = 1;
+            MaxMult = 1;
+            damage = new List<DamageStore>();
+        }
+
+    
+        public void CalculateDamage(float basePower, float scaling)
+        {
+            for (int i = 1; i <= 65; i++)
+            {
+                int j = i * 2;
+                double scalingfactor = Math.Pow(scaling, j/1.333);
+                double levelfactor = 0.804d;
+                double final = scalingfactor * levelfactor * basePower * j + 8d;
+                //damage[i] = (new DamageStore( (float)(final * minMult), (float)(final * MaxMult) ));
+                if (damage.Count < i)
+                {
+                    damage.Add (new DamageStore(0,0));
+                }
+                damage[i-1].Min = (int)Math.Round(final * minMult, MidpointRounding.AwayFromZero);
+                damage[i-1].Max = (int)Math.Round(final * MaxMult, MidpointRounding.AwayFromZero);
+            }
+        }
     }
 
     [Serializable]
@@ -169,6 +233,21 @@ namespace loot_td
 
         [JsonProperty]
         public float Time { get => time; set => SetProperty(ref time, value); }
+    }
+
+    public class DamageStore : BindableBase
+    {
+        private int min;
+        private int max;
+
+        public int Min { get => min; set => SetProperty(ref min, value); }
+        public int Max { get => max; set => SetProperty(ref max, value); }
+
+        public DamageStore(int a, int b)
+        {
+            Min = a;
+            Max = b;
+        }
     }
 
     [Serializable]

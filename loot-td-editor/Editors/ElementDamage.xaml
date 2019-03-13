@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="loot_td_editor.Editors.ElementDamage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:loot_td_editor.Editors"
+             xmlns:localx="clr-namespace:loot_td_editor"
+             xmlns:loottd="clr-namespace:loot_td"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="200"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             >
+    <Grid Background="Wheat">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Label Content="" FontWeight="Bold" Grid.Column="0" Margin="15,0,0,0" Name="EleLabel"></Label>
+        <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Name="PhysCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
+        <DockPanel Grid.Row="1">
+            <xctk:DoubleUpDown Width="70" Name="PhysMin" Value="{Binding BindAbilityDamage.MinMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Width="70" Name="PhysMax" Value="{Binding BindAbilityDamage.MaxMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3"></xctk:DoubleUpDown>
+        </DockPanel>
+        <DataGrid Grid.Row="2" Name="PhysGrid" ItemsSource="{Binding BindAbilityDamage.Damage}" AutoGenerateColumns="True" LoadingRow="DataGrid_LoadingRow" ItemStringFormat="F1">
+        </DataGrid>
+    </Grid>
+</UserControl>

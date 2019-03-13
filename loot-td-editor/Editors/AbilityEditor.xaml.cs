@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using loot_td;
 using Newtonsoft.Json;
+using Xceed.Wpf.Toolkit;
 
 namespace loot_td_editor.Editors
 {
@@ -91,6 +92,88 @@ namespace loot_td_editor.Editors
                 return;
             Abilities.Remove((AbilityBase)AbilitiesList.SelectedItem);
             //ArchetypesList.Items.Refresh();
+        }
+
+        private void Checked(object sender, RoutedEventArgs e)
+        {
+            CheckBox c = (CheckBox)sender;
+
+            if (AbilitiesList.SelectedItem == null)
+                return;
+
+
+            AbilityBase selected = (AbilityBase)AbilitiesList.SelectedItem;
+
+            switch (c.Name)
+            {
+                case "PhysCheck":
+                    if (!selected.HasPhysical)
+                    {
+                        AbilityDamageBase a = new AbilityDamageBase();
+                        selected.DamageLevels.Add(ElementType.NONE, a);
+                        Binding min = new Binding();
+                        min.Source = a.MinMult;
+                    }
+                    break;
+                case "FireCheck":
+                    selected.DamageLevels.Add(ElementType.FIRE, new AbilityDamageBase());
+                    break;
+                case "ColdCheck":
+                    selected.DamageLevels.Add(ElementType.COLD, new AbilityDamageBase());
+                    break;
+                case "LightningCheck":
+                    selected.DamageLevels.Add(ElementType.LIGHTNING, new AbilityDamageBase());
+                    break;
+                case "EarthCheck":
+                    selected.DamageLevels.Add(ElementType.EARTH, new AbilityDamageBase());
+                    break;
+                case "DivineCheck":
+                    selected.DamageLevels.Add(ElementType.DIVINE, new AbilityDamageBase());
+                    break;
+                case "VoidCheck":
+                    selected.DamageLevels.Add(ElementType.VOID, new AbilityDamageBase());
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void Unchecked(object sender, RoutedEventArgs e)
+        {
+            CheckBox c = (CheckBox)sender;
+
+            if (AbilitiesList.SelectedItem == null)
+                return;
+
+
+            AbilityBase selected = (AbilityBase)AbilitiesList.SelectedItem;
+
+            switch (c.Name)
+            {
+                case "PhysCheck":
+                    selected.DamageLevels.Remove(ElementType.NONE);
+                    break;
+                case "FireCheck":
+                    selected.DamageLevels.Remove(ElementType.FIRE);
+                    break;
+                case "ColdCheck":
+                    selected.DamageLevels.Remove(ElementType.COLD);
+                    break;
+                case "LightningCheck":
+                    selected.DamageLevels.Remove(ElementType.LIGHTNING);
+                    break;
+                case "EarthCheck":
+                    selected.DamageLevels.Remove(ElementType.EARTH);
+                    break;
+                case "DivineCheck":
+                    selected.DamageLevels.Remove(ElementType.DIVINE);
+                    break;
+                case "VoidCheck":
+                    selected.DamageLevels.Remove(ElementType.VOID);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
