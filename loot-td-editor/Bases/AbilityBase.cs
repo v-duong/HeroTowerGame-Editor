@@ -3,6 +3,8 @@ using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using loot_td_editor;
 
 namespace loot_td
 {
@@ -35,8 +37,8 @@ namespace loot_td
         private float baseAbilityPower;
         private float abilityScaling;
 
-        private List<GroupType> groupTypes;
-        private List<GroupType> weaponRestrictions;
+        private ObservableCollection<GroupType> groupTypes;
+        private ObservableCollection<GroupType> weaponRestrictions;
         private List<ScalingBonusProperty> bonusProperties;
         private string effectSprite;
         private LinkedAbilityData linkedAbility;
@@ -108,10 +110,10 @@ namespace loot_td
         public float AbilityScaling { get => abilityScaling; set => SetAndCalc(ref abilityScaling, value); }
 
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<GroupType> GroupTypes { get => groupTypes; set => SetProperty(ref groupTypes, value); }
+        public ObservableCollection<GroupType> GroupTypes { get => groupTypes; set => SetProperty(ref groupTypes, value); }
 
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<GroupType> WeaponRestrictions { get => weaponRestrictions; set => SetProperty(ref weaponRestrictions, value); }
+        public ObservableCollection<GroupType> WeaponRestrictions { get => weaponRestrictions; set => SetProperty(ref weaponRestrictions, value); }
 
         [JsonProperty]
         public List<ScalingBonusProperty> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
@@ -128,8 +130,8 @@ namespace loot_td
         public AbilityBase()
         {
             DamageLevels = new Dictionary<ElementType, AbilityDamageBase>();
-            GroupTypes = new List<GroupType>();
-            WeaponRestrictions = new List<GroupType>();
+            GroupTypes = new ObservableCollection<GroupType>();
+            WeaponRestrictions = new ObservableCollection<GroupType>();
             BonusProperties = new List<ScalingBonusProperty>();
             AppliedEffects = new List<AbilityEffectData>();
             effectSprite = "";
@@ -205,8 +207,9 @@ namespace loot_td
                 int j = i * 2;
                 double scalingfactor = Math.Pow(scaling, j/1.333);
                 double levelfactor = 0.804d;
-                double final = scalingfactor * levelfactor * basePower * j + 8d;
+                //double final = scalingfactor * levelfactor * basePower * j + 8d;
                 //damage[i] = (new DamageStore( (float)(final * minMult), (float)(final * MaxMult) ));
+                double final = Helpers.AbilityScalingFormula(j, scaling, basePower) + 8d;
                 if (damage.Count < i)
                 {
                     damage.Add (new DamageStore(0,0));

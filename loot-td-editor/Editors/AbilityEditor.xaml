@@ -157,7 +157,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-<!--
+            <!--
             <Label Content="Cold" FontWeight="Bold" Grid.Column="2" Margin="15,0,0,0"></Label>
             <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Name="ColdCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
             <Label Content="Lightning" FontWeight="Bold" Grid.Column="3" Margin="15,0,0,0"></Label>
@@ -190,6 +190,55 @@
             <local:ElementDamage Grid.RowSpan="3" Grid.Column="5" ElementProp="VOID" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetVoid , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
 
 
+        </Grid>
+        <Grid Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="200"/>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.ColumnSpan="2" Name="FilterBox" TextChanged="FilterBox_TextChanged"></TextBox>
+            <ListBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Name="GroupList" ItemsSource="{Binding}">
+            </ListBox>
+            <Grid Grid.Column="0" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Grid.Row="1" Content="Add" Click="GroupAddButtonClick"/>
+                <Button Grid.Column="1" Grid.Row="1" Content="Remove" Click="GroupRemoveButtonClick"/>
+            </Grid>
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0" Grid.Row="1" Content="Add" Click="RestrictAddButtonClick"/>
+                <Button Grid.Column="1" Grid.Row="1" Content="Remove" Click="RestrictRemoveButtonClick"/>
+            </Grid>
+            <ListView Grid.Row="3" Grid.ColumnSpan="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.GroupTypes, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="GroupTagList">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn Header="Tag" Width="120"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <ListView Grid.Row="3" Grid.ColumnSpan="1" Grid.Column="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.WeaponRestrictions, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="RestrictionList">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn Header="Restrictions" Width="120"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
         </Grid>
     </Grid>
 </UserControl>

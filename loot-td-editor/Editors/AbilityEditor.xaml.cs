@@ -28,6 +28,7 @@ namespace loot_td_editor.Editors
 
         public ObservableCollection<AbilityBase> Abilities;
         private int currentID;
+        public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
 
         public void InitializeList()
         {
@@ -61,6 +62,9 @@ namespace loot_td_editor.Editors
         {
             InitializeComponent();
             InitializeList();
+            GroupList.ItemsSource = GroupTypes;
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(GroupList.ItemsSource);
+            view.Filter = TagFilter;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -94,85 +98,65 @@ namespace loot_td_editor.Editors
             //ArchetypesList.Items.Refresh();
         }
 
-        private void Checked(object sender, RoutedEventArgs e)
+        private void GroupAddButtonClick(object sender, RoutedEventArgs e)
         {
-            CheckBox c = (CheckBox)sender;
-
-            if (AbilitiesList.SelectedItem == null)
+            if (GroupList.SelectedItem == null || AbilitiesList.SelectedItem == null)
                 return;
-
-
-            AbilityBase selected = (AbilityBase)AbilitiesList.SelectedItem;
-
-            switch (c.Name)
-            {
-                case "PhysCheck":
-                    if (!selected.HasPhysical)
-                    {
-                        AbilityDamageBase a = new AbilityDamageBase();
-                        selected.DamageLevels.Add(ElementType.NONE, a);
-                        Binding min = new Binding();
-                        min.Source = a.MinMult;
-                    }
-                    break;
-                case "FireCheck":
-                    selected.DamageLevels.Add(ElementType.FIRE, new AbilityDamageBase());
-                    break;
-                case "ColdCheck":
-                    selected.DamageLevels.Add(ElementType.COLD, new AbilityDamageBase());
-                    break;
-                case "LightningCheck":
-                    selected.DamageLevels.Add(ElementType.LIGHTNING, new AbilityDamageBase());
-                    break;
-                case "EarthCheck":
-                    selected.DamageLevels.Add(ElementType.EARTH, new AbilityDamageBase());
-                    break;
-                case "DivineCheck":
-                    selected.DamageLevels.Add(ElementType.DIVINE, new AbilityDamageBase());
-                    break;
-                case "VoidCheck":
-                    selected.DamageLevels.Add(ElementType.VOID, new AbilityDamageBase());
-                    break;
-                default:
-                    break;
-            }
+            AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
+            if (!temp.GroupTypes.Contains((GroupType)GroupList.SelectedItem))
+                temp.GroupTypes.Add((GroupType)GroupList.SelectedItem);
+            else
+                return;
+            //GroupTagList.Items.Refresh();
         }
 
-        private void Unchecked(object sender, RoutedEventArgs e)
+        private void GroupRemoveButtonClick(object sender, RoutedEventArgs e)
         {
-            CheckBox c = (CheckBox)sender;
-
-            if (AbilitiesList.SelectedItem == null)
+            if (GroupTagList.SelectedItem == null || AbilitiesList.SelectedItem == null)
                 return;
+            AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
+            temp.GroupTypes.Remove((GroupType)GroupTagList.SelectedItem);
+            //GroupTagList.Items.Refresh();
+        }
 
+        private void RestrictAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (GroupList.SelectedItem == null || AbilitiesList.SelectedItem == null)
+                return;
+            AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
+            if (!temp.WeaponRestrictions.Contains((GroupType)GroupList.SelectedItem))
+                temp.WeaponRestrictions.Add((GroupType)GroupList.SelectedItem);
+            else
+                return;
+            //GroupTagList.Items.Refresh();
+        }
 
-            AbilityBase selected = (AbilityBase)AbilitiesList.SelectedItem;
+        private void RestrictRemoveButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (RestrictionList.SelectedItem == null || AbilitiesList.SelectedItem == null)
+                return;
+            AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
+            temp.WeaponRestrictions.Remove((GroupType)RestrictionList.SelectedItem);
+            //GroupTagList.Items.Refresh();
+        }
 
-            switch (c.Name)
+        private void FilterBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(GroupList.ItemsSource).Refresh();
+        }
+
+        private bool TagFilter(object item)
+        {
+            if (item == null)
+                return false;
+            string s = (item as GroupType?).ToString();
+
+            if(String.IsNullOrEmpty(FilterBox.Text))
             {
-                case "PhysCheck":
-                    selected.DamageLevels.Remove(ElementType.NONE);
-                    break;
-                case "FireCheck":
-                    selected.DamageLevels.Remove(ElementType.FIRE);
-                    break;
-                case "ColdCheck":
-                    selected.DamageLevels.Remove(ElementType.COLD);
-                    break;
-                case "LightningCheck":
-                    selected.DamageLevels.Remove(ElementType.LIGHTNING);
-                    break;
-                case "EarthCheck":
-                    selected.DamageLevels.Remove(ElementType.EARTH);
-                    break;
-                case "DivineCheck":
-                    selected.DamageLevels.Remove(ElementType.DIVINE);
-                    break;
-                case "VoidCheck":
-                    selected.DamageLevels.Remove(ElementType.VOID);
-                    break;
-                default:
-                    break;
+                return true;
+            } else
+            {
+                return s.IndexOf(FilterBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
             }
         }
     }

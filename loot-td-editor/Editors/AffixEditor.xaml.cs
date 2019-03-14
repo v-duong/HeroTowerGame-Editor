@@ -104,6 +104,8 @@ namespace loot_td_editor
         {
             InitializeComponent();
             GroupList.ItemsSource = GroupTypes;
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(GroupList.ItemsSource);
+            view.Filter = TagFilter;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -215,7 +217,7 @@ namespace loot_td_editor
 
         private void GroupAddButtonClick(object sender, RoutedEventArgs e)
         {
-            if (GroupList.SelectedItem == null)
+            if (GroupList.SelectedItem == null || AffixesList.SelectedItem == null)
                 return;
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
             if (!temp.GroupTypes.Contains((GroupType)GroupList.SelectedItem))
@@ -227,11 +229,32 @@ namespace loot_td_editor
 
         private void GroupRemoveButtonClick(object sender, RoutedEventArgs e)
         {
-            if (GroupTagList.SelectedItem == null)
+            if (GroupTagList.SelectedItem == null || AffixesList.SelectedItem == null)
                 return;
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
             temp.GroupTypes.Remove((GroupType)GroupTagList.SelectedItem);
             GroupTagList.Items.Refresh();
+        }
+
+        private void FilterBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CollectionViewSource.GetDefaultView(GroupList.ItemsSource).Refresh();
+        }
+
+        private bool TagFilter(object item)
+        {
+            if (item == null)
+                return false;
+            string s = (item as GroupType?).ToString();
+
+            if (String.IsNullOrEmpty(FilterBox.Text))
+            {
+                return true;
+            }
+            else
+            {
+                return s.IndexOf(FilterBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
         }
     }
 
@@ -252,4 +275,6 @@ namespace loot_td_editor
             return ValidationResult.ValidResult;
         }
     }
+
+    
 }
