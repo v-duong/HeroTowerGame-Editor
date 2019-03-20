@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -126,6 +127,8 @@ namespace loot_td_editor.Editors
         void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
         {
             e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+            if (e.Row.GetIndex() + 1 > 10 && (e.Row.GetIndex() + 1) % 5 != 0 && e.Row.GetIndex() + 1 < 50)
+                e.Row.Visibility = Visibility.Collapsed;
         }
 
         private void PhysMin_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -137,5 +140,12 @@ namespace loot_td_editor.Editors
 
             BindAbilityDamage.CalculateDamage(BindBase.BaseAbilityPower, BindBase.AbilityScaling);
         }
+
+        bool IsShow()
+        {
+            return false;
+        }
     }
+
 }
+

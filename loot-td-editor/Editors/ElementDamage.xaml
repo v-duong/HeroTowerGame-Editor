@@ -23,7 +23,8 @@
             <xctk:DoubleUpDown Width="70" Name="PhysMin" Value="{Binding BindAbilityDamage.MinMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3"></xctk:DoubleUpDown>
             <xctk:DoubleUpDown Width="70" Name="PhysMax" Value="{Binding BindAbilityDamage.MaxMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3"></xctk:DoubleUpDown>
         </DockPanel>
-        <DataGrid Grid.Row="2" Name="PhysGrid" ItemsSource="{Binding BindAbilityDamage.Damage}" AutoGenerateColumns="True" LoadingRow="DataGrid_LoadingRow" ItemStringFormat="F1">
+        <DataGrid Grid.Row="2" Name="PhysGrid" ItemsSource="{Binding BindAbilityDamage.Damage}" AutoGenerateColumns="True" LoadingRow="DataGrid_LoadingRow" ItemStringFormat="F1" IsReadOnly="True">
+
         </DataGrid>
     </Grid>
 </UserControl>

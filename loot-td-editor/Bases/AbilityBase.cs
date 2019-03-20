@@ -205,8 +205,8 @@ namespace loot_td
             for (int i = 1; i <= 65; i++)
             {
                 int j = i * 2;
-                double scalingfactor = Math.Pow(scaling, j/1.333);
-                double levelfactor = 0.804d;
+                //double scalingfactor = Math.Pow(scaling, j/1.333);
+                //double levelfactor = 0.804d;
                 //double final = scalingfactor * levelfactor * basePower * j + 8d;
                 //damage[i] = (new DamageStore( (float)(final * minMult), (float)(final * MaxMult) ));
                 double final = Helpers.AbilityScalingFormula(j, scaling, basePower) + 8d;
@@ -259,6 +259,8 @@ namespace loot_td
         private EffectType effect;
         private float chanceToApply;
         private float value1;
+        private float chanceToApplyScaling;
+        private float value1Scaling;
 
         // private float value2;
         [JsonProperty]
@@ -270,6 +272,12 @@ namespace loot_td
 
         [JsonProperty]
         public float EffectPower { get => value1; set => SetProperty(ref value1, value); }
+
+        [JsonProperty]
+        public float ChanceToApplyScaling { get => chanceToApplyScaling; set => SetProperty(ref chanceToApplyScaling, value); }
+
+        [JsonProperty]
+        public float EffectPowerScaling { get => value1Scaling; set => SetProperty(ref value1Scaling, value); }
 
         //[JsonProperty]
         //public float Value2 { get => value2; set => SetProperty( ref value2, value); }

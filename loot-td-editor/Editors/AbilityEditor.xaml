@@ -16,7 +16,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1.75*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
@@ -119,6 +119,7 @@
                 <ColumnDefinition Width="5" />
                 <ColumnDefinition Width="80" />
                 <ColumnDefinition Width="50" />
+                <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
             <Label Content="Projectile Values" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
             <Label Content="Proj Speed" Grid.Column="0" Grid.Row="1"></Label>
@@ -137,9 +138,12 @@
             <xctk:IntegerUpDown Grid.Column="1" Grid.Row="7" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
             <Label Content="Weapon Skill Values" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
             <Label Content="BaseMult" Grid.Column="3" Grid.Row="6"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="6" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="6" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" ValueChanged="WeaponBaseMult_ValueChanged" Name="WeaponBaseMultInput"></xctk:DoubleUpDown>
             <Label Content="Scaling" Grid.Column="3" Grid.Row="7"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="7" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplierScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="7" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplierScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F2" ValueChanged="DoubleUpDown_ValueChanged_1" Name="WeaponScaleInput"></xctk:DoubleUpDown>
+            <Label Content="" Grid.Column="5" Grid.Row="6" Name="WeaponMultLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
+            <Label Content="" Grid.Column="5" Grid.Row="7" Name="WeaponScaleLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
+            <Label Content="" Grid.Column="5" Grid.Row="8" Name="WeaponSumLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>

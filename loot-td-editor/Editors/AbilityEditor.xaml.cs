@@ -159,5 +159,21 @@ namespace loot_td_editor.Editors
                 return s.IndexOf(FilterBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
             }
         }
+
+        private void WeaponBaseMult_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            DoubleUpDown d = sender as DoubleUpDown;
+
+            WeaponMultLabel.Content = d.Value;
+            WeaponSumLabel.Content = d.Value + WeaponScaleInput.Value * 50;
+        }
+
+        private void DoubleUpDown_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            DoubleUpDown d = sender as DoubleUpDown;
+
+            WeaponScaleLabel.Content = d.Value * 50;
+            WeaponSumLabel.Content = WeaponBaseMultInput.Value + d.Value * 50;
+        }
     }
 }
