@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -155,7 +156,7 @@ namespace loot_td_editor
             AffixBonus b = new AffixBonus();
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
             temp.AffixBonuses.Add(b);
-            BonusGrid.Items.Refresh();
+            //BonusGrid.Items.Refresh();
             CountText.Text = "Count: " + temp.GetBonusCountString;
         }
 
@@ -165,7 +166,7 @@ namespace loot_td_editor
                 return;
             AffixBase temp = (AffixBase)AffixesList.SelectedItem;
             temp.AffixBonuses.Remove((AffixBonus)BonusGrid.SelectedItem);
-            BonusGrid.Items.Refresh();
+            //BonusGrid.Items.Refresh();
             CountText.Text = "Count: " + temp.GetBonusCountString;
         }
 
@@ -255,6 +256,55 @@ namespace loot_td_editor
             {
                 return s.IndexOf(FilterBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
             }
+        }
+
+
+        private GridViewColumnHeader _lastHeaderClicked = null;
+        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        private void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    string header = headerClicked.Column.Header as string;
+                    Sort(header, direction);
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            ICollectionView dataView =
+              CollectionViewSource.GetDefaultView(AffixesList.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
         }
     }
 

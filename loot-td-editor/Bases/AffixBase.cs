@@ -1,34 +1,49 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Prism;
 using Prism.Mvvm;
+using System.Collections.Generic;
 
 namespace loot_td
 {
-
-    public class AffixBase
+    public class AffixBase : BindableBase
     {
+        private int _id;
+        private string _idName;
+        private string _name;
+        private AffixType _affixType;
+        private int _tier;
+        private int _spawnLevel;
+        private List<AffixBonus> _affixBonuses;
+        private List<AffixWeight> _spawnWeight;
+        private List<GroupType> _groupTypes;
+
         [JsonProperty]
-        public int Id { get; set; }
+        public int Id { get => _id; set => SetProperty(ref _id, value); }
+
         [JsonProperty]
-        public string IdName { get; set; }
+        public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
+
         [JsonProperty]
-        public string Name { get; set; }
+        public string Name { get => _name; set => SetProperty(ref _name, value); }
+
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public AffixType AffixType { get; set; }
+        public AffixType AffixType { get => _affixType; set => SetProperty(ref _affixType, value); }
+
         [JsonProperty]
-        public int Tier { get; set; }
+        public int Tier { get => _tier; set => SetProperty(ref _tier, value); }
+
         [JsonProperty]
-        public int SpawnLevel { get; set; }
+        public int SpawnLevel { get => _spawnLevel; set => SetProperty(ref _spawnLevel, value); }
+
         [JsonProperty]
-        public List<AffixBonus> AffixBonuses { get; }
+        public List<AffixBonus> AffixBonuses { get => _affixBonuses; set => SetProperty(ref _affixBonuses, value); }
+
         [JsonProperty]
-        public List<AffixWeight> SpawnWeight { get; }
+        public List<AffixWeight> SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
+
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<GroupType> GroupTypes { get; }
+        public List<GroupType> GroupTypes { get => _groupTypes; set => SetProperty(ref _groupTypes, value); }
 
         [JsonIgnore]
         public string ListString { get { return GetBonusTypesString(); } }
@@ -78,8 +93,6 @@ namespace loot_td
             GroupTypes = new List<GroupType>(a.GroupTypes);
         }
 
-
-
         public string GetBonusTypesString()
         {
             string x = "";
@@ -95,8 +108,9 @@ namespace loot_td
 
         public static int WeightContainsType(List<AffixWeight> s, GroupType type)
         {
+            
             int i = 0;
-            foreach(AffixWeight x in s)
+            foreach (AffixWeight x in s)
             {
                 if (x.type == type)
                     return i;
@@ -105,20 +119,31 @@ namespace loot_td
             return -1;
         }
 
+        
     }
 
-    public class AffixBonus
+    public class AffixBonus : BindableBase
     {
+
+        private BonusType _bonusType;
+        private ModifyType _modifyType;
+        private int _minValue;
+        private int _maxValue;
+
+
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public BonusType BonusType { get; set; }
+        public BonusType BonusType { get => _bonusType; set => SetProperty(ref _bonusType, value); }
+
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public ModifyType ModifyType { get; set; }
+        public ModifyType ModifyType { get => _modifyType; set => SetProperty(ref _modifyType, value); }
+
         [JsonProperty]
-        public int MinValue { get; set; }
+        public int MinValue { get => _minValue; set => SetProperty(ref _minValue, value); }
+
         [JsonProperty]
-        public int MaxValue { get; set; }
+        public int MaxValue { get => _maxValue; set => SetProperty(ref _maxValue, value); }
     }
 
     public class AffixWeight
@@ -126,8 +151,9 @@ namespace loot_td
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public GroupType type { get; set; }
+
         [JsonProperty]
-        public int weight {get; set;}
+        public int weight { get; set; }
     }
 
     public enum AffixType
@@ -145,5 +171,4 @@ namespace loot_td
         SET,            //sets value to modifier value, ignores all other increases
         FLAT_ADDITION   //adds to base before any other calculation
     }
-
 }

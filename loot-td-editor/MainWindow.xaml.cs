@@ -80,13 +80,13 @@ namespace loot_td_editor
                 switch (t.Header.ToString())
                 {
                     case "_Armor":
-                        SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments);
+                        SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
                         break;
                     case "_Weapon":
-                        SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments);
+                        SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
                         break;
                     case "_Accessory":
-                        SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments);
+                        SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments.ToList());
                         break;
                     default:
                         return;
@@ -142,9 +142,9 @@ namespace loot_td_editor
 
         private void SaveJsonAll(object sender, RoutedEventArgs e)
         {
-            SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments);
-            SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments);
-            SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments);
+            SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
+            SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
+            SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments.ToList());
             SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes.ToList());
             SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes.ToList());
             SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes.ToList());

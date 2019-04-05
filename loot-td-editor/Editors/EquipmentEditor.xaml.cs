@@ -3,10 +3,12 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace loot_td_editor
 {
@@ -28,7 +30,7 @@ namespace loot_td_editor
         public static int startingAttr = 10;
 
         public ObservableCollection<AffixBase> innatesList { get; set; }
-        public List<EquipmentBase> Equipments;
+        public ObservableCollection<EquipmentBase> Equipments;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
         public IList<EquipSlotType> EquipSlotTypes { get { return Enum.GetValues(typeof(EquipSlotType)).Cast<EquipSlotType>().ToList<EquipSlotType>(); } }
 
@@ -60,14 +62,14 @@ namespace loot_td_editor
             Debug.WriteLine(filePath);
             if (!System.IO.File.Exists(filePath))
             {
-                Equipments = new List<EquipmentBase>();
+                Equipments = new ObservableCollection<EquipmentBase>();
                 EquipList.ItemsSource = Equipments;
                 return;
             }
             string json = System.IO.File.ReadAllText(filePath);
-            Equipments = JsonConvert.DeserializeObject<List<EquipmentBase>>(json);
+            Equipments = JsonConvert.DeserializeObject<ObservableCollection<EquipmentBase>>(json);
 
-            foreach(EquipmentBase k in Equipments)
+            foreach (EquipmentBase k in Equipments)
             {
                 if (k.Description == null)
                     k.Description = "";
@@ -300,7 +302,6 @@ namespace loot_td_editor
 
         private void InnateBox_DropDownOpened(object sender, EventArgs e)
         {
-
         }
 
         private void ScalingMult_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -314,7 +315,7 @@ namespace loot_td_editor
         private void UseScalingBox_Checked(object sender, RoutedEventArgs e)
         {
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            
+
             if (ScalingMult != null)
                 ScalingMult.Value = 1;
 
@@ -329,6 +330,54 @@ namespace loot_td_editor
         {
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             ScalingMult.Value = 1;
+        }
+
+        private GridViewColumnHeader _lastHeaderClicked = null;
+        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        private void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    string header = headerClicked.Column.Header as string;
+                    Sort(header, direction);
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            ICollectionView dataView =
+              CollectionViewSource.GetDefaultView(EquipList.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            SortDescription sd = new SortDescription(sortBy, direction);
+            dataView.SortDescriptions.Add(sd);
+            dataView.Refresh();
         }
     }
 }

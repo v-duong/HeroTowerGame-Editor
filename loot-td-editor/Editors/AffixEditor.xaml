@@ -33,7 +33,7 @@
             <Button Content="ADD" Click="AddButtonClick"/>
             <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick"/>
             <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick"/>
-            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AffixesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AffixesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30"/>
