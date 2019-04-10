@@ -42,10 +42,7 @@ namespace loot_td_editor.Editors
             }
 
             ArchetypesList.ItemsSource = Archetypes;
-            if (Archetypes.Count >= 1)
-                currentID = Archetypes[Archetypes.Count - 1].Id + 1;
-            else
-                currentID = 0;
+
         }
 
         public ArchetypeEditor()
@@ -58,8 +55,8 @@ namespace loot_td_editor.Editors
         {
             ArchetypeBase temp = new ArchetypeBase
             {
-                Id = currentID,
-                Name = "UNTITLED NEW",
+
+                IdName = "UNTITLED NEW",
             };
             Archetypes.Add(temp);
             //ArchetypesList.Items.Refresh();
@@ -71,7 +68,7 @@ namespace loot_td_editor.Editors
             if (ArchetypesList.SelectedItem == null)
                 return;
             ArchetypeBase temp = ArchetypeBase.DeepClone((ArchetypeBase)ArchetypesList.SelectedItem);
-            temp.Id = currentID;
+
             Archetypes.Add(temp);
             //ArchetypesList.Items.Refresh();
             currentID++;
@@ -93,7 +90,6 @@ namespace loot_td_editor.Editors
             ArchetypeSkillNode temp = new ArchetypeSkillNode
             {
                 Id = selected.NodeList.Count,
-                Name = "UNTITLED NEW",
             };
             selected.NodeList.Add(temp);
             NodesList.Items.Refresh();

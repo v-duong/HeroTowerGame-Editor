@@ -15,6 +15,7 @@ namespace loot_td
         private int _intelligenceReq;
         private int _strengthReq;
         private float _weaponRange;
+        private float _attackSpeed;
         private int _armor;
         private int _shield;
         private int _dodge;
@@ -30,13 +31,9 @@ namespace loot_td
         private int _dropLevel;
         private int _spawnWeight;
 
-        [JsonProperty]
-        public int Id { get => _id; set => SetProperty(ref _id, value); }
-        [JsonProperty]
-        public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
 
         [JsonProperty]
-        public string Name { get => _name; set => SetProperty(ref _name, value); }
+        public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
 
         [JsonProperty]
         public string Description { get => _description; set => SetProperty(ref _description, value); }
@@ -67,6 +64,8 @@ namespace loot_td
 
         [JsonProperty]
         public float CriticalChance { get => _criticalChance; set => SetProperty(ref _criticalChance, value); }
+        [JsonProperty]
+        public float AttackSpeed { get => _attackSpeed; set => SetProperty(ref _attackSpeed, value); }
 
         [JsonProperty]
         public float WeaponRange { get => _weaponRange; set => SetProperty(ref _weaponRange, value); }
@@ -108,10 +107,8 @@ namespace loot_td
 
         public EquipmentBase(EquipmentBase a)
         {
-            Id = a.Id;
             IdName = a.IdName;
             Description = a.Description;
-            Name = a.Name;
             DropLevel = a.DropLevel;
             Armor = a.Armor;
             Shield = a.Shield;

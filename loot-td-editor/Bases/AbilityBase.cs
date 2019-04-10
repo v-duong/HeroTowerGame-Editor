@@ -45,16 +45,7 @@ namespace loot_td
         private List<AbilityEffectData> appliedEffects;
 
         [JsonProperty]
-        public int Id { get => id; set => SetProperty(ref id, value); }
-
-        [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
-
-        [JsonProperty]
-        public string Name { get => name; set => SetProperty(ref name, value); }
-
-        [JsonProperty]
-        public string Description { get => description; set => SetProperty(ref description, value); }
 
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -135,7 +126,6 @@ namespace loot_td
             BonusProperties = new List<ScalingBonusProperty>();
             AppliedEffects = new List<AbilityEffectData>();
             effectSprite = "";
-            Description = "";
         }
 
         [JsonIgnore] public AbilityDamageBase GetPhysical { get => GetElementDamage(ElementType.NONE);  set => damageLevels[ElementType.NONE] = value; }
@@ -325,5 +315,10 @@ namespace loot_td
         ALLY,
         ALL,
         NONE
+    }
+
+    public interface IIdName
+    {
+        string GetIdName();
     }
 }

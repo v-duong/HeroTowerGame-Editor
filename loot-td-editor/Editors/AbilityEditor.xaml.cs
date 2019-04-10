@@ -52,10 +52,7 @@ namespace loot_td_editor.Editors
             }
 
             AbilitiesList.ItemsSource = Abilities;
-            if (Abilities.Count >= 1)
-                currentID = Abilities[Abilities.Count - 1].Id + 1;
-            else
-                currentID = 0;
+
         }
 
         public AbilityEditor()
@@ -71,8 +68,8 @@ namespace loot_td_editor.Editors
         {
             AbilityBase temp = new AbilityBase
             {
-                Id = currentID,
-                Name = "UNTITLED NEW",
+
+                IdName = "UNTITLED NEW",
             };
             Abilities.Add(temp);
             //AbilitiesList.Items.Refresh();
@@ -84,7 +81,7 @@ namespace loot_td_editor.Editors
             if (AbilitiesList.SelectedItem == null)
                 return;
             AbilityBase temp = Helpers.DeepClone((AbilityBase)AbilitiesList.SelectedItem);
-            temp.Id = currentID;
+
             Abilities.Add(temp);
             //AbilitiesList.Items.Refresh();
             currentID++;

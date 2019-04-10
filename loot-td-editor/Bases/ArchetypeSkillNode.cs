@@ -24,12 +24,6 @@ namespace loot_td
         public int Id { get => _id; set =>  SetProperty( ref _id, value); }
 
         [JsonProperty]
-        public string Name { get => _name; set =>  SetProperty( ref _name, value); }
-
-        [JsonProperty]
-        public string Desc { get => _desc; set =>  SetProperty( ref _desc, value); }
-
-        [JsonProperty]
         public int InitialLevel { get => _initialLevel; set =>  SetProperty( ref _initialLevel, value); }
 
         [JsonProperty]
@@ -57,7 +51,6 @@ namespace loot_td
         public ArchetypeSkillNode()
         {
             NodePosition = new Vector2(0,0);
-            Desc = "";
             Children = new List<int>();
             Bonuses = new List<ScalingBonusProperty>();
             IconPath = "";

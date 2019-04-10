@@ -95,10 +95,6 @@ namespace loot_td_editor
 
 
 
-            if (Affixes.Count >= 1)
-                currentID = Affixes[Affixes.Count - 1].Id + 1;
-            else
-                currentID = 0;
         }
 
         public AffixEditor()
@@ -118,8 +114,8 @@ namespace loot_td_editor
             }
             AffixBase temp = new AffixBase
             {
-                Id = currentID,
-                Name = "UNTITLED NEW",
+
+                IdName = "UNTITLED NEW",
                 AffixType = affixContext,
                 Tier = 1
             };
@@ -134,7 +130,7 @@ namespace loot_td_editor
                 return;
             AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem)
             {
-                Id = currentID,
+
             };
             Affixes.Add(temp);
             //AffixesList.Items.Refresh();

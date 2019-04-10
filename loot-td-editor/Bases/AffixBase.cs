@@ -17,14 +17,10 @@ namespace loot_td
         private List<AffixWeight> _spawnWeight;
         private List<GroupType> _groupTypes;
 
-        [JsonProperty]
-        public int Id { get => _id; set => SetProperty(ref _id, value); }
+
 
         [JsonProperty]
         public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
-
-        [JsonProperty]
-        public string Name { get => _name; set => SetProperty(ref _name, value); }
 
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -61,8 +57,7 @@ namespace loot_td
 
         public AffixBase(AffixBase a)
         {
-            Id = a.Id;
-            Name = a.Name;
+            IdName = a.IdName;
             AffixType = a.AffixType;
             Tier = a.Tier;
             SpawnLevel = a.SpawnLevel;

@@ -126,6 +126,7 @@
     <Compile Include="SpawnWeightEntryWindow.xaml.cs">
       <DependentUpon>SpawnWeightEntryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Types\Class1.cs" />
     <Page Include="Editors\AbilityEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

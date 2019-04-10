@@ -76,10 +76,6 @@ namespace loot_td_editor
             }
 
             EquipList.ItemsSource = Equipments;
-            if (Equipments.Count >= 1)
-                currentID = Equipments[Equipments.Count - 1].Id + 1;
-            else
-                currentID = 0;
         }
 
         public EquipmentEditor()
@@ -97,8 +93,7 @@ namespace loot_td_editor
         {
             EquipmentBase temp = new EquipmentBase
             {
-                Id = currentID,
-                Name = "UNTITLED NEW",
+                IdName = "UNTITLED NEW",
                 InnateAffixId = null
             };
             Equipments.Add(temp);
@@ -112,7 +107,7 @@ namespace loot_td_editor
                 return;
             EquipmentBase temp = new EquipmentBase((EquipmentBase)EquipList.SelectedItem)
             {
-                Id = currentID,
+
             };
             Equipments.Add(temp);
             EquipList.Items.Refresh();
@@ -131,8 +126,6 @@ namespace loot_td_editor
         {
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             t.HasInnate = true;
-            t.InnateAffixId = "";
-            InnateBox.SelectedIndex = 0;
         }
 
         private void HasInnateBox_Unchecked(object sender, RoutedEventArgs e)
@@ -140,7 +133,6 @@ namespace loot_td_editor
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             t.HasInnate = false;
             t.InnateAffixId = null;
-            InnateBox.SelectedIndex = -1;
         }
 
         private void SetArmorValuesClick(object sender, RoutedEventArgs e)

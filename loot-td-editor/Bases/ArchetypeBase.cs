@@ -33,17 +33,9 @@ namespace loot_td
 
         private float willGrowth;
 
-        [JsonProperty]
-        public int Id { get => id; set => SetProperty( ref id , value ); }
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
-
-        [JsonProperty]
-        public string Name { get => name; set =>  SetProperty( ref name, value); }
-
-        [JsonProperty]
-        public string Text { get => text; set =>  SetProperty( ref text, value); }
 
         [JsonProperty]
         public int Stars { get => stars; set =>  SetProperty( ref stars, value); }
@@ -78,7 +70,6 @@ namespace loot_td
 
         public ArchetypeBase()
         {
-            Text = "";
             IdName = "";
             NodeList = new List<ArchetypeSkillNode>();
             DropLevel = 1;

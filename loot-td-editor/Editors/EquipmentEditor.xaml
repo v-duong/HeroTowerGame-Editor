@@ -37,9 +37,7 @@
             <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="EquipList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="30" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Name}" Header="Name" Width="90" />
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="90" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=EquipSlot}" Header="EquipSlot" Width="90" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Group}" Header="Group" Width="90" />
                     </GridView>
@@ -69,12 +67,8 @@
                     <ColumnDefinition Width="1.35*" />
                     <ColumnDefinition Width="2*" />
                 </Grid.ColumnDefinitions>
-                <Label Content="ID"></Label>
-                <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=EquipList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsReadOnly="True"></xctk:IntegerUpDown>
-                <Label Content="IdName" Grid.Row="1"></Label>
-                <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=EquipList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                <Label Content="Name" Grid.Row="2"></Label>
-                <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Text="{Binding ElementName=EquipList,Path=SelectedItem.Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                <Label Content="IdName" Grid.Row="0"></Label>
+                <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=EquipList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
                 <Label Content="DropLevel" Grid.Row="3"></Label>
                 <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=EquipList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
                 <Label Content="SpawnWeight" Grid.Row="4"></Label>
@@ -86,7 +80,7 @@
                 <Label Content="Has Innate?" Grid.Column="3" Grid.Row="3"></Label>
                 <CheckBox Grid.Column="4" Grid.Row="3" VerticalAlignment="Center" Name="HasInnateBox" Checked="HasInnateBox_Checked" Unchecked="HasInnateBox_Unchecked" IsChecked="{Binding ElementName=EquipList, Path=SelectedItem.HasInnate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
                 <Label Content="InnateAffix" Grid.Column="3" Grid.Row="4"></Label>
-                <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=EquipList,Path=SelectedItem.InnateAffixId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="InnateBox" Grid.Column="4" Grid.Row="4" DisplayMemberPath="Name" SelectedValuePath="IdName" IsEnabled="{Binding ElementName=HasInnateBox, Path=IsChecked}"></ComboBox>
+                <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=EquipList,Path=SelectedItem.InnateAffixId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="InnateBox" Grid.Column="4" Grid.Row="4" DisplayMemberPath="IdName" SelectedValuePath="IdName" IsEnabled="{Binding ElementName=HasInnateBox, Path=IsChecked}"></ComboBox>
                 <Label Content="Use Scaling" Grid.Column="3" Grid.Row="6"></Label>
                 <CheckBox Grid.Column="4" Grid.Row="6" VerticalAlignment="Center" Name="UseScalingBox" Checked="UseScalingBox_Checked" Unchecked="UseScalingBox_Unchecked" IsChecked="True"></CheckBox>
                 <Label Content="ValueMult" Grid.Column="3" Grid.Row="7"></Label>
@@ -127,12 +121,15 @@
                     <Label Content="minDamage" Height="30"></Label>
                     <Label Content="maxDamage" Height="30"></Label>
                     <Label Content="CriticalChance" Height="30"></Label>
+                    <Label Content="AttackSpeed" Height="30"></Label>
                     <Label Content="WeaponRange" Height="30"></Label>
                 </StackPanel>
                 <StackPanel Grid.Column="3" Grid.Row="1" Margin="2">
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MinDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MaxDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.CriticalChance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.AttackSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+
                     <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.WeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
                 </StackPanel>
                 <Label Content="Stat Requirements" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>

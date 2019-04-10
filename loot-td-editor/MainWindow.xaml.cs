@@ -1,30 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using loot_td;
+﻿using loot_td;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System;
 
 namespace loot_td_editor
 {
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static List<string> locales = new List<string>() { "en-US" };
 
         public MainWindow()
         {
@@ -40,7 +33,6 @@ namespace loot_td_editor
             AccessoryEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
 
             ArchetypeEditor.NodeAbilityList.ItemsSource = AbilityEditor.Abilities;
-
         }
 
         private void JsonSettingsClick(object sender, RoutedEventArgs e)
@@ -52,7 +44,7 @@ namespace loot_td_editor
         private void SaveOneJsonClick(object sender, RoutedEventArgs e)
         {
             TabItem t = Cat1TabControl.SelectedItem as TabItem;
-            if (t.Header is "_Affixes")
+            if (t.Header.ToString() == "_Affixes")
             {
                 t = AffixesTabControl.SelectedItem as TabItem;
 
@@ -61,19 +53,24 @@ namespace loot_td_editor
                     case "_Prefix":
                         SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes.ToList());
                         break;
+
                     case "_Suffix":
                         SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes.ToList());
                         break;
+
                     case "_Enchantment":
                         SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes.ToList());
                         break;
+
                     case "_Innate":
                         SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes.ToList());
                         break;
+
                     default:
                         return;
                 }
-            } else if (t.Header is "_Equipment")
+            }
+            else if (t.Header.ToString() == "_Equipment")
             {
                 t = EquipTabControl.SelectedItem as TabItem;
 
@@ -82,22 +79,28 @@ namespace loot_td_editor
                     case "_Armor":
                         SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
                         break;
+
                     case "_Weapon":
                         SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
                         break;
+
                     case "_Accessory":
                         SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments.ToList());
                         break;
+
                     default:
                         return;
                 }
-            } else if (t.Header is "_Archetypes")
+            }
+            else if (t.Header.ToString() == "_Archetypes")
             {
                 SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
-            } else if (t.Header is "_Abilities")
+            }
+            else if (t.Header.ToString() == "_Abilities")
             {
                 SaveAbilitiesJson();
             }
+            SaveLocalizationKeys();
         }
 
         private void SaveAffixJson(AffixType type, List<AffixBase> affixList)
@@ -107,9 +110,9 @@ namespace loot_td_editor
             SaveToJson<AffixBase>(filePath, affixList);
         }
 
-        private void SaveToJson<T>(string path , List<T> list)
+        private void SaveToJson<T>(string path, List<T> list)
         {
-            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath is "")
+            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
             {
                 MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
                 return;
@@ -121,7 +124,7 @@ namespace loot_td_editor
 
         private void SaveAbilitiesJson()
         {
-            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath is "")
+            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
             {
                 MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
                 return;
@@ -132,8 +135,6 @@ namespace loot_td_editor
             string s = Properties.Settings.Default.JsonSavePath + "\\abilities\\abilities.json";
             string o = JsonConvert.SerializeObject(AbilityEditor.Abilities.ToList(), settings);
             System.IO.File.WriteAllText(s, o);
-
-
 
             s = Properties.Settings.Default.JsonSavePath + "\\abilities\\abilities.editor.json";
             o = JsonConvert.SerializeObject(AbilityEditor.Abilities.ToList());
@@ -151,11 +152,119 @@ namespace loot_td_editor
             SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes.ToList());
             SaveAbilitiesJson();
             SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
+            SaveLocalizationKeys();
             MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
         }
 
+        private void SaveLocalizationKeys()
+        {
+            SortedDictionary<string, string> localization;
+            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
+            {
+                MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
+                return;
+            }
+            foreach (string locale in locales)
+            {
+                string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\" + locale + ".json";
+                if (!System.IO.File.Exists(filepath))
+                {
+                    localization = new SortedDictionary<string, string>();
+                }
+                else
+                {
+                    string json = System.IO.File.ReadAllText(filepath);
+                    localization = JsonConvert.DeserializeObject<SortedDictionary<string, string>>(json);
+                }
 
+                HashSet<string> keys = new HashSet<string>( localization.Keys );
+
+                List<EquipmentBase> equips = ArmorEditor.Equipments.ToList();
+                equips.AddRange(WeaponEditor.Equipments.ToList());
+                equips.AddRange(AccessoryEditor.Equipments.ToList());
+
+                foreach (EquipmentBase equipment in equips)
+                {
+                    string localizationKey = "equipment." + equipment.IdName;
+                    if (!localization.ContainsKey(localizationKey))
+                        localization.Add(localizationKey, "");
+                    else
+                        keys.Remove(localizationKey);
+                }
+
+                /*
+                List<AffixBase> affixes = PrefixEditor.Affixes.ToList();
+                affixes.AddRange(SuffixEditor.Affixes.ToList());
+                affixes.AddRange(EnchantmentEditor.Affixes.ToList());
+                affixes.AddRange(InnateEditor.Affixes.ToList());
+
+                foreach (AffixBase a in affixes)
+                {
+                    if (!localization.ContainsKey(a.IdName))
+                        localization.Add("affix." + a.IdName, "");
+                    else
+                        keys.Remove("affix." + a.IdName);
+                }
+                */
+
+                List<string> bonusTypes = new List<string>(Enum.GetNames(typeof(BonusType)));
+
+                foreach(string x in bonusTypes)
+                {
+                    string localizationKey = "bonusType." + x;
+                    if (!localization.ContainsKey(localizationKey))
+                        localization.Add(localizationKey, "");
+                    else
+                        keys.Remove(localizationKey);
+                }
+
+                List<string> groupTypes = new List<string>(Enum.GetNames(typeof(GroupType)));
+
+                foreach (string x in groupTypes)
+                {
+                    string localizationKey = "groupType." + x;
+                    if (!localization.ContainsKey(localizationKey))
+                        localization.Add(localizationKey, "");
+                    else
+                        keys.Remove(localizationKey);
+                }
+
+
+                List<ArchetypeBase> archetypes = ArchetypeEditor.Archetypes.ToList();
+
+                foreach (ArchetypeBase a in archetypes)
+                {
+                    string localizationKey = "archetype." + a.IdName;
+                    if (!localization.ContainsKey(localizationKey))
+                        localization.Add(localizationKey, "");
+                    else
+                        keys.Remove(localizationKey);
+                }
+
+                List<AbilityBase> abilities = AbilityEditor.Abilities.ToList();
+
+                foreach (AbilityBase a in abilities)
+                {
+                    string localizationKey = "ability." + a.IdName;
+                    if (!localization.ContainsKey(localizationKey))
+                        localization.Add(localizationKey, "");
+                    else
+                        keys.Remove(localizationKey);
+                }
+
+                foreach (string key in keys)
+                {
+                    localization.Remove(key);
+                }
+
+
+                string o = JsonConvert.SerializeObject(localization);
+                System.IO.File.WriteAllText(filepath, o);
+            }
+
+        }
     }
+
 }
 
 public class ShouldSerializeContractResolver : DefaultContractResolver
