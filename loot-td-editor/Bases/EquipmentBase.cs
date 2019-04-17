@@ -6,9 +6,7 @@ namespace loot_td
 {
     public class EquipmentBase : BindableBase
     {
-        private int _id;
         private string _idName;
-        private string _name;
         private string _description;
         private int _willReq;
         private int _agilityReq;

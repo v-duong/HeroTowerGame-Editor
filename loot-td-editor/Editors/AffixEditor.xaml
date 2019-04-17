@@ -37,6 +37,8 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="200"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=SpawnLevel}" Header="SpawnLevel" Width="50"/>
+
                         <GridViewColumn DisplayMemberBinding="{Binding Path=ListString}" Header="ListString" Width="110"/>
                     </GridView>
                 </ListView.View>

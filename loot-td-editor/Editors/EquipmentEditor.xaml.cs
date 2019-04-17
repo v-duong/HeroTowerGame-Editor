@@ -105,10 +105,7 @@ namespace loot_td_editor
         {
             if (EquipList.SelectedItem == null)
                 return;
-            EquipmentBase temp = new EquipmentBase((EquipmentBase)EquipList.SelectedItem)
-            {
-
-            };
+            EquipmentBase temp = Helpers.DeepClone((EquipmentBase)EquipList.SelectedItem);
             Equipments.Add(temp);
             EquipList.Items.Refresh();
             currentID++;
@@ -370,6 +367,16 @@ namespace loot_td_editor
             SortDescription sd = new SortDescription(sortBy, direction);
             dataView.SortDescriptions.Add(sd);
             dataView.Refresh();
+        }
+
+        private void DPS_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
+            if (t == null)
+                return;
+            double dps = 0;
+            dps = ((t.MinDamage + t.MaxDamage) / 2d) * t.AttackSpeed;
+            DPSLabel.Content = dps;
         }
     }
 }

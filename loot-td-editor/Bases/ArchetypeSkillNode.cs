@@ -9,8 +9,7 @@ namespace loot_td
     public class ArchetypeSkillNode : BindableBase
     {
         private int _id;
-        private string _name;
-        private string _desc;
+        private string _idName;
         private int _initialLevel;
         private int _maxLevel;
         private NodeType _type;
@@ -22,6 +21,8 @@ namespace loot_td
 
         [JsonProperty]
         public int Id { get => _id; set =>  SetProperty( ref _id, value); }
+        [JsonProperty]
+        public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
 
         [JsonProperty]
         public int InitialLevel { get => _initialLevel; set =>  SetProperty( ref _initialLevel, value); }
@@ -69,7 +70,7 @@ namespace loot_td
         public ModifyType modifyType { get; set; }
 
         [JsonProperty]
-        public int intialValue { get; set; }
+        public int initialValue { get; set; }
 
         [JsonProperty]
         public int growthValue { get; set; }

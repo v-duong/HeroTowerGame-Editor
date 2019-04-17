@@ -1,17 +1,16 @@
 ﻿using loot_td;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
-using System;
 
 namespace loot_td_editor
 {
-
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -156,9 +155,157 @@ namespace loot_td_editor
             MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
         }
 
+        private void SaveLocalizationCommon(string locale)
+        {
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\common." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<string> bonusTypes = new List<string>(Enum.GetNames(typeof(BonusType)));
+
+            foreach (string x in bonusTypes)
+            {
+                string localizationKey = "bonusType." + x;
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+            }
+
+            List<string> groupTypes = new List<string>(Enum.GetNames(typeof(GroupType)));
+
+            foreach (string x in groupTypes)
+            {
+                string localizationKey = "groupType." + x;
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            System.IO.File.WriteAllText(filepath, o);
+        }
+
+        private void SaveLocalizationEquipment(string locale)
+        {
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\equipment." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<EquipmentBase> equips = ArmorEditor.Equipments.ToList();
+            equips.AddRange(WeaponEditor.Equipments.ToList());
+            equips.AddRange(AccessoryEditor.Equipments.ToList());
+
+            foreach (EquipmentBase equipment in equips)
+            {
+                string localizationKey = "equipment." + equipment.IdName;
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            System.IO.File.WriteAllText(filepath, o);
+        }
+
+        private void SaveLocalizationArchetype(string locale)
+        {
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\archetype." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<ArchetypeBase> archetypes = ArchetypeEditor.Archetypes.ToList();
+
+            foreach (ArchetypeBase a in archetypes)
+            {
+                string localizationKey = "archetype." + a.IdName + ".name";
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+                localizationKey = "archetype." + a.IdName + ".text";
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+                foreach (ArchetypeSkillNode node in a.NodeList)
+                {
+                    if (node.Type == NodeType.GREATER || node.Type == NodeType.MASTER)
+                    {
+                        localizationKey = "archetype." + a.IdName + ".node." + node.IdName;
+                        if (!localization.ContainsKey(localizationKey))
+                            localization.Add(localizationKey, "");
+                        else
+                            keys.Remove(localizationKey);
+                    }
+                }
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            System.IO.File.WriteAllText(filepath, o);
+        }
+
+        private void SaveLocalizationAbility(string locale)
+        {
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\ability." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<AbilityBase> abilities = AbilityEditor.Abilities.ToList();
+
+            foreach (AbilityBase a in abilities)
+            {
+                string localizationKey = "ability." + a.IdName + ".name";
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+                localizationKey = "ability." + a.IdName + ".text";
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            System.IO.File.WriteAllText(filepath, o);
+        }
+
+        private void InitializeLocalizationSaving(string locale, string filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys)
+        {
+            if (!System.IO.File.Exists(filepath))
+            {
+                localization = new SortedDictionary<string, string>();
+            }
+            else
+            {
+                string json = System.IO.File.ReadAllText(filepath);
+                localization = JsonConvert.DeserializeObject<SortedDictionary<string, string>>(json);
+            }
+
+            keys = new HashSet<string>(localization.Keys);
+        }
+
         private void SaveLocalizationKeys()
         {
-            SortedDictionary<string, string> localization;
             if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
             {
                 MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
@@ -166,32 +313,10 @@ namespace loot_td_editor
             }
             foreach (string locale in locales)
             {
-                string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\" + locale + ".json";
-                if (!System.IO.File.Exists(filepath))
-                {
-                    localization = new SortedDictionary<string, string>();
-                }
-                else
-                {
-                    string json = System.IO.File.ReadAllText(filepath);
-                    localization = JsonConvert.DeserializeObject<SortedDictionary<string, string>>(json);
-                }
-
-                HashSet<string> keys = new HashSet<string>( localization.Keys );
-
-                List<EquipmentBase> equips = ArmorEditor.Equipments.ToList();
-                equips.AddRange(WeaponEditor.Equipments.ToList());
-                equips.AddRange(AccessoryEditor.Equipments.ToList());
-
-                foreach (EquipmentBase equipment in equips)
-                {
-                    string localizationKey = "equipment." + equipment.IdName;
-                    if (!localization.ContainsKey(localizationKey))
-                        localization.Add(localizationKey, "");
-                    else
-                        keys.Remove(localizationKey);
-                }
-
+                SaveLocalizationCommon(locale);
+                SaveLocalizationEquipment(locale);
+                SaveLocalizationAbility(locale);
+                SaveLocalizationArchetype(locale);
                 /*
                 List<AffixBase> affixes = PrefixEditor.Affixes.ToList();
                 affixes.AddRange(SuffixEditor.Affixes.ToList());
@@ -206,70 +331,14 @@ namespace loot_td_editor
                         keys.Remove("affix." + a.IdName);
                 }
                 */
-
-                List<string> bonusTypes = new List<string>(Enum.GetNames(typeof(BonusType)));
-
-                foreach(string x in bonusTypes)
-                {
-                    string localizationKey = "bonusType." + x;
-                    if (!localization.ContainsKey(localizationKey))
-                        localization.Add(localizationKey, "");
-                    else
-                        keys.Remove(localizationKey);
-                }
-
-                List<string> groupTypes = new List<string>(Enum.GetNames(typeof(GroupType)));
-
-                foreach (string x in groupTypes)
-                {
-                    string localizationKey = "groupType." + x;
-                    if (!localization.ContainsKey(localizationKey))
-                        localization.Add(localizationKey, "");
-                    else
-                        keys.Remove(localizationKey);
-                }
-
-
-                List<ArchetypeBase> archetypes = ArchetypeEditor.Archetypes.ToList();
-
-                foreach (ArchetypeBase a in archetypes)
-                {
-                    string localizationKey = "archetype." + a.IdName;
-                    if (!localization.ContainsKey(localizationKey))
-                        localization.Add(localizationKey, "");
-                    else
-                        keys.Remove(localizationKey);
-                }
-
-                List<AbilityBase> abilities = AbilityEditor.Abilities.ToList();
-
-                foreach (AbilityBase a in abilities)
-                {
-                    string localizationKey = "ability." + a.IdName;
-                    if (!localization.ContainsKey(localizationKey))
-                        localization.Add(localizationKey, "");
-                    else
-                        keys.Remove(localizationKey);
-                }
-
-                foreach (string key in keys)
-                {
-                    localization.Remove(key);
-                }
-
-
-                string o = JsonConvert.SerializeObject(localization);
-                System.IO.File.WriteAllText(filepath, o);
             }
-
         }
     }
-
 }
 
 public class ShouldSerializeContractResolver : DefaultContractResolver
 {
-    public new static readonly ShouldSerializeContractResolver Instance = new ShouldSerializeContractResolver();
+    public static readonly ShouldSerializeContractResolver Instance = new ShouldSerializeContractResolver();
 
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
     {

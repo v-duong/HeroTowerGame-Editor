@@ -84,16 +84,22 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="..\..\..\Unity Projects\eeGame\Assets\Scripts\Common\EffectType.cs">
-      <Link>Types\EffectType.cs</Link>
-    </Compile>
-    <Compile Include="..\..\..\Unity Projects\eeGame\Assets\Scripts\Common\ElementType.cs">
-      <Link>Types\ElementType.cs</Link>
-    </Compile>
     <Compile Include="Bases\AbilityBase.cs" />
     <Compile Include="Bases\AffixBase.cs" />
     <Compile Include="Bases\ArchetypeBase.cs" />
     <Compile Include="Bases\ArchetypeSkillNode.cs" />
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\BonusType.cs">
+      <Link>Types\BonusType.cs</Link>
+    </Compile>
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\EffectType.cs">
+      <Link>Types\EffectType.cs</Link>
+    </Compile>
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\ElementType.cs">
+      <Link>Types\ElementType.cs</Link>
+    </Compile>
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\GroupType.cs">
+      <Link>Types\GroupType.cs</Link>
+    </Compile>
     <Compile Include="Editors\AbilityEditor.xaml.cs">
       <DependentUpon>AbilityEditor.xaml</DependentUpon>
     </Compile>
@@ -108,12 +114,6 @@
     <Compile Include="Bases\EquipmentBase.cs" />
     <Compile Include="Editors\EquipmentEditor.xaml.cs">
       <DependentUpon>EquipmentEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="F:\Unity Projects\eeGame\Assets\Scripts\Common\BonusType.cs">
-      <Link>Types\BonusType.cs</Link>
-    </Compile>
-    <Compile Include="F:\Unity Projects\eeGame\Assets\Scripts\Common\GroupType.cs">
-      <Link>Types\GroupType.cs</Link>
     </Compile>
     <Compile Include="ObservableDictionary.cs" />
     <Compile Include="Settings.cs" />

@@ -7,17 +7,13 @@ namespace loot_td
 {
     public class AffixBase : BindableBase
     {
-        private int _id;
         private string _idName;
-        private string _name;
         private AffixType _affixType;
         private int _tier;
         private int _spawnLevel;
         private List<AffixBonus> _affixBonuses;
         private List<AffixWeight> _spawnWeight;
         private List<GroupType> _groupTypes;
-
-
 
         [JsonProperty]
         public string IdName { get => _idName; set => SetProperty(ref _idName, value); }

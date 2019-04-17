@@ -1,20 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using loot_td_editor;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using loot_td_editor;
 
 namespace loot_td
 {
     [Serializable]
     public class AbilityBase : BindableBase
     {
-        private int id;
         private string idName;
-        private string name;
-        private string description;
         private AbilityType abilityType;
         private AbilityShotType abilityShotType;
         private float cooldown;
@@ -128,8 +125,8 @@ namespace loot_td
             effectSprite = "";
         }
 
-        [JsonIgnore] public AbilityDamageBase GetPhysical { get => GetElementDamage(ElementType.NONE);  set => damageLevels[ElementType.NONE] = value; }
-        [JsonIgnore] public AbilityDamageBase GetFire { get => GetElementDamage(ElementType.FIRE); set => damageLevels[ElementType.FIRE] = value;  }
+        [JsonIgnore] public AbilityDamageBase GetPhysical { get => GetElementDamage(ElementType.NONE); set => damageLevels[ElementType.NONE] = value; }
+        [JsonIgnore] public AbilityDamageBase GetFire { get => GetElementDamage(ElementType.FIRE); set => damageLevels[ElementType.FIRE] = value; }
         [JsonIgnore] public AbilityDamageBase GetCold { get => GetElementDamage(ElementType.COLD); set => damageLevels[ElementType.COLD] = value; }
         [JsonIgnore] public AbilityDamageBase GetLightning { get => GetElementDamage(ElementType.LIGHTNING); set => damageLevels[ElementType.LIGHTNING] = value; }
         [JsonIgnore] public AbilityDamageBase GetEarth { get => GetElementDamage(ElementType.EARTH); set => damageLevels[ElementType.EARTH] = value; }
@@ -146,10 +143,10 @@ namespace loot_td
 
         private void SetAndCalc(ref float r, float v)
         {
-            SetProperty( ref r, v);
+            SetProperty(ref r, v);
             if (damageLevels.Count == 0)
                 return;
-            foreach(AbilityDamageBase b in damageLevels.Values)
+            foreach (AbilityDamageBase b in damageLevels.Values)
             {
                 if (b == null)
                     continue;
@@ -189,7 +186,6 @@ namespace loot_td
             damage = new List<DamageStore>();
         }
 
-    
         public void CalculateDamage(float basePower, float scaling)
         {
             for (int i = 1; i <= 65; i++)
@@ -202,10 +198,10 @@ namespace loot_td
                 double final = Helpers.AbilityScalingFormula(j, scaling, basePower) + 8d;
                 if (damage.Count < i)
                 {
-                    damage.Add (new DamageStore(0,0));
+                    damage.Add(new DamageStore(0, 0));
                 }
-                damage[i-1].Min = (int)Math.Round(final * minMult, MidpointRounding.AwayFromZero);
-                damage[i-1].Max = (int)Math.Round(final * MaxMult, MidpointRounding.AwayFromZero);
+                damage[i - 1].Min = (int)Math.Round(final * minMult, MidpointRounding.AwayFromZero);
+                damage[i - 1].Max = (int)Math.Round(final * MaxMult, MidpointRounding.AwayFromZero);
             }
         }
     }

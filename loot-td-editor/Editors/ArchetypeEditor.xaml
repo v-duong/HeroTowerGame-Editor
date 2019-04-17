@@ -123,7 +123,8 @@
                 <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="NodesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="ID" Width="30" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="30" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="100" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Type}" Header="NodeType" Width="80" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityId}" Header="AbilityId" Width="80" />
                         </GridView>
@@ -152,8 +153,10 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Label Content="ID" />
+                    <Label Content="Id" />
                     <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=NodesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  ValueChanged="CanvasEdit"/>
+                    <Label Content="IdName" Grid.Row="1" />
+                    <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=NodesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <Label Content="Type" Grid.Column="2" />
                     <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="TypeBox_SelectionChanged"/>
                     <Label Content="initalLevel" Grid.Row="3"/>

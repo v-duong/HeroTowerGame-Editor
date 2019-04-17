@@ -38,6 +38,7 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=DropLevel}" Header="DropLevel" Width="35" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=EquipSlot}" Header="EquipSlot" Width="90" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Group}" Header="Group" Width="90" />
                     </GridView>
@@ -90,6 +91,7 @@
             <Grid Grid.Row="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
+                    <RowDefinition Height="25" />
                     <RowDefinition Height="*" />
                     <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
@@ -101,53 +103,55 @@
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-                <Label Content="Defense Values" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
-                <StackPanel Grid.Row="1" Margin="2">
+                <Label Content="Defense Values" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="1"></Label>
+                <Label Content="DPS" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="0"></Label>
+                <Label Content="" Name="DPSLabel" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="0" ContentStringFormat="F3"></Label>
+                <Label Content="Defense Values" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="1"></Label>
+                <StackPanel Grid.Row="2" Margin="2">
                     <Label Content="Armor" Height="30"></Label>
                     <Label Content="Shield" Height="30"></Label>
                     <Label Content="DodgeRating" Height="30"></Label>
                     <Label Content="ResolveRating" Height="30"></Label>
                     <Label Content="SellValue" Height="30"></Label>
                 </StackPanel>
-                <StackPanel Grid.Column="1" Grid.Row="1" Margin="2">
+                <StackPanel Grid.Column="1" Grid.Row="2" Margin="2">
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Armor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.Shield, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.DodgeRating, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.ResolveRating, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.SellValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
                 </StackPanel>
-                <Label Content="Offense Values" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
-                <StackPanel Grid.Row="1" Grid.Column="2" Margin="2">
+                <Label Content="Offense Values" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Row="2" Grid.Column="2" Margin="2">
                     <Label Content="minDamage" Height="30"></Label>
                     <Label Content="maxDamage" Height="30"></Label>
                     <Label Content="CriticalChance" Height="30"></Label>
                     <Label Content="AttackSpeed" Height="30"></Label>
                     <Label Content="WeaponRange" Height="30"></Label>
                 </StackPanel>
-                <StackPanel Grid.Column="3" Grid.Row="1" Margin="2">
-                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MinDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
-                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MaxDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
-                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.CriticalChance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
-                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.AttackSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
-
-                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.WeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+                <StackPanel Grid.Column="3" Grid.Row="2" Margin="2">
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MinDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ValueChanged="DPS_ValueChanged"></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.MaxDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ValueChanged="DPS_ValueChanged"></xctk:IntegerUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.CriticalChance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FormatString="F2"></xctk:DoubleUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.AttackSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ValueChanged="DPS_ValueChanged" FormatString="F2"></xctk:DoubleUpDown>
+                    <xctk:DoubleUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.WeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FormatString="F2"></xctk:DoubleUpDown>
                 </StackPanel>
-                <Label Content="Stat Requirements" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
-                <StackPanel Grid.Row="1" Grid.Column="4" Margin="2">
+                <Label Content="Stat Requirements" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Center"></Label>
+                <StackPanel Grid.Row="2" Grid.Column="4" Margin="2">
                     <Label Content="StrReq" Height="30"></Label>
                     <Label Content="IntReq" Height="30"></Label>
                     <Label Content="AgiReq" Height="30"></Label>
                     <Label Content="WillReq" Height="30"></Label>
                 </StackPanel>
-                <StackPanel Grid.Column="5" Grid.Row="1" Margin="2">
+                <StackPanel Grid.Column="5" Grid.Row="2" Margin="2">
                     <xctk:IntegerUpDown Minimum="0" Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.StrengthReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Minimum="0"  Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.IntelligenceReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown  Minimum="0" Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.AgilityReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown  Minimum="0" Height="30" Value="{Binding ElementName=EquipList,Path=SelectedItem.WillReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></xctk:IntegerUpDown>
                 </StackPanel>
-                <Button Grid.Row="2" Content="Set Armor Values" Click="SetArmorValuesClick"></Button>
-                <Button Grid.Row="2" Grid.Column="2" Content="Set Offense Values" Click="SetOffenseValuesClick"></Button>
-                <Button Grid.Row="2" Grid.Column="4" Content="Set Req Values" Click="SetReqValuesClick"></Button>
+                <Button Grid.Row="3" Content="Set Armor Values" Click="SetArmorValuesClick"></Button>
+                <Button Grid.Row="3" Grid.Column="2" Content="Set Offense Values" Click="SetOffenseValuesClick"></Button>
+                <Button Grid.Row="3" Grid.Column="4" Content="Set Req Values" Click="SetReqValuesClick"></Button>
             </Grid>
         </Grid>
     </Grid>
