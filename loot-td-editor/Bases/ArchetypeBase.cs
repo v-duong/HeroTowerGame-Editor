@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace loot_td
 {
@@ -16,6 +17,7 @@ namespace loot_td
         private float intelligenceGrowth;
         private float agilityGrowth;
         private float willGrowth;
+        private ObservableCollection<ArchetypeSkillNode> nodeList;
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -48,12 +50,12 @@ namespace loot_td
         public int SpawnWeight { get => spawnWeight; set => SetProperty(ref spawnWeight, value); }
 
         [JsonProperty]
-        public List<ArchetypeSkillNode> NodeList { get; }
+        public ObservableCollection<ArchetypeSkillNode> NodeList { get => nodeList; set => SetProperty(ref nodeList, value); }
 
         public ArchetypeBase()
         {
             IdName = "";
-            NodeList = new List<ArchetypeSkillNode>();
+            NodeList = new ObservableCollection<ArchetypeSkillNode>();
             DropLevel = 1;
             Stars = 1;
         }

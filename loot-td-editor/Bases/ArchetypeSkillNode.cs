@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 using System.Windows;
 using Prism.Mvvm;
+using System.Collections.ObjectModel;
 
 namespace loot_td
 {
@@ -13,12 +14,12 @@ namespace loot_td
         private int _initialLevel;
         private int _maxLevel;
         private NodeType _type;
-        private List<ScalingBonusProperty> _bonuses;
+        private ObservableCollection<ScalingBonusProperty> _bonuses;
         private string _ability;
         private Vector2 _nodePosition;
         private string _iconPath;
-        private List<int> _requirements;
-        private List<ArchetypeSkillNode> _requirements2;
+        private ObservableCollection<int> _requirements;
+        private ObservableCollection<ArchetypeSkillNode> _requirements2;
 
         [JsonProperty]
         public int Id { get => _id; set =>  SetProperty( ref _id, value); }
@@ -36,7 +37,7 @@ namespace loot_td
         public NodeType Type { get => _type; set =>  SetProperty( ref _type, value); }
 
         [JsonProperty]
-        public List<ScalingBonusProperty> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
+        public ObservableCollection<ScalingBonusProperty> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
 
         [JsonProperty]
         public string AbilityId { get => _ability; set =>  SetProperty( ref _ability, value); }
@@ -48,17 +49,18 @@ namespace loot_td
         public string IconPath { get => _iconPath; set =>  SetProperty( ref _iconPath, value); }
 
         [JsonProperty]
-        public List<int> Children { get => _requirements; set =>  SetProperty( ref _requirements, value); }
+        public ObservableCollection<int> Children { get => _requirements; set =>  SetProperty( ref _requirements, value); }
         
         [JsonProperty]
-        public List<ArchetypeSkillNode> ChildrenEditor { get => _requirements2; set => SetProperty(ref _requirements2, value); }
+        public ObservableCollection<ArchetypeSkillNode> ChildrenEditor { get => _requirements2; set => SetProperty(ref _requirements2, value); }
 
         public ArchetypeSkillNode()
         {
+            IdName = "";
             NodePosition = new Vector2(0,0);
-            Children = new List<int>();
-            ChildrenEditor = new List<ArchetypeSkillNode>();
-            Bonuses = new List<ScalingBonusProperty>();
+            Children = new ObservableCollection<int>();
+            ChildrenEditor = new ObservableCollection<ArchetypeSkillNode>();
+            Bonuses = new ObservableCollection<ScalingBonusProperty>();
             IconPath = "";
             MaxLevel = 1;
         }

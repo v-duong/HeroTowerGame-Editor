@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
+using System.Linq;
 
 namespace loot_td_editor.Editors
 {
@@ -49,6 +50,8 @@ namespace loot_td_editor.Editors
         {
             InitializeComponent();
             InitializeList();
+            ScrollViewer.ScrollToBottom();
+            ScrollViewer.ScrollToHorizontalOffset(270);
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -89,11 +92,12 @@ namespace loot_td_editor.Editors
             ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
             ArchetypeSkillNode temp = new ArchetypeSkillNode
             {
+                IdName = "UNTITLED NEW",
                 Id = selected.NodeList.Count,
             };
             selected.NodeList.Add(temp);
-            NodesList.Items.Refresh();
-            ChildNumRefresh();
+            //NodesList.Items.Refresh();
+            //ChildNumRefresh();
         }
 
         private void CopyButtonClickNode(object sender, RoutedEventArgs e)
@@ -110,8 +114,8 @@ namespace loot_td_editor.Editors
             ArchetypeSkillNode temp = Helpers.DeepClone(selectedNode);
             temp.Id++;
             selected.NodeList.Add(temp);
-            NodesList.Items.Refresh();
-            ChildNumRefresh();
+            //NodesList.Items.Refresh();
+            //ChildNumRefresh();
         }
 
         private void RemoveButtonClickNode(object sender, RoutedEventArgs e)
@@ -128,8 +132,8 @@ namespace loot_td_editor.Editors
 
             selected.NodeList.Remove(selectedNode);
 
-            NodesList.Items.Refresh();
-            ChildNumRefresh();
+            //NodesList.Items.Refresh();
+            //ChildNumRefresh();
         }
 
         private void AddButtonClickChild(object sender, RoutedEventArgs e)
@@ -168,9 +172,11 @@ namespace loot_td_editor.Editors
             DrawCanvas();
         }
 
+        private static int GridSpacing = 75;
+
         private void DrawGrid()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 18; i++)
             {
                 Line l = new Line()
                 {
@@ -182,11 +188,11 @@ namespace loot_td_editor.Editors
                 };
                 NodeTree.Children.Add(l);
                 Canvas.SetLeft(l, 0);
-                Canvas.SetBottom(l, 0 + 25 + i * 100);
+                Canvas.SetBottom(l, 0 + 25 + i * GridSpacing);
                 Canvas.SetZIndex(l, -2);
             }
 
-            for (int i = -4; i < 4; i++)
+            for (int i = -8; i < 9; i++)
             {
                 Line l = new Line()
                 {
@@ -197,7 +203,7 @@ namespace loot_td_editor.Editors
                     Y2 = -NodeTree.ActualHeight
                 };
                 NodeTree.Children.Add(l);
-                Canvas.SetLeft(l, NodeTree.ActualWidth / 2 + i * 100);
+                Canvas.SetLeft(l, NodeTree.ActualWidth / 2 + i * GridSpacing);
                 Canvas.SetBottom(l, 0);
                 Canvas.SetZIndex(l, -2);
             }
@@ -205,7 +211,7 @@ namespace loot_td_editor.Editors
 
         private void DrawCanvas()
         {
-            int spacing = 100;
+            int spacing = GridSpacing;
 
             NodeTree.Children.Clear();
 
@@ -239,10 +245,11 @@ namespace loot_td_editor.Editors
                 {
                     Height = 50,
                     Width = 50,
-                    Text = node.Id.ToString(),
-                    FontSize = 24,
+                    Text = node.Id.ToString() + "\n" + node.IdName + "\nMax: " + node.MaxLevel,
+                    FontSize = 12,
                     FontWeight = FontWeights.Bold,
                     TextAlignment = TextAlignment.Center,
+                    TextTrimming = TextTrimming.CharacterEllipsis,
                     IsHitTestVisible = false
                 };
 
@@ -260,7 +267,7 @@ namespace loot_td_editor.Editors
                     ArchetypeSkillNode c = null;
                     foreach (int id in node.Children)
                     {
-                        c = selected.NodeList.Find(x => x.Id == id);
+                        c = selected.NodeList.ToList().Find(x => x.Id == id);
                         if (c != null)
                         {
                             Line l = new Line()
@@ -338,28 +345,39 @@ namespace loot_td_editor.Editors
             {
                 case "HpGrow":
                     HealthL.Content = Math.Round((double)d.Value * 100f, 1, MidpointRounding.AwayFromZero);
-                    return;
+                    break;
 
                 case "SpGrow":
                     SoulL.Content = Math.Round((double)d.Value * 100f, 1, MidpointRounding.AwayFromZero);
-                    return;
+                    break;
 
                 case "StrGrow":
                     StrL.Content = Math.Round((double)d.Value * 100f, 1, MidpointRounding.AwayFromZero);
-                    return;
+                    break;
 
                 case "IntGrow":
                     IntL.Content = Math.Round((double)d.Value * 100f, 1, MidpointRounding.AwayFromZero);
-                    return;
+                    break;
 
                 case "AgiGrow":
                     AgiL.Content = Math.Round((double)d.Value * 100f, 1, MidpointRounding.AwayFromZero);
-                    return;
+                    break;
 
                 case "WillGrow":
                     WillL.Content = Math.Round((double)d.Value * 100f, 1, MidpointRounding.AwayFromZero);
-                    return;
+                    break;
             }
+
+            if (ArchetypesList.SelectedItem == null)
+                return;
+
+            ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
+
+            double totalstats = 0, totalhpsp = 0, total = 0;
+            totalstats = selected.StrengthGrowth + selected.IntelligenceGrowth + selected.AgilityGrowth + selected.WillGrowth;
+            totalhpsp = selected.HealthGrowth + selected.SoulPointGrowth * 50;
+            total = totalhpsp + totalstats;
+            TotalL.Content = totalstats.ToString("F2") + " + " + totalhpsp.ToString("F2") + " = " + total.ToString("F2");
         }
 
         private void CanvasEdit(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -370,6 +388,7 @@ namespace loot_td_editor.Editors
         private void ArchetypesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DrawCanvas();
+            CalculateTotalSkillPoints();
         }
 
         private void ChildNumRefresh()
@@ -416,6 +435,26 @@ namespace loot_td_editor.Editors
             TextBlock s = sender as TextBlock;
             int x = Convert.ToInt32(s.Text);
             s.Text = x + "\t" + selected.NodeList[x].IdName;
+        }
+
+        private void MaxLevelChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            CalculateTotalSkillPoints();
+        }
+
+        private void CalculateTotalSkillPoints()
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+
+            ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
+            int total = 0;
+            foreach (ArchetypeSkillNode n in selected.NodeList)
+            {
+                total += n.MaxLevel;
+                total -= n.InitialLevel;
+            }
+            TotalSkillPoints.Content = total.ToString();
         }
     }
 }

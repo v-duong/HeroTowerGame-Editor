@@ -101,6 +101,10 @@
             <Label Name="IntL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="3"></Label>
             <Label Name="AgiL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="4"></Label>
             <Label Name="WillL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="5"></Label>
+            <Label Content="Total Growth" FontWeight="Bold" Grid.Column="3" Grid.Row="6"></Label>
+            <Label Name="TotalL" Content="" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="6" ContentStringFormat="F2"></Label>
+            <Label Content="Total Skill Points" FontWeight="Bold" Grid.Column="3" Grid.Row="7"></Label>
+            <Label Name="TotalSkillPoints" Content="" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="7"></Label>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -125,7 +129,7 @@
                         <GridView AllowsColumnReorder="False">
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="30" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="100" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Type}" Header="NodeType" Width="80" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=MaxLevel}" Header="MaxLevel" Width="40" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityId}" Header="AbilityId" Width="80" />
                         </GridView>
                     </ListView.View>
@@ -162,7 +166,7 @@
                     <Label Content="initalLevel" Grid.Row="3"/>
                     <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.InitialLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"/>
                     <Label Content="maxLevel" Grid.Row="3"   Grid.Column="2"/>
-                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"/>
+                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="10" ValueChanged="MaxLevelChanged"/>
                     <Label Content="PosX" Grid.Row="4"   Grid.Column="0"/>
                     <xctk:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit" Name="Px"/>
                     <Label Content="PosY" Grid.Row="4"   Grid.Column="2"/>
@@ -197,8 +201,9 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Canvas Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" Name="NodeTree" ClipToBounds="True">
+        <ScrollViewer Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="ScrollViewer">
+            <Canvas  Name="NodeTree" ClipToBounds="True" Width="1200" Height="1200"/>
+        </ScrollViewer>
 
-        </Canvas>
     </Grid>
 </UserControl>
