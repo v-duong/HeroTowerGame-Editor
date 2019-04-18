@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace loot_td
 {
-    public class AffixBase : BindableBase
+    public class AffixBase : BindableBase, IStringId
     {
         private string _idName;
         private AffixType _affixType;
@@ -110,7 +110,10 @@ namespace loot_td
             return -1;
         }
 
-        
+        public string GetStringId()
+        {
+            return this.IdName;
+        }
     }
 
     public class AffixBonus : BindableBase

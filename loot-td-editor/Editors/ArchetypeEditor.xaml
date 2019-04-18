@@ -180,12 +180,19 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="125" />
                     </Grid.ColumnDefinitions>
                     <Button Content="ADD" Click="AddButtonClickChild" />
                     <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClickChild" />
-                    <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="Id"></ComboBox>
+                    <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="IdName"></ComboBox>
                     <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Children, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,5,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Name="ChildList" SelectionChanged="ArchetypesList_SelectionChanged">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <TextBlock Text="{Binding}" Loaded="TextBlock_Loaded"></TextBlock>
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
                     </ListView>
                 </Grid>
             </Grid>

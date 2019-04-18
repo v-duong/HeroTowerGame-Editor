@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace loot_td
 {
-    public class ArchetypeBase : BindableBase
+    public class ArchetypeBase : BindableBase, IStringId
     {
         private string idName;
         private int stars;
@@ -62,6 +62,11 @@ namespace loot_td
         {
             string s = JsonConvert.SerializeObject(a);
             return JsonConvert.DeserializeObject<ArchetypeBase>(s);
+        }
+
+        public string GetStringId()
+        {
+            return this.IdName;
         }
     }
 }

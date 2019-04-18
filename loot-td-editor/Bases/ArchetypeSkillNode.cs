@@ -6,7 +6,7 @@ using Prism.Mvvm;
 
 namespace loot_td
 {
-    public class ArchetypeSkillNode : BindableBase
+    public class ArchetypeSkillNode : BindableBase, IStringId
     {
         private int _id;
         private string _idName;
@@ -18,6 +18,7 @@ namespace loot_td
         private Vector2 _nodePosition;
         private string _iconPath;
         private List<int> _requirements;
+        private List<ArchetypeSkillNode> _requirements2;
 
         [JsonProperty]
         public int Id { get => _id; set =>  SetProperty( ref _id, value); }
@@ -48,14 +49,23 @@ namespace loot_td
 
         [JsonProperty]
         public List<int> Children { get => _requirements; set =>  SetProperty( ref _requirements, value); }
+        
+        [JsonProperty]
+        public List<ArchetypeSkillNode> ChildrenEditor { get => _requirements2; set => SetProperty(ref _requirements2, value); }
 
         public ArchetypeSkillNode()
         {
             NodePosition = new Vector2(0,0);
             Children = new List<int>();
+            ChildrenEditor = new List<ArchetypeSkillNode>();
             Bonuses = new List<ScalingBonusProperty>();
             IconPath = "";
             MaxLevel = 1;
+        }
+
+        public string GetStringId()
+        {
+            return this.IdName;
         }
     }
 

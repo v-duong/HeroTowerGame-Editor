@@ -108,6 +108,7 @@ namespace loot_td_editor.Editors
 
             ArchetypeSkillNode selectedNode = (ArchetypeSkillNode)NodesList.SelectedItem;
             ArchetypeSkillNode temp = Helpers.DeepClone(selectedNode);
+            temp.Id++;
             selected.NodeList.Add(temp);
             NodesList.Items.Refresh();
             ChildNumRefresh();
@@ -400,6 +401,21 @@ namespace loot_td_editor.Editors
                 NodeAbilityList.SelectedItem = null;
                 node.AbilityId = null;
             }
+        }
+
+        private void TextBlock_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+
+            ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
+
+            if (selected.NodeList.Count == 0)
+                return;
+
+            TextBlock s = sender as TextBlock;
+            int x = Convert.ToInt32(s.Text);
+            s.Text = x + "\t" + selected.NodeList[x].IdName;
         }
     }
 }

@@ -92,9 +92,6 @@ namespace loot_td_editor
                     k.IdName = "";
             }
             AffixesList.ItemsSource = Affixes;
-
-
-
         }
 
         public AffixEditor()
@@ -114,7 +111,6 @@ namespace loot_td_editor
             }
             AffixBase temp = new AffixBase
             {
-
                 IdName = "UNTITLED NEW",
                 AffixType = affixContext,
                 Tier = 1
@@ -130,7 +126,6 @@ namespace loot_td_editor
                 return;
             AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem)
             {
-
             };
             Affixes.Add(temp);
             //AffixesList.Items.Refresh();
@@ -254,7 +249,6 @@ namespace loot_td_editor
             }
         }
 
-
         private GridViewColumnHeader _lastHeaderClicked = null;
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
 
@@ -294,12 +288,19 @@ namespace loot_td_editor
 
         private void Sort(string sortBy, ListSortDirection direction)
         {
-            ICollectionView dataView =
-              CollectionViewSource.GetDefaultView(AffixesList.ItemsSource);
+            var dataView =
+              (ListCollectionView)CollectionViewSource.GetDefaultView(AffixesList.ItemsSource);
 
             dataView.SortDescriptions.Clear();
-            SortDescription sd = new SortDescription(sortBy, direction);
-            dataView.SortDescriptions.Add(sd);
+            if (sortBy == "IdName")
+            {
+                dataView.CustomSort = new NaturalStringComparer();
+            }
+            else
+            {
+                SortDescription sd = new SortDescription(sortBy, direction);
+                dataView.SortDescriptions.Add(sd);
+            }
             dataView.Refresh();
         }
     }
@@ -321,6 +322,4 @@ namespace loot_td_editor
             return ValidationResult.ValidResult;
         }
     }
-
-    
 }

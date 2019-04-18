@@ -4,7 +4,7 @@ using Prism.Mvvm;
 
 namespace loot_td
 {
-    public class EquipmentBase : BindableBase
+    public class EquipmentBase : BindableBase, IStringId
     {
         private string _idName;
         private string _description;
@@ -124,6 +124,11 @@ namespace loot_td
             EquipSlot = a.EquipSlot;
             Group = a.Group;
             InnateAffixId = a.InnateAffixId;
+        }
+
+        public string GetStringId()
+        {
+            return this.IdName;
         }
     }
 

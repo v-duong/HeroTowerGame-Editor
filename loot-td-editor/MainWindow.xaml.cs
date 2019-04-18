@@ -17,6 +17,11 @@ namespace loot_td_editor
     public partial class MainWindow : Window
     {
         public static List<string> locales = new List<string>() { "en-US" };
+        public bool saveEquips = true;
+        public bool saveAbility = true;
+        public bool saveArchetype = true;
+        public bool saveAffix = true;
+        Helpers.ErrorLog ErrorLog = new Helpers.ErrorLog();
 
         public MainWindow()
         {
@@ -93,7 +98,7 @@ namespace loot_td_editor
             }
             else if (t.Header.ToString() == "_Archetypes")
             {
-                SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
+                SaveArchetypesJson();
             }
             else if (t.Header.ToString() == "_Abilities")
             {
@@ -104,6 +109,7 @@ namespace loot_td_editor
 
         private void SaveAffixJson(AffixType type, List<AffixBase> affixList)
         {
+
             string fileName = type.ToString().ToLower();
             string filePath = "\\affixes\\" + fileName;
             SaveToJson<AffixBase>(filePath, affixList);
@@ -128,8 +134,16 @@ namespace loot_td_editor
                 MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
                 return;
             }
-            JsonSerializerSettings settings = new JsonSerializerSettings();
-            settings.ContractResolver = ShouldSerializeContractResolver.Instance;
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                ContractResolver = AbilitySerializeResolver.Instance
+            };
+
+            if (!Helpers.ErrorCheckAbilities(AbilityEditor.Abilities.ToList(), ErrorLog))
+            {
+                saveAbility = false;
+                return;
+            }
 
             string s = Properties.Settings.Default.JsonSavePath + "\\abilities\\abilities.json";
             string o = JsonConvert.SerializeObject(AbilityEditor.Abilities.ToList(), settings);
@@ -140,19 +154,88 @@ namespace loot_td_editor
             System.IO.File.WriteAllText(s, o);
         }
 
+        private void SaveArchetypesJson()
+        {
+            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
+            {
+                MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
+                return;
+            }
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                ContractResolver = ArchetypeSerializeResolver.Instance
+            };
+
+            if (!Helpers.ErrorCheckArchetypes(ArchetypeEditor.Archetypes.ToList(), ErrorLog))
+            {
+                saveArchetype = false;
+                return;
+            }
+
+            string s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.json";
+            string o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList(), settings);
+            System.IO.File.WriteAllText(s, o);
+
+            s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.editor.json";
+            o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList());
+            System.IO.File.WriteAllText(s, o);
+
+            saveArchetype = true;
+        }
+
         private void SaveJsonAll(object sender, RoutedEventArgs e)
         {
-            SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
-            SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
-            SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments.ToList());
-            SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes.ToList());
-            SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes.ToList());
-            SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes.ToList());
-            SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes.ToList());
+            ErrorLog.Clear();
+
+            List<EquipmentBase> equipList = new List<EquipmentBase>();
+            equipList.AddRange(ArmorEditor.Equipments.ToList());
+            equipList.AddRange(WeaponEditor.Equipments.ToList());
+            equipList.AddRange(AccessoryEditor.Equipments.ToList());
+
+            if (!Helpers.ErrorCheckEquipment(equipList, ErrorLog))
+            {
+                saveEquips = false;
+            } else
+            {
+                SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
+                SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
+                SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments.ToList());
+                saveEquips = true;
+            }
+
+            List<AffixBase> a = new List<AffixBase>();
+            a.AddRange(PrefixEditor.Affixes.ToList());
+            a.AddRange(SuffixEditor.Affixes.ToList());
+            a.AddRange(EnchantmentEditor.Affixes.ToList());
+            a.AddRange(InnateEditor.Affixes.ToList());
+            if (!Helpers.ErrorCheckAffixes(a, ErrorLog))
+            {
+                saveAffix = false;
+            } else
+            {
+                SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes.ToList());
+                SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes.ToList());
+                SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes.ToList());
+                SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes.ToList());
+                saveAffix = true;
+            }
+            
             SaveAbilitiesJson();
-            SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
+            //SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
+            SaveArchetypesJson();
             SaveLocalizationKeys();
-            MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
+            if (ErrorLog.Count == 0)
+            {
+                MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
+            } else
+            {
+                string s = "";
+                foreach(KeyValuePair<string, int> x in ErrorLog.dict)
+                {
+                    s += x.Value + " " + x.Key + '\n';
+                }
+                MessageBox.Show(s, "Error", MessageBoxButton.OK);
+            }
         }
 
         private void SaveLocalizationCommon(string locale)
@@ -193,6 +276,8 @@ namespace loot_td_editor
 
         private void SaveLocalizationEquipment(string locale)
         {
+            if (!saveEquips)
+                return;
             string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\equipment." + locale + ".json";
             InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
 
@@ -220,6 +305,8 @@ namespace loot_td_editor
 
         private void SaveLocalizationArchetype(string locale)
         {
+            if (!saveArchetype)
+                return;
             string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\archetype." + locale + ".json";
             InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
 
@@ -261,6 +348,8 @@ namespace loot_td_editor
 
         private void SaveLocalizationAbility(string locale)
         {
+            if (!saveAbility)
+                return;
             string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\ability." + locale + ".json";
             InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
 
@@ -336,15 +425,36 @@ namespace loot_td_editor
     }
 }
 
-public class ShouldSerializeContractResolver : DefaultContractResolver
+public class AbilitySerializeResolver : DefaultContractResolver
 {
-    public static readonly ShouldSerializeContractResolver Instance = new ShouldSerializeContractResolver();
+    public static readonly AbilitySerializeResolver Instance = new AbilitySerializeResolver();
 
     protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
     {
         JsonProperty property = base.CreateProperty(member, memberSerialization);
 
         if (property.PropertyName == "BaseAbilityPower" || property.PropertyName == "AbilityScaling" || property.PropertyName == "MinMult" || property.PropertyName == "MaxMult")
+        {
+            property.ShouldSerialize =
+                instance =>
+                {
+                    return false;
+                };
+        }
+
+        return property;
+    }
+}
+
+public class ArchetypeSerializeResolver : DefaultContractResolver
+{
+    public static readonly ArchetypeSerializeResolver Instance = new ArchetypeSerializeResolver();
+
+    protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+    {
+        JsonProperty property = base.CreateProperty(member, memberSerialization);
+
+        if (property.PropertyName == "ChildrenEditor")
         {
             property.ShouldSerialize =
                 instance =>

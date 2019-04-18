@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 namespace loot_td
 {
     [Serializable]
-    public class AbilityBase : BindableBase
+    public class AbilityBase : BindableBase, IStringId
     {
         private string idName;
         private AbilityType abilityType;
@@ -160,6 +160,11 @@ namespace loot_td
                 return damageLevels[e];
             else
                 return null;
+        }
+
+        public string GetStringId()
+        {
+            return this.IdName;
         }
     }
 

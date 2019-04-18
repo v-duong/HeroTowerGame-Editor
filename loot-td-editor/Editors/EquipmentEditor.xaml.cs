@@ -6,6 +6,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -360,12 +362,19 @@ namespace loot_td_editor
 
         private void Sort(string sortBy, ListSortDirection direction)
         {
-            ICollectionView dataView =
-              CollectionViewSource.GetDefaultView(EquipList.ItemsSource);
+            var dataView =
+              (ListCollectionView)CollectionViewSource.GetDefaultView(EquipList.ItemsSource);
 
             dataView.SortDescriptions.Clear();
-            SortDescription sd = new SortDescription(sortBy, direction);
-            dataView.SortDescriptions.Add(sd);
+
+            if (sortBy == "IdName")
+            {
+                dataView.CustomSort = new NaturalStringComparer();
+            } else
+            {
+                SortDescription sd = new SortDescription(sortBy, direction);
+                dataView.SortDescriptions.Add(sd);
+            }
             dataView.Refresh();
         }
 
@@ -380,3 +389,4 @@ namespace loot_td_editor
         }
     }
 }
+
