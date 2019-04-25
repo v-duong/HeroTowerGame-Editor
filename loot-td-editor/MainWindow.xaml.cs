@@ -402,7 +402,7 @@ namespace loot_td_editor
             }
             foreach (string locale in locales)
             {
-                SaveLocalizationCommon(locale);
+                //SaveLocalizationCommon(locale);
                 SaveLocalizationEquipment(locale);
                 SaveLocalizationAbility(locale);
                 SaveLocalizationArchetype(locale);

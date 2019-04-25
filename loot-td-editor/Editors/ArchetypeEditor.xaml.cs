@@ -1,15 +1,16 @@
 ﻿using loot_td;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
-using System.Linq;
 
 namespace loot_td_editor.Editors
 {
@@ -36,14 +37,13 @@ namespace loot_td_editor.Editors
             string json = System.IO.File.ReadAllText(filePath);
             Archetypes = JsonConvert.DeserializeObject<ObservableCollection<ArchetypeBase>>(json);
 
-            foreach(ArchetypeBase k in Archetypes)
+            foreach (ArchetypeBase k in Archetypes)
             {
                 if (k.IdName == null)
                     k.IdName = "";
             }
 
             ArchetypesList.ItemsSource = Archetypes;
-
         }
 
         public ArchetypeEditor()
@@ -58,7 +58,6 @@ namespace loot_td_editor.Editors
         {
             ArchetypeBase temp = new ArchetypeBase
             {
-
                 IdName = "UNTITLED NEW",
             };
             Archetypes.Add(temp);
@@ -310,8 +309,8 @@ namespace loot_td_editor.Editors
             if (rect.DataContext != null)
             {
                 ArchetypeSkillNode a = (ArchetypeSkillNode)rect.DataContext;
-                a.NodePosition.x = (int)Math.Round((Canvas.GetLeft(rect) - NodeTree.ActualWidth / 2) / 100, 0);
-                a.NodePosition.y = (int)Math.Round(Canvas.GetBottom(rect) / 100, 0);
+                a.NodePosition.x = (int)Math.Round((Canvas.GetLeft(rect) - NodeTree.ActualWidth / 2) / GridSpacing, 0);
+                a.NodePosition.y = (int)Math.Round(Canvas.GetBottom(rect) / GridSpacing, 0);
             }
 
             DrawCanvas();
@@ -330,8 +329,8 @@ namespace loot_td_editor.Editors
             double left = mousePos.X - (rect.ActualWidth / 2);
             double top = -mousePos.Y + (NodeTree.ActualHeight) + (rect.ActualHeight / 2);
 
-            Canvas.SetLeft(rect, Math.Round((left + 10) / 100, 0) * 100 - 10);
-            Canvas.SetBottom(rect, Math.Round((top - 50) / 100, 0) * 100);
+            Canvas.SetLeft(rect, Math.Round((left + 10) / GridSpacing, 0) * GridSpacing - rect.ActualWidth / 2);
+            Canvas.SetBottom(rect, Math.Round((top - 50) / GridSpacing, 0) * GridSpacing);
         }
 
         private void DoubleUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -424,6 +423,8 @@ namespace loot_td_editor.Editors
 
         private void TextBlock_Loaded(object sender, RoutedEventArgs e)
         {
+            if (sender == null)
+                return;
             if (ArchetypesList.SelectedItem == null)
                 return;
 
@@ -433,8 +434,11 @@ namespace loot_td_editor.Editors
                 return;
 
             TextBlock s = sender as TextBlock;
-            int x = Convert.ToInt32(s.Text);
-            s.Text = x + "\t" + selected.NodeList[x].IdName;
+            if (s.Text == null || s.Text == "")
+                return;
+
+            if (int.TryParse(s.Text, out int x))
+                s.Text = x + "\t" + selected.NodeList[x].IdName;
         }
 
         private void MaxLevelChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -456,5 +460,61 @@ namespace loot_td_editor.Editors
             }
             TotalSkillPoints.Content = total.ToString();
         }
+
+        private GridViewColumnHeader _lastHeaderClicked = null;
+        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        private void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    string header = headerClicked.Column.Header as string;
+                    Sort(header, direction);
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            var dataView =
+              (ListCollectionView)CollectionViewSource.GetDefaultView(ArchetypesList.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            if (sortBy == "IdName")
+            {
+                dataView.CustomSort = new NaturalStringComparer();
+            }
+            else
+            {
+                SortDescription sd = new SortDescription(sortBy, direction);
+                dataView.SortDescriptions.Add(sd);
+            }
+            dataView.Refresh();
+        }
+
     }
 }

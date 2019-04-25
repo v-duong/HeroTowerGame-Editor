@@ -21,11 +21,15 @@ namespace loot_td
         private float projectileSpeed;
         private float projectileSize;
         private int projectileCount;
+        private int projectileSpread;
+        private bool projectileDoesNotSpread;
 
         private float areaRadius;
         private float areaLength;
 
         private float hitscanDelay;
+
+        private float baseCritical;
 
         private float weaponMultiplier;
         private float weaponMultiplierScaling;
@@ -40,6 +44,7 @@ namespace loot_td
         private string effectSprite;
         private LinkedAbilityData linkedAbility;
         private List<AbilityEffectData> appliedEffects;
+        private bool useLinkedDamage;
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -53,10 +58,13 @@ namespace loot_td
         public AbilityShotType AbilityShotType { get => abilityShotType; set => SetProperty(ref abilityShotType, value); }
 
         [JsonProperty]
-        public float Cooldown { get => cooldown; set => SetProperty(ref cooldown, value); }
+        public float AttacksPerSec { get => cooldown; set => SetProperty(ref cooldown, value); }
 
         [JsonProperty]
         public float TargetRange { get => targetRange; set => SetProperty(ref targetRange, value); }
+
+        [JsonProperty]
+        public float BaseCritical { get => baseCritical; set => SetProperty(ref baseCritical, value); }
 
         [JsonProperty]
         public AbilityTargetType TargetType { get => targetsAllies; set => SetProperty(ref targetsAllies, value); }
@@ -69,6 +77,12 @@ namespace loot_td
 
         [JsonProperty]
         public int ProjectileCount { get => projectileCount; set => SetProperty(ref projectileCount, value); }
+
+        [JsonProperty]
+        public int ProjectileSpread { get => projectileSpread; set => SetProperty(ref projectileSpread, value); }
+
+        [JsonProperty]
+        public bool DoesProjectileSpread { get => projectileDoesNotSpread; set => SetProperty(ref projectileDoesNotSpread, value); }
 
         [JsonProperty]
         public float AreaRadius { get => areaRadius; set => SetProperty(ref areaRadius, value); }
@@ -115,6 +129,9 @@ namespace loot_td
         [JsonProperty]
         public List<AbilityEffectData> AppliedEffects { get => appliedEffects; set => SetProperty(ref appliedEffects, value); }
 
+        [JsonProperty]
+        public bool HasLinkedAbility { get => useLinkedDamage; set => SetProperty(ref useLinkedDamage, value); }
+
         public AbilityBase()
         {
             DamageLevels = new Dictionary<ElementType, AbilityDamageBase>();
@@ -122,10 +139,11 @@ namespace loot_td
             WeaponRestrictions = new ObservableCollection<GroupType>();
             BonusProperties = new List<ScalingBonusProperty>();
             AppliedEffects = new List<AbilityEffectData>();
+            LinkedAbility = new LinkedAbilityData();
             effectSprite = "";
         }
 
-        [JsonIgnore] public AbilityDamageBase GetPhysical { get => GetElementDamage(ElementType.NONE); set => damageLevels[ElementType.NONE] = value; }
+        [JsonIgnore] public AbilityDamageBase GetPhysical { get => GetElementDamage(ElementType.PHYSICAL); set => damageLevels[ElementType.PHYSICAL] = value; }
         [JsonIgnore] public AbilityDamageBase GetFire { get => GetElementDamage(ElementType.FIRE); set => damageLevels[ElementType.FIRE] = value; }
         [JsonIgnore] public AbilityDamageBase GetCold { get => GetElementDamage(ElementType.COLD); set => damageLevels[ElementType.COLD] = value; }
         [JsonIgnore] public AbilityDamageBase GetLightning { get => GetElementDamage(ElementType.LIGHTNING); set => damageLevels[ElementType.LIGHTNING] = value; }
@@ -133,7 +151,7 @@ namespace loot_td
         [JsonIgnore] public AbilityDamageBase GetDivine { get => GetElementDamage(ElementType.DIVINE); set => damageLevels[ElementType.DIVINE] = value; }
         [JsonIgnore] public AbilityDamageBase GetVoid { get => GetElementDamage(ElementType.VOID); set => damageLevels[ElementType.VOID] = value; }
 
-        [JsonIgnore] public bool HasPhysical { get => damageLevels.ContainsKey(ElementType.NONE); }
+        [JsonIgnore] public bool HasPhysical { get => damageLevels.ContainsKey(ElementType.PHYSICAL); }
         [JsonIgnore] public bool HasFire { get => damageLevels.ContainsKey(ElementType.FIRE); }
         [JsonIgnore] public bool HasCold { get => damageLevels.ContainsKey(ElementType.COLD); }
         [JsonIgnore] public bool HasLightning { get => damageLevels.ContainsKey(ElementType.LIGHTNING); }
@@ -217,6 +235,9 @@ namespace loot_td
         private string abilityId;
         private AbilityLinkType type;
         private float time;
+        public bool inheritsDamage;
+        public float inheritDamagePercent;
+        public float inheritDamagePercentScaling;
 
         [JsonProperty]
         public string AbilityId { get => abilityId; set => SetProperty(ref abilityId, value); }
@@ -227,6 +248,15 @@ namespace loot_td
 
         [JsonProperty]
         public float Time { get => time; set => SetProperty(ref time, value); }
+
+        [JsonProperty]
+        public bool InheritsDamage { get => inheritsDamage; set => SetProperty(ref inheritsDamage, value); }
+
+        [JsonProperty]
+        public float InheritDamagePercent { get => inheritDamagePercent; set => SetProperty(ref inheritDamagePercent, value); }
+
+        [JsonProperty]
+        public float InheritDamagePercentScaling { get => inheritDamagePercentScaling; set => SetProperty(ref inheritDamagePercentScaling, value); }
     }
 
     public class DamageStore : BindableBase

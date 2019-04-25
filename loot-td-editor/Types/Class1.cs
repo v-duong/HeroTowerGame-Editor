@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-class Archetype
+class HeroArchetypeData
 {
-    public const int LocalBonusStart = 0x600;
+    public const int LocalBonusStart = 0x900;
 }
 
 

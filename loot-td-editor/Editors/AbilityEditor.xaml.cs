@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,8 @@ namespace loot_td_editor.Editors
             {
                 if (k.IdName == null)
                     k.IdName = "";
+                if (k.LinkedAbility == null)
+                    k.LinkedAbility = new LinkedAbilityData();
             }
 
             AbilitiesList.ItemsSource = Abilities;
@@ -62,6 +65,7 @@ namespace loot_td_editor.Editors
             GroupList.ItemsSource = GroupTypes;
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(GroupList.ItemsSource);
             view.Filter = TagFilter;
+            LinkedAbilityList.ItemsSource = Abilities;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -148,10 +152,11 @@ namespace loot_td_editor.Editors
                 return false;
             string s = (item as GroupType?).ToString();
 
-            if(String.IsNullOrEmpty(FilterBox.Text))
+            if (String.IsNullOrEmpty(FilterBox.Text))
             {
                 return true;
-            } else
+            }
+            else
             {
                 return s.IndexOf(FilterBox.Text, StringComparison.OrdinalIgnoreCase) >= 0;
             }
@@ -172,5 +177,61 @@ namespace loot_td_editor.Editors
             WeaponScaleLabel.Content = d.Value * 50;
             WeaponSumLabel.Content = WeaponBaseMultInput.Value + d.Value * 50;
         }
+
+        private GridViewColumnHeader _lastHeaderClicked = null;
+        private ListSortDirection _lastDirection = ListSortDirection.Ascending;
+
+        private void GridViewColumnHeaderClickedHandler(object sender, RoutedEventArgs e)
+        {
+            GridViewColumnHeader headerClicked = e.OriginalSource as GridViewColumnHeader;
+            ListSortDirection direction;
+
+            if (headerClicked != null)
+            {
+                if (headerClicked.Role != GridViewColumnHeaderRole.Padding)
+                {
+                    if (headerClicked != _lastHeaderClicked)
+                    {
+                        direction = ListSortDirection.Ascending;
+                    }
+                    else
+                    {
+                        if (_lastDirection == ListSortDirection.Ascending)
+                        {
+                            direction = ListSortDirection.Descending;
+                        }
+                        else
+                        {
+                            direction = ListSortDirection.Ascending;
+                        }
+                    }
+
+                    string header = headerClicked.Column.Header as string;
+                    Sort(header, direction);
+
+                    _lastHeaderClicked = headerClicked;
+                    _lastDirection = direction;
+                }
+            }
+        }
+
+        private void Sort(string sortBy, ListSortDirection direction)
+        {
+            var dataView =
+              (ListCollectionView)CollectionViewSource.GetDefaultView(AbilitiesList.ItemsSource);
+
+            dataView.SortDescriptions.Clear();
+            if (sortBy == "IdName")
+            {
+                dataView.CustomSort = new NaturalStringComparer();
+            }
+            else
+            {
+                SortDescription sd = new SortDescription(sortBy, direction);
+                dataView.SortDescriptions.Add(sd);
+            }
+            dataView.Refresh();
+        }
     }
+
 }

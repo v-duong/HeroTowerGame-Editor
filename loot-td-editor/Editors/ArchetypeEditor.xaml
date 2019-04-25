@@ -34,11 +34,12 @@
             <Button Content="ADD" Click="AddButtonClick" />
             <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick" />
             <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick" />
-            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ArchetypesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="ArchetypesList_SelectionChanged">
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="ArchetypesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="ArchetypesList_SelectionChanged" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
                         <GridViewColumn DisplayMemberBinding="{Binding Path=DropLevel}" Header="DropLevel" Width="50" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Stars}" Header="Stars" Width="35" />
                     </GridView>
                 </ListView.View>
             </ListView>
