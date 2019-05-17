@@ -88,8 +88,13 @@
     <Compile Include="Bases\AffixBase.cs" />
     <Compile Include="Bases\ArchetypeBase.cs" />
     <Compile Include="Bases\ArchetypeSkillNode.cs" />
+    <Compile Include="Bases\EnemyBase.cs" />
+    <Compile Include="Bases\StageInfoBase.cs" />
     <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\BonusType.cs">
       <Link>Types\BonusType.cs</Link>
+    </Compile>
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\DifficultyType.cs">
+      <Link>Types\DifficultyType.cs</Link>
     </Compile>
     <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\EffectType.cs">
       <Link>Types\EffectType.cs</Link>
@@ -100,6 +105,9 @@
     <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\GroupType.cs">
       <Link>Types\GroupType.cs</Link>
     </Compile>
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\RarityType.cs">
+      <Link>Types\RarityType.cs</Link>
+    </Compile>
     <Compile Include="Editors\AbilityEditor.xaml.cs">
       <DependentUpon>AbilityEditor.xaml</DependentUpon>
     </Compile>
@@ -109,7 +117,13 @@
     <Compile Include="Editors\ElementDamage.xaml.cs">
       <DependentUpon>ElementDamage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Editors\EnemyEditor.xaml.cs">
+      <DependentUpon>EnemyEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editors\Helpers.cs" />
+    <Compile Include="Editors\StageEditor.xaml.cs">
+      <DependentUpon>StageEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="EnumBindingSourceExtension.cs" />
     <Compile Include="Bases\EquipmentBase.cs" />
     <Compile Include="Editors\EquipmentEditor.xaml.cs">
@@ -139,7 +153,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Editors\EnemyEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Editors\EquipmentEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Editors\StageEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

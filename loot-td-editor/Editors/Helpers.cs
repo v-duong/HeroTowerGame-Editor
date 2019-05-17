@@ -184,6 +184,31 @@ namespace loot_td_editor
             return flag;
         }
 
+        public static bool ErrorCheckEnemies(List<EnemyBase> list, ErrorLog errorLog)
+        {
+            bool flag = true;
+            HashSet<string> nameHash = new HashSet<string>();
+            foreach (EnemyBase a in list)
+            {
+                if (a.IdName == "" || a.IdName == null)
+                {
+                    errorLog.Add("Enemy has null IdName");
+                    flag = false;
+                }
+                if (a.IdName == "UNTITLED NEW")
+                {
+                    errorLog.Add("Enemy has default IdName");
+                    flag = false;
+                }
+                if (!nameHash.Add(a.IdName))
+                {
+                    errorLog.Add("Enemy has duplicate IdName: " + a.IdName);
+                    flag = false;
+                }
+            }
+            return flag;
+        }
+
         public class ErrorLog
         {
             public Dictionary<string, int> dict = new Dictionary<string, int>();

@@ -21,6 +21,8 @@ namespace loot_td_editor
         public bool saveAbility = true;
         public bool saveArchetype = true;
         public bool saveAffix = true;
+        public bool saveEnemy = true;
+        public bool saveStage = true;
         Helpers.ErrorLog ErrorLog = new Helpers.ErrorLog();
 
         public MainWindow()
@@ -37,6 +39,9 @@ namespace loot_td_editor
             AccessoryEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
 
             ArchetypeEditor.NodeAbilityList.ItemsSource = AbilityEditor.Abilities;
+            EnemyEditor.DataGridAbilityName.ItemsSource = AbilityEditor.Abilities;
+
+            StageEditor.EnemyComboBox.ItemsSource = EnemyEditor.EnemyBaseList;
         }
 
         private void JsonSettingsClick(object sender, RoutedEventArgs e)
@@ -183,6 +188,35 @@ namespace loot_td_editor
             saveArchetype = true;
         }
 
+        private void SaveEnemiesJson()
+        {
+            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
+            {
+                MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
+                return;
+            }
+            JsonSerializerSettings settings = new JsonSerializerSettings
+            {
+                ContractResolver = EnemySerializeResolver.Instance
+            };
+
+            if (!Helpers.ErrorCheckEnemies(EnemyEditor.EnemyBaseList.ToList(), ErrorLog))
+            {
+                saveEnemy = false;
+                return;
+            }
+
+            string s = Properties.Settings.Default.JsonSavePath + "\\enemies\\enemies.json";
+            string o = JsonConvert.SerializeObject(EnemyEditor.EnemyBaseList.ToList(), settings);
+            System.IO.File.WriteAllText(s, o);
+
+            s = Properties.Settings.Default.JsonSavePath + "\\enemies\\enemies.editor.json";
+            o = JsonConvert.SerializeObject(EnemyEditor.EnemyBaseList.ToList());
+            System.IO.File.WriteAllText(s, o);
+
+            saveEnemy = true;
+        }
+
         private void SaveJsonAll(object sender, RoutedEventArgs e)
         {
             ErrorLog.Clear();
@@ -221,6 +255,7 @@ namespace loot_td_editor
             }
             
             SaveAbilitiesJson();
+            SaveEnemiesJson();
             //SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
             SaveArchetypesJson();
             SaveLocalizationKeys();
@@ -288,6 +323,33 @@ namespace loot_td_editor
             foreach (EquipmentBase equipment in equips)
             {
                 string localizationKey = "equipment." + equipment.IdName;
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            System.IO.File.WriteAllText(filepath, o);
+        }
+
+        private void SaveLocalizationEnemy(string locale)
+        {
+            if (!saveArchetype)
+                return;
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\enemy." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<EnemyBase> enemies = EnemyEditor.EnemyBaseList.ToList();
+
+            foreach (EnemyBase a in enemies)
+            {
+                string localizationKey = "enemy." + a.IdName + ".name";
                 if (!localization.ContainsKey(localizationKey))
                     localization.Add(localizationKey, "");
                 else
@@ -406,6 +468,7 @@ namespace loot_td_editor
                 SaveLocalizationEquipment(locale);
                 SaveLocalizationAbility(locale);
                 SaveLocalizationArchetype(locale);
+                SaveLocalizationEnemy(locale);
                 /*
                 List<AffixBase> affixes = PrefixEditor.Affixes.ToList();
                 affixes.AddRange(SuffixEditor.Affixes.ToList());
@@ -455,6 +518,27 @@ public class ArchetypeSerializeResolver : DefaultContractResolver
         JsonProperty property = base.CreateProperty(member, memberSerialization);
 
         if (property.PropertyName == "ChildrenEditor")
+        {
+            property.ShouldSerialize =
+                instance =>
+                {
+                    return false;
+                };
+        }
+
+        return property;
+    }
+}
+
+public class EnemySerializeResolver : DefaultContractResolver
+{
+    public static readonly EnemySerializeResolver Instance = new EnemySerializeResolver();
+
+    protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+    {
+        JsonProperty property = base.CreateProperty(member, memberSerialization);
+
+        if (property.PropertyName == "ActNumber")
         {
             property.ShouldSerialize =
                 instance =>

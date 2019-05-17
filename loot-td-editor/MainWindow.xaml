@@ -58,6 +58,12 @@
                     </TabItem>
                 </TabControl>
             </TabItem>
+            <TabItem Header="_Enemies">
+                <localed:EnemyEditor x:Name="EnemyEditor"/>
+            </TabItem>
+            <TabItem Header="_Stages">
+                <localed:StageEditor x:Name="StageEditor" />
+            </TabItem>
         </TabControl>
     </DockPanel>
 </Window>
