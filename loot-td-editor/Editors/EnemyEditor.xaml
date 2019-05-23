@@ -69,20 +69,24 @@
             <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=EnemyListView,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
 
             <Label Content="Level" Grid.Column="0" Grid.Row="1" />
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.Level, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" DefaultValue="1"/>
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.Level, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" DefaultValue="1" ValueChanged="Health_ValueChanged"/>
 
             <Label Content="Experience" Grid.Column="0" Grid.Row="2" />
             <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.Experience, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" DefaultValue="1"/>
             <Label Content="IsBoss" Grid.Column="0" Grid.Row="3" />
             <CheckBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" IsChecked="{Binding ElementName=EnemyListView,Path=SelectedItem.IsBoss, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <Label Content="HealthScaling" Grid.Column="3" />
-            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.HealthScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" DefaultValue="1"/>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.HealthScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" DefaultValue="1" ValueChanged="Health_ValueChanged" FormatString="F3"/>
             <Label Content="MovementSpeed" Grid.Column="3" Grid.Row="2" />
-            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.MovementSpeed, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="2" Increment="0.1" DefaultValue="1"/>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.MovementSpeed, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="2" Increment="0.1" DefaultValue="1" FormatString="F2"/>
             <Label Content="EnemyType" Grid.Column="0" Grid.Row="4" />
             <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" SelectedValue="{Binding SelectedItem.EnemyType, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:EnemyType}}}"/>
             <Label Content="SpriteName" Grid.Column="0" Grid.Row="5" />
             <TextBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" Text="{Binding SelectedItem.SpriteName, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Label Content="Level 1 Health" Grid.Column="5" Name="HealthLabel1" />
+            <Label Content="0" Grid.Column="6" Name="HealthValue1" ContentStringFormat="F1"/>
+            <Label Content="Level 100 Health" Grid.Column="5" Grid.Row="1" />
+            <Label Content="15" Grid.Column="6" Grid.Row="1" Name="HealthValue2" ContentStringFormat="F1"/>
 
         </Grid>
         

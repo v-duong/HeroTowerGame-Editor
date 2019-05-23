@@ -123,5 +123,15 @@ namespace loot_td_editor.Editors
             }
             dataView.Refresh();
         }
+
+        private void Health_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            if (EnemyListView.SelectedItem == null)
+                return;
+            EnemyBase enemy = EnemyListView.SelectedItem as EnemyBase;
+            HealthLabel1.Content = "Level " + enemy.Level;
+            HealthValue1.Content = Helpers.EnemyScalingFormula(enemy.Level) * 15 * enemy.HealthScaling;
+            HealthValue2.Content = Helpers.EnemyScalingFormula(100) * 15 * enemy.HealthScaling;
+        }
     }
 }

@@ -41,6 +41,7 @@ namespace loot_td
         private ObservableCollection<EnemyWave> enemyWaves;
 
         [JsonProperty]
+        [JsonConverter(typeof(StringEnumConverter))]
         public DifficultyType Difficulty { get => difficulty; set => SetProperty(ref difficulty, value); }
 
         [JsonProperty]
@@ -72,6 +73,11 @@ namespace loot_td
 
         public StageInfoBase()
         {
+            MonsterLevel = 1;
+            BaseExperience = 0;
+            ExpMultiplier = 1;
+            EquipmentDropRateMultiplier = 1;
+            consumableDropRateMultiplier = 1;
             EquipmentDropList = new ObservableCollection<WeightBase>();
             ArchetypeDropList = new ObservableCollection<WeightBase>();
             StageProperties = new ObservableCollection<ScalingBonusProperty>();
@@ -113,6 +119,7 @@ namespace loot_td
         private bool isBossOverride;
         private int enemyCount;
         private int spawnerIndex; // which spawn point to spawn from
+        private int goalIndex;
 
         [JsonProperty]
         public string EnemyName { get => enemyType; set => SetProperty(ref enemyType, value); }
@@ -135,6 +142,9 @@ namespace loot_td
 
         [JsonProperty]
         public int SpawnerIndex { get => spawnerIndex; set => SetProperty(ref spawnerIndex, value); }
+
+        [JsonProperty]
+        public int GoalIndex { get => goalIndex; set => SetProperty(ref goalIndex, value); }
 
         public EnemyWaveItem()
         {

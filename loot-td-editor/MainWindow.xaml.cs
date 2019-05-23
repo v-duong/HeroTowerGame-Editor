@@ -217,6 +217,28 @@ namespace loot_td_editor
             saveEnemy = true;
         }
 
+        private void SaveStagesJson()
+        {
+            if (Properties.Settings.Default.JsonSavePath == null || Properties.Settings.Default.JsonSavePath == "")
+            {
+                MessageBox.Show("Save Path not defined", "Error", MessageBoxButton.OK);
+                return;
+            }
+
+            /*
+            if (!Helpers.ErrorCheckEnemies(EnemyEditor.EnemyBaseList.ToList(), ErrorLog))
+            {
+                saveEnemy = false;
+                return;
+            }
+            */
+            string s = Properties.Settings.Default.JsonSavePath + "\\stages\\stages.json";
+            string o = JsonConvert.SerializeObject(StageEditor.Stages.ToList());
+            System.IO.File.WriteAllText(s, o);
+
+            saveStage = true;
+        }
+
         private void SaveJsonAll(object sender, RoutedEventArgs e)
         {
             ErrorLog.Clear();
@@ -256,6 +278,7 @@ namespace loot_td_editor
             
             SaveAbilitiesJson();
             SaveEnemiesJson();
+            SaveStagesJson();
             //SaveToJson<ArchetypeBase>("\\archetypes\\archetypes", ArchetypeEditor.Archetypes.ToList());
             SaveArchetypesJson();
             SaveLocalizationKeys();
@@ -340,7 +363,7 @@ namespace loot_td_editor
 
         private void SaveLocalizationEnemy(string locale)
         {
-            if (!saveArchetype)
+            if (!saveEnemy)
                 return;
             string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\enemy." + locale + ".json";
             InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
@@ -350,6 +373,34 @@ namespace loot_td_editor
             foreach (EnemyBase a in enemies)
             {
                 string localizationKey = "enemy." + a.IdName + ".name";
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            System.IO.File.WriteAllText(filepath, o);
+        }
+
+
+        private void SaveLocalizationStage(string locale)
+        {
+            if (!saveStage)
+                return;
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\stage." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<StageInfoCollection> stage = StageEditor.Stages.ToList();
+
+            foreach (StageInfoCollection a in stage)
+            {
+                string localizationKey = "stage." + a.IdName + ".name";
                 if (!localization.ContainsKey(localizationKey))
                     localization.Add(localizationKey, "");
                 else
@@ -469,6 +520,7 @@ namespace loot_td_editor
                 SaveLocalizationAbility(locale);
                 SaveLocalizationArchetype(locale);
                 SaveLocalizationEnemy(locale);
+                SaveLocalizationStage(locale);
                 /*
                 List<AffixBase> affixes = PrefixEditor.Affixes.ToList();
                 affixes.AddRange(SuffixEditor.Affixes.ToList());

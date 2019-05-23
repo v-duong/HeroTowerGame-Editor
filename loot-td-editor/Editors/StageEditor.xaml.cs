@@ -73,7 +73,14 @@ namespace loot_td_editor.Editors
                 return;
 
             StageInfoBase temp = DifficultyView.SelectedItem as StageInfoBase;
+            
             temp.EnemyWaves.Add(new EnemyWave());
+
+            int i = 0;
+            foreach (EnemyWave wave in temp.EnemyWaves)
+            {
+                wave.Id = i++;
+            }
         }
 
         private void CopyButtonClickWave(object sender, RoutedEventArgs e)
@@ -88,6 +95,12 @@ namespace loot_td_editor.Editors
             StageInfoBase temp = DifficultyView.SelectedItem as StageInfoBase;
             EnemyWave temp2 = Helpers.DeepClone((EnemyWave)EnemyWaveView.SelectedItem);
             temp.EnemyWaves.Add(temp2);
+
+            int i = 0;
+            foreach (EnemyWave wave in temp.EnemyWaves)
+            {
+                wave.Id = i++;
+            }
         }
 
         private void DelButtonClickWave(object sender, RoutedEventArgs e)
@@ -101,6 +114,12 @@ namespace loot_td_editor.Editors
 
             StageInfoBase temp = DifficultyView.SelectedItem as StageInfoBase;
             temp.EnemyWaves.Remove((EnemyWave)EnemyWaveView.SelectedItem);
+
+            int i = 0;
+            foreach (EnemyWave wave in temp.EnemyWaves)
+            {
+                wave.Id = i++;
+            }
         }
 
         private void AddButtonClickWaveItem(object sender, RoutedEventArgs e)
