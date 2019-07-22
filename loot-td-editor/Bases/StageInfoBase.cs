@@ -10,25 +10,6 @@ namespace loot_td
         private string idName;
         private int act;
         private int stage;
-        private ObservableCollection<StageInfoBase> difficultyList;
-
-        [JsonProperty]
-        public ObservableCollection<StageInfoBase> DifficultyList { get => difficultyList; set => SetProperty(ref difficultyList, value); }
-        [JsonProperty]
-        public string IdName { get => idName; set => SetProperty(ref idName, value); }
-        [JsonProperty]
-        public int Act { get => act; set => SetProperty(ref act, value); }
-        [JsonProperty]
-        public int Stage { get => stage; set => SetProperty(ref stage, value); }
-
-        public StageInfoCollection()
-        {
-            DifficultyList = new ObservableCollection<StageInfoBase>();
-        }
-    }
-
-    public class StageInfoBase : BindableBase
-    {
         private DifficultyType difficulty;
         private int stageLevel;
         private int baseExperience;
@@ -71,7 +52,14 @@ namespace loot_td
         [JsonProperty]
         public ObservableCollection<EnemyWave> EnemyWaves { get => enemyWaves; set => SetProperty(ref enemyWaves, value); }
 
-        public StageInfoBase()
+        [JsonProperty]
+        public string IdName { get => idName; set => SetProperty(ref idName, value); }
+        [JsonProperty]
+        public int Act { get => act; set => SetProperty(ref act, value); }
+        [JsonProperty]
+        public int Stage { get => stage; set => SetProperty(ref stage, value); }
+
+        public StageInfoCollection()
         {
             MonsterLevel = 1;
             BaseExperience = 0;

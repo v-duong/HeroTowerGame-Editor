@@ -43,9 +43,6 @@ namespace loot_td_editor.Editors
             {
                 IdName = "UNTITLED NEW"
             };
-            temp.DifficultyList.Add(new StageInfoBase { Difficulty = DifficultyType.NORMAL });
-            temp.DifficultyList.Add(new StageInfoBase { Difficulty = DifficultyType.HARD });
-            temp.DifficultyList.Add(new StageInfoBase { Difficulty = DifficultyType.CHAOS });
             Stages.Add(temp);
         }
 
@@ -69,11 +66,9 @@ namespace loot_td_editor.Editors
         {
             if (StageListView.SelectedItem == null)
                 return;
-            if (DifficultyView.SelectedItem == null)
-                return;
 
-            StageInfoBase temp = DifficultyView.SelectedItem as StageInfoBase;
-            
+            StageInfoCollection temp = StageListView.SelectedItem as StageInfoCollection;
+
             temp.EnemyWaves.Add(new EnemyWave());
 
             int i = 0;
@@ -87,12 +82,10 @@ namespace loot_td_editor.Editors
         {
             if (StageListView.SelectedItem == null)
                 return;
-            if (DifficultyView.SelectedItem == null)
-                return;
             if (EnemyWaveView.SelectedItem == null)
                 return;
 
-            StageInfoBase temp = DifficultyView.SelectedItem as StageInfoBase;
+            StageInfoCollection temp = StageListView.SelectedItem as StageInfoCollection;
             EnemyWave temp2 = Helpers.DeepClone((EnemyWave)EnemyWaveView.SelectedItem);
             temp.EnemyWaves.Add(temp2);
 
@@ -107,12 +100,10 @@ namespace loot_td_editor.Editors
         {
             if (StageListView.SelectedItem == null)
                 return;
-            if (DifficultyView.SelectedItem == null)
-                return;
             if (EnemyWaveView.SelectedItem == null)
                 return;
 
-            StageInfoBase temp = DifficultyView.SelectedItem as StageInfoBase;
+            StageInfoCollection temp = StageListView.SelectedItem as StageInfoCollection;
             temp.EnemyWaves.Remove((EnemyWave)EnemyWaveView.SelectedItem);
 
             int i = 0;
@@ -126,8 +117,6 @@ namespace loot_td_editor.Editors
         {
             if (StageListView.SelectedItem == null)
                 return;
-            if (DifficultyView.SelectedItem == null)
-                return;
             if (EnemyWaveView.SelectedItem == null)
                 return;
 
@@ -138,8 +127,6 @@ namespace loot_td_editor.Editors
         private void CopyButtonClickWaveItem(object sender, RoutedEventArgs e)
         {
             if (StageListView.SelectedItem == null)
-                return;
-            if (DifficultyView.SelectedItem == null)
                 return;
             if (EnemyWaveView.SelectedItem == null)
                 return;
@@ -154,8 +141,6 @@ namespace loot_td_editor.Editors
         private void DelButtonClickWaveItem(object sender, RoutedEventArgs e)
         {
             if (StageListView.SelectedItem == null)
-                return;
-            if (DifficultyView.SelectedItem == null)
                 return;
             if (EnemyWaveView.SelectedItem == null)
                 return;

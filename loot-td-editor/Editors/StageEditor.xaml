@@ -74,20 +74,13 @@
                 <Label Content="Consumable Drop Rate Multiplier" Height="26"></Label>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.RowSpan="2">
-                <xctk:IntegerUpDown Value="{Binding SelectedItem.MonsterLevel, ElementName=DifficultyView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="150" Height="26"></xctk:IntegerUpDown>
-                <xctk:IntegerUpDown Value="{Binding SelectedItem.BaseExperience, ElementName=DifficultyView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
-                <xctk:DoubleUpDown Value="{Binding SelectedItem.ExpMultiplier, ElementName=DifficultyView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Increment="0.1" Height="26" FormatString="F2"></xctk:DoubleUpDown>
-                <xctk:DoubleUpDown Value="{Binding SelectedItem.EquipmentDropRateMultiplier, ElementName=DifficultyView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" Minimum="0" Height="26" FormatString="F2"></xctk:DoubleUpDown>
-                <xctk:DoubleUpDown Value="{Binding SelectedItem.ConsumableDropRateMultiplier, ElementName=DifficultyView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" Minimum="0" Height="26" FormatString="F2"></xctk:DoubleUpDown>
+                <xctk:IntegerUpDown Value="{Binding SelectedItem.MonsterLevel, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="150" Height="26"></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Value="{Binding SelectedItem.BaseExperience, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
+                <xctk:DoubleUpDown Value="{Binding SelectedItem.ExpMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Increment="0.1" Height="26" FormatString="F2"></xctk:DoubleUpDown>
+                <xctk:DoubleUpDown Value="{Binding SelectedItem.EquipmentDropRateMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" Minimum="0" Height="26" FormatString="F2"></xctk:DoubleUpDown>
+                <xctk:DoubleUpDown Value="{Binding SelectedItem.ConsumableDropRateMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" Minimum="0" Height="26" FormatString="F2"></xctk:DoubleUpDown>
 
             </StackPanel>
-            <ListView Grid.Row ="2" Grid.ColumnSpan="2"  ItemsSource="{Binding SelectedItem.DifficultyList, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="DifficultyView" SelectedIndex="0">
-                <ListView.View>
-                    <GridView AllowsColumnReorder="False">
-                        <GridViewColumn DisplayMemberBinding="{Binding Path=Difficulty}" Header="Difficulty" Width="150" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
             
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
@@ -110,7 +103,7 @@
                 <Button Width="50" Content="COPY" Click="CopyButtonClickWaveItem"></Button>
                 <Button Width="50" Content="DEL" Click="DelButtonClickWaveItem"></Button>
             </DockPanel>
-            <ListView Grid.Row="1" ItemsSource="{Binding SelectedItem.EnemyWaves, ElementName=DifficultyView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="EnemyWaveView">
+            <ListView Grid.Row="1" ItemsSource="{Binding SelectedItem.EnemyWaves, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="EnemyWaveView">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="35" />
@@ -138,8 +131,8 @@
                     <Label Content="delayUntil" Height="26"></Label>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
-                    <xctk:DoubleUpDown Value="{Binding SelectedItem.DelayBetweenSpawns, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26" Minimum="0" FormatString="F3"></xctk:DoubleUpDown>
-                    <xctk:DoubleUpDown Value="{Binding SelectedItem.DelayUntilNextWave, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26" Minimum="0" FormatString="F3"></xctk:DoubleUpDown>
+                    <xctk:DoubleUpDown Value="{Binding SelectedItem.DelayBetweenSpawns, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26" Minimum="0" FormatString="F3" Increment="0.125"></xctk:DoubleUpDown>
+                    <xctk:DoubleUpDown Value="{Binding SelectedItem.DelayUntilNextWave, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26" Minimum="0" FormatString="F3" Increment="0.125"></xctk:DoubleUpDown>
 
                 </StackPanel>
                 <ListView Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding SelectedItem.EnemyList, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="WaveItemView">
