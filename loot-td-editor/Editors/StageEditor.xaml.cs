@@ -1,6 +1,9 @@
 ﻿using loot_td;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,6 +11,7 @@ namespace loot_td_editor.Editors
 {
     public partial class StageEditor : UserControl
     {
+        public IList<DifficultyType> DifficultyTypes { get { return Enum.GetValues(typeof(DifficultyType)).Cast<DifficultyType>().ToList<DifficultyType>(); } }
         public ObservableCollection<StageInfoCollection> Stages;
 
         public void InitializeList()
@@ -35,6 +39,7 @@ namespace loot_td_editor.Editors
         {
             InitializeComponent();
             InitializeList();
+            DifficultyBox.ItemsSource = DifficultyTypes;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -149,6 +154,66 @@ namespace loot_td_editor.Editors
 
             EnemyWave temp = EnemyWaveView.SelectedItem as EnemyWave;
             temp.EnemyList.Remove((EnemyWaveItem)WaveItemView.SelectedItem);
+        }
+
+        private void AddPropertiesClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (StagePropertiesComboBox.SelectedItem == null)
+                return;
+
+            StageInfoCollection s = StageListView.SelectedItem as StageInfoCollection;
+            AffixBase a = StagePropertiesComboBox.SelectedItem as AffixBase;
+            if (s.StageProperties.Contains(a.IdName))
+                return;
+            s.StageProperties.Add(a.IdName);
+        }
+
+        private void RemovePropertiesClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (StagePropertiesList.SelectedItem == null)
+                return;
+
+            StageInfoCollection s = StageListView.SelectedItem as StageInfoCollection;
+            string a = StagePropertiesList.SelectedItem as string;
+            s.StageProperties.Remove(a);
+        }
+
+        private void AddWavePropertiesClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (EnemyWaveView.SelectedItem == null)
+                return;
+            if (WaveItemView.SelectedItem == null)
+                return;
+            if (WaveModComboBox.SelectedItem == null)
+                return;
+
+            EnemyWaveItem s = WaveItemView.SelectedItem as EnemyWaveItem;
+            AffixBase a = WaveModComboBox.SelectedItem as AffixBase;
+            if (s.BonusProperties.Contains(a.IdName))
+                return;
+            s.BonusProperties.Add(a.IdName);
+        }
+
+        private void RemoveWavePropertiesClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (EnemyWaveView.SelectedItem == null)
+                return;
+            if (WaveItemView.SelectedItem == null)
+                return;
+            if (WavePropertiesList.SelectedItem == null)
+                return;
+
+            EnemyWaveItem s = WaveItemView.SelectedItem as EnemyWaveItem;
+            string a = WavePropertiesList.SelectedItem as string;
+            s.BonusProperties.Remove(a);
         }
     }
 }

@@ -72,6 +72,10 @@ namespace loot_td_editor
                     fileName = "innate.json";
                     break;
 
+                case AffixType.MONSTERMOD:
+                    fileName = "monstermod.json";
+                    break;
+
                 default:
                     return;
             }

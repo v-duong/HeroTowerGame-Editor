@@ -56,6 +56,9 @@
                     <TabItem Header="_Innate">
                         <local:AffixEditor AffixProp="INNATE" x:Name="InnateEditor"/>
                     </TabItem>
+                    <TabItem Header="_Enemy">
+                        <local:AffixEditor AffixProp="MONSTERMOD" x:Name="EnemyAffixEditor"/>
+                    </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="_Enemies">

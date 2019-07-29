@@ -46,8 +46,7 @@
         </Grid>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.1*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.3*" />
@@ -60,11 +59,13 @@
                 <Label Content="IdName" Height="26"></Label>
                 <Label Content="Act" Height="26"></Label>
                 <Label Content="Stage" Height="26"></Label>
+                <Label Content="Difficulty" Height="26"></Label>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBox Text="{Binding SelectedItem.IdName, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26"></TextBox>
                 <xctk:IntegerUpDown Value="{Binding SelectedItem.Act, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
                 <xctk:IntegerUpDown Value="{Binding SelectedItem.Stage, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
+                <ComboBox SelectedItem="{Binding SelectedItem.Difficulty, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="DifficultyBox"></ComboBox>
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.RowSpan="2">
                 <Label Content="Monster Level" Height="26"></Label>
@@ -154,6 +155,7 @@
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
                     <RowDefinition Height="25" />
+                    <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.70*" />
@@ -167,8 +169,52 @@
                 <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding SelectedItem.EnemyCount, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
                 <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding SelectedItem.SpawnerIndex, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
                 <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding SelectedItem.GoalIndex, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
-
+                <Grid Grid.Row="6" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                    <ComboBox Name="WaveModComboBox" DisplayMemberPath="IdName"></ComboBox>
+                    <Button Grid.Column="1" Content="ADD" Click="AddWavePropertiesClick" />
+                    <Button Grid.Column="2" Content="REMOVE" Click="RemoveWavePropertiesClick" />
+                    <ListView Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding SelectedItem.BonusProperties, ElementName=WaveItemView, UpdateSourceTrigger=PropertyChanged}" Name="WavePropertiesList" SelectionMode="Single" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    </ListView>
+                </Grid>
             </Grid>
+            
+        </Grid>
+        <DataGrid Grid.Row="0" Grid.Column="2" ItemsSource="{Binding SelectedItem.EquipmentDropList, ElementName=StageListView, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false">
+            <DataGrid.Columns>
+                <DataGridComboBoxColumn SelectedValueBinding="{Binding IdName}" SelectedValuePath="IdName" x:Name="EquipmentComboBox" Header="Equipment Base" DisplayMemberPath="IdName"></DataGridComboBoxColumn>
+                <DataGridTextColumn Binding="{Binding Weight}" Header="Weight"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Row="0" Grid.Column="3" ItemsSource="{Binding SelectedItem.ArchetypeDropList, ElementName=StageListView, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" AutoGenerateColumns="false">
+            <DataGrid.Columns>
+                <DataGridComboBoxColumn SelectedValueBinding="{Binding IdName}" SelectedValuePath="IdName" x:Name="ArchetypeComboBox" Header="Archetype Base" DisplayMemberPath="IdName"></DataGridComboBoxColumn>
+                <DataGridTextColumn Binding="{Binding Weight}" Header="Weight"></DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Grid Grid.Row="1" Grid.Column="3" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="70" />
+                <ColumnDefinition Width="70" />
+            </Grid.ColumnDefinitions>
+            <ComboBox Name="StagePropertiesComboBox" SelectedValuePath="IdName" DisplayMemberPath="IdName"></ComboBox>
+            <Button Grid.Column="1" Content="ADD" Click="AddPropertiesClick" />
+            <Button Grid.Column="2" Content="REMOVE" Click="RemovePropertiesClick" />
+            <ListView Grid.ColumnSpan="3" Grid.Row="1" ItemsSource="{Binding SelectedItem.StageProperties, ElementName=StageListView, UpdateSourceTrigger=PropertyChanged}" Name="StagePropertiesList" SelectionMode="Single" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>

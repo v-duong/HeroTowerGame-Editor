@@ -155,7 +155,8 @@ namespace loot_td
         PREFIX,
         SUFFIX,
         ENCHANTMENT,
-        INNATE
+        INNATE,
+        MONSTERMOD
     }
 
     public enum ModifyType

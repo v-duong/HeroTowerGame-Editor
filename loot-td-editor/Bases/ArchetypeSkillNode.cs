@@ -82,10 +82,10 @@ namespace loot_td
         public ModifyType modifyType { get; set; }
 
         [JsonProperty]
-        public int initialValue { get; set; }
+        public int growthValue { get; set; }
 
         [JsonProperty]
-        public int growthValue { get; set; }
+        public int finalLevelValue { get; set; }
     }
 
     public enum NodeType

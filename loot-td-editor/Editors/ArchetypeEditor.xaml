@@ -15,8 +15,8 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="0.8*" />
+            <ColumnDefinition Width="2.1*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
@@ -66,7 +66,7 @@
             </Grid.ColumnDefinitions>
             <Label Content="IdName" Grid.Row="0" />
             <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-            
+
             <Grid Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75" />
@@ -92,7 +92,7 @@
             <Label Content="IntelligenceGrowth" Grid.Column="3" Grid.Row="3"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.IntelligenceGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="IntGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
             <Label Content="AgilityGrowth" Grid.Column="3" Grid.Row="4"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.AgilityGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="AgiGrow" Increment="0.1" FormatString="F2"> </xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.AgilityGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="AgiGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
             <Label Content="WillGrowth" Grid.Column="3" Grid.Row="5"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="5" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.WillGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="WillGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
 
@@ -109,7 +109,7 @@
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="0.75*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <Grid>
@@ -175,7 +175,7 @@
                     <Label Content="Ability" Grid.Row="5"   Grid.Column="0"/>
                     <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
                 </Grid>
-                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" >
+                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="auto" AutoGenerateColumns="True" >
                 </DataGrid>
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>

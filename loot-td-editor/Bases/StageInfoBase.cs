@@ -15,7 +15,7 @@ namespace loot_td
         private int baseExperience;
         private ObservableCollection<WeightBase> equipmentDropList;
         private ObservableCollection<WeightBase> archetypeDropList;
-        private ObservableCollection<ScalingBonusProperty> stageProperties;
+        private ObservableCollection<string> stageProperties;
         private float expMultiplier;
         private float equipmentDropRateMultiplier;
         private float consumableDropRateMultiplier;
@@ -38,7 +38,7 @@ namespace loot_td
         public ObservableCollection<WeightBase> ArchetypeDropList { get => archetypeDropList; set => SetProperty(ref archetypeDropList, value); }
 
         [JsonProperty]
-        public ObservableCollection<ScalingBonusProperty> StageProperties { get => stageProperties; set => SetProperty(ref stageProperties, value); }
+        public ObservableCollection<string> StageProperties { get => stageProperties; set => SetProperty(ref stageProperties, value); }
 
         [JsonProperty]
         public float ExpMultiplier { get => expMultiplier; set => SetProperty(ref expMultiplier, value); }
@@ -68,7 +68,7 @@ namespace loot_td
             consumableDropRateMultiplier = 1;
             EquipmentDropList = new ObservableCollection<WeightBase>();
             ArchetypeDropList = new ObservableCollection<WeightBase>();
-            StageProperties = new ObservableCollection<ScalingBonusProperty>();
+            StageProperties = new ObservableCollection<string>();
             EnemyWaves = new ObservableCollection<EnemyWave>();
         }
     }
@@ -102,7 +102,7 @@ namespace loot_td
     {
         private string enemyType;
         private RarityType enemyRarity;
-        private ObservableCollection<ScalingBonusProperty> bonusProperties;
+        private ObservableCollection<string> bonusProperties;
         private ObservableCollection<string> abilityOverrides;
         private bool isBossOverride;
         private int enemyCount;
@@ -117,7 +117,7 @@ namespace loot_td
         public RarityType EnemyRarity { get => enemyRarity; set => SetProperty(ref enemyRarity, value); }
 
         [JsonProperty]
-        public ObservableCollection<ScalingBonusProperty> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
+        public ObservableCollection<string> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
 
         [JsonProperty]
         public ObservableCollection<string> AbilityOverrides { get => abilityOverrides; set => SetProperty(ref abilityOverrides, value); }
@@ -136,7 +136,7 @@ namespace loot_td
 
         public EnemyWaveItem()
         {
-            BonusProperties = new ObservableCollection<ScalingBonusProperty>();
+            BonusProperties = new ObservableCollection<string>();
             AbilityOverrides = new ObservableCollection<string>();
         }
     }

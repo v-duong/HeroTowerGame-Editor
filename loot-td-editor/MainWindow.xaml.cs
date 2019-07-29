@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace loot_td_editor
 {
@@ -23,7 +24,7 @@ namespace loot_td_editor
         public bool saveAffix = true;
         public bool saveEnemy = true;
         public bool saveStage = true;
-        Helpers.ErrorLog ErrorLog = new Helpers.ErrorLog();
+        private Helpers.ErrorLog ErrorLog = new Helpers.ErrorLog();
 
         public MainWindow()
         {
@@ -42,6 +43,23 @@ namespace loot_td_editor
             EnemyEditor.DataGridAbilityName.ItemsSource = AbilityEditor.Abilities;
 
             StageEditor.EnemyComboBox.ItemsSource = EnemyEditor.EnemyBaseList;
+
+            CompositeCollection cc = new CompositeCollection
+            {
+                new CollectionContainer() { Collection =  ArmorEditor.Equipments},
+                new CollectionContainer() { Collection =  WeaponEditor.Equipments},
+                new CollectionContainer() { Collection =  AccessoryEditor.Equipments}
+            };
+
+            CollectionViewSource viewSource = new CollectionViewSource
+            {
+                Source = cc
+            };
+
+            StageEditor.EquipmentComboBox.ItemsSource = cc;
+            StageEditor.ArchetypeComboBox.ItemsSource = ArchetypeEditor.Archetypes;
+            StageEditor.StagePropertiesComboBox.ItemsSource = EnemyAffixEditor.Affixes;
+            StageEditor.WaveModComboBox.ItemsSource = EnemyAffixEditor.Affixes;
         }
 
         private void JsonSettingsClick(object sender, RoutedEventArgs e)
@@ -73,6 +91,10 @@ namespace loot_td_editor
 
                     case "_Innate":
                         SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes.ToList());
+                        break;
+
+                    case "_Enemy":
+                        SaveAffixJson(AffixType.MONSTERMOD, EnemyAffixEditor.Affixes.ToList());
                         break;
 
                     default:
@@ -114,7 +136,6 @@ namespace loot_td_editor
 
         private void SaveAffixJson(AffixType type, List<AffixBase> affixList)
         {
-
             string fileName = type.ToString().ToLower();
             string filePath = "\\affixes\\" + fileName;
             SaveToJson<AffixBase>(filePath, affixList);
@@ -251,7 +272,8 @@ namespace loot_td_editor
             if (!Helpers.ErrorCheckEquipment(equipList, ErrorLog))
             {
                 saveEquips = false;
-            } else
+            }
+            else
             {
                 SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
                 SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
@@ -264,18 +286,21 @@ namespace loot_td_editor
             a.AddRange(SuffixEditor.Affixes.ToList());
             a.AddRange(EnchantmentEditor.Affixes.ToList());
             a.AddRange(InnateEditor.Affixes.ToList());
+            a.AddRange(EnemyAffixEditor.Affixes.ToList());
             if (!Helpers.ErrorCheckAffixes(a, ErrorLog))
             {
                 saveAffix = false;
-            } else
+            }
+            else
             {
                 SaveAffixJson(AffixType.PREFIX, PrefixEditor.Affixes.ToList());
                 SaveAffixJson(AffixType.SUFFIX, SuffixEditor.Affixes.ToList());
                 SaveAffixJson(AffixType.ENCHANTMENT, EnchantmentEditor.Affixes.ToList());
                 SaveAffixJson(AffixType.INNATE, InnateEditor.Affixes.ToList());
+                SaveAffixJson(AffixType.MONSTERMOD, EnemyAffixEditor.Affixes.ToList());
                 saveAffix = true;
             }
-            
+
             SaveAbilitiesJson();
             SaveEnemiesJson();
             SaveStagesJson();
@@ -285,10 +310,11 @@ namespace loot_td_editor
             if (ErrorLog.Count == 0)
             {
                 MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
-            } else
+            }
+            else
             {
                 string s = "";
-                foreach(KeyValuePair<string, int> x in ErrorLog.dict)
+                foreach (KeyValuePair<string, int> x in ErrorLog.dict)
                 {
                     s += x.Value + " " + x.Key + '\n';
                 }
@@ -387,7 +413,6 @@ namespace loot_td_editor
             string o = JsonConvert.SerializeObject(localization);
             System.IO.File.WriteAllText(filepath, o);
         }
-
 
         private void SaveLocalizationStage(string locale)
         {
