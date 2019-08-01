@@ -10,6 +10,8 @@ namespace loot_td
         private string idName;
         private int act;
         private int stage;
+        private int sceneAct;
+        private int sceneStage;
         private DifficultyType difficulty;
         private int stageLevel;
         private int baseExperience;
@@ -58,6 +60,10 @@ namespace loot_td
         public int Act { get => act; set => SetProperty(ref act, value); }
         [JsonProperty]
         public int Stage { get => stage; set => SetProperty(ref stage, value); }
+        [JsonProperty]
+        public int SceneAct { get => sceneAct; set => SetProperty(ref sceneAct, value); }
+        [JsonProperty]
+        public int SceneStage { get => sceneStage; set => SetProperty(ref sceneStage, value); }
 
         public StageInfoCollection()
         {

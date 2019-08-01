@@ -253,7 +253,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
-            <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
+            <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
         </Grid>
     </Grid>
 </UserControl>

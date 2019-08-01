@@ -49,7 +49,7 @@
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.3*" />
+                <ColumnDefinition Width="0.4*" />
                 <ColumnDefinition Width="0.7*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="0.4*" />
@@ -60,12 +60,16 @@
                 <Label Content="Act" Height="26"></Label>
                 <Label Content="Stage" Height="26"></Label>
                 <Label Content="Difficulty" Height="26"></Label>
+                <Label Content="SceneAct" Height="26"></Label>
+                <Label Content="SceneStage" Height="26"></Label>
             </StackPanel>
             <StackPanel Grid.Column="1">
                 <TextBox Text="{Binding SelectedItem.IdName, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26"></TextBox>
                 <xctk:IntegerUpDown Value="{Binding SelectedItem.Act, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
                 <xctk:IntegerUpDown Value="{Binding SelectedItem.Stage, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
                 <ComboBox SelectedItem="{Binding SelectedItem.Difficulty, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="DifficultyBox"></ComboBox>
+                <xctk:IntegerUpDown Value="{Binding SelectedItem.SceneAct, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Value="{Binding SelectedItem.SceneStage, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
             </StackPanel>
             <StackPanel Grid.Column="2" Grid.RowSpan="2">
                 <Label Content="Monster Level" Height="26"></Label>

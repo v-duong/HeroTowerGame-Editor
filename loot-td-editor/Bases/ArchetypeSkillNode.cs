@@ -14,7 +14,7 @@ namespace loot_td
         private int _initialLevel;
         private int _maxLevel;
         private NodeType _type;
-        private ObservableCollection<ScalingBonusProperty> _bonuses;
+        private ObservableCollection<ScalingBonusProperty_Int> _bonuses;
         private string _ability;
         private Vector2 _nodePosition;
         private string _iconPath;
@@ -37,7 +37,7 @@ namespace loot_td
         public NodeType Type { get => _type; set =>  SetProperty( ref _type, value); }
 
         [JsonProperty]
-        public ObservableCollection<ScalingBonusProperty> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
+        public ObservableCollection<ScalingBonusProperty_Int> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
 
         [JsonProperty]
         public string AbilityId { get => _ability; set =>  SetProperty( ref _ability, value); }
@@ -60,7 +60,7 @@ namespace loot_td
             NodePosition = new Vector2(0,0);
             Children = new ObservableCollection<int>();
             ChildrenEditor = new ObservableCollection<ArchetypeSkillNode>();
-            Bonuses = new ObservableCollection<ScalingBonusProperty>();
+            Bonuses = new ObservableCollection<ScalingBonusProperty_Int>();
             IconPath = "";
             MaxLevel = 1;
         }
@@ -71,7 +71,7 @@ namespace loot_td
         }
     }
 
-    public class ScalingBonusProperty
+    public class ScalingBonusProperty_Int
     {
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -86,6 +86,23 @@ namespace loot_td
 
         [JsonProperty]
         public int finalLevelValue { get; set; }
+    }
+
+    public class ScalingBonusProperty_Float
+    {
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public BonusType bonusType { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public ModifyType modifyType { get; set; }
+
+        [JsonProperty]
+        public float initialValue { get; set; }
+
+        [JsonProperty]
+        public float growthValue { get; set; }
     }
 
     public enum NodeType

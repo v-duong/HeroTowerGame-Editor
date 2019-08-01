@@ -40,7 +40,7 @@ namespace loot_td
 
         private ObservableCollection<GroupType> groupTypes;
         private ObservableCollection<GroupType> weaponRestrictions;
-        private List<ScalingBonusProperty> bonusProperties;
+        private List<ScalingBonusProperty_Float> bonusProperties;
         private string effectSprite;
         private LinkedAbilityData linkedAbility;
         private List<AbilityEffectData> appliedEffects;
@@ -118,7 +118,7 @@ namespace loot_td
         public ObservableCollection<GroupType> WeaponRestrictions { get => weaponRestrictions; set => SetProperty(ref weaponRestrictions, value); }
 
         [JsonProperty]
-        public List<ScalingBonusProperty> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
+        public List<ScalingBonusProperty_Float> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
 
         [JsonProperty]
         public string EffectSprite { get => effectSprite; set => SetProperty(ref effectSprite, value); }
@@ -137,7 +137,7 @@ namespace loot_td
             DamageLevels = new Dictionary<ElementType, AbilityDamageBase>();
             GroupTypes = new ObservableCollection<GroupType>();
             WeaponRestrictions = new ObservableCollection<GroupType>();
-            BonusProperties = new List<ScalingBonusProperty>();
+            BonusProperties = new List<ScalingBonusProperty_Float>();
             AppliedEffects = new List<AbilityEffectData>();
             LinkedAbility = new LinkedAbilityData();
             effectSprite = "";
