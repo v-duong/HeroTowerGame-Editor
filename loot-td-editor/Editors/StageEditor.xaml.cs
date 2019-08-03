@@ -215,5 +215,77 @@ namespace loot_td_editor.Editors
             string a = WavePropertiesList.SelectedItem as string;
             s.BonusProperties.Remove(a);
         }
+
+        private void AddSpawnerClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (spawnerBox.Value == null)
+                return;
+
+            StageInfoCollection s = StageListView.SelectedItem as StageInfoCollection;
+            int selectedValue = (int)spawnerBox.Value;
+            if (s.SpawnerInfos.Where(x => x.Spawner == selectedValue).ToList().Count > 0)
+                return;
+            SpawnerInfo info = new SpawnerInfo(selectedValue);
+            s.SpawnerInfos.Add(info);
+            spawnerList.SelectedItem = info;
+        }
+
+        private void RemoveSpawnerClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (spawnerList.SelectedItem == null)
+                return;
+
+            StageInfoCollection s = StageListView.SelectedItem as StageInfoCollection;
+            s.SpawnerInfos.Remove(spawnerList.SelectedItem as SpawnerInfo);
+        }
+
+        private void AddGoalClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (spawnerList.SelectedItem == null)
+                return;
+            if (goalBox.Value == null)
+                return;
+
+            SpawnerInfo spawnerInfo = spawnerList.SelectedItem as SpawnerInfo;
+            int selectedValue = (int)goalBox.Value;
+            if (spawnerInfo.PossibleGoals.Contains(selectedValue))
+                return;
+            spawnerInfo.PossibleGoals.Add(selectedValue);
+        }
+
+        private void RemoveGoalClick(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (spawnerList.SelectedItem == null)
+                return;
+            if (goalList.SelectedItem == null)
+                return;
+
+            SpawnerInfo spawnerInfo = spawnerList.SelectedItem as SpawnerInfo;
+            int selected = (int)goalList.SelectedItem;
+            spawnerInfo.PossibleGoals.Remove(selected);
+        }
+
+        private void SpawnersComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (EnemyWaveView.SelectedItem == null)
+                return;
+            if (WaveItemView.SelectedItem == null)
+                return;
+            if (SpawnersComboBox.SelectedItem == null)
+                return;
+
+            SpawnerInfo spawnerInfo = SpawnersComboBox.SelectedItem as SpawnerInfo;
+            GoalComboBox.ItemsSource = spawnerInfo.PossibleGoals;
+        }
     }
 }

@@ -22,6 +22,7 @@ namespace loot_td
         private float equipmentDropRateMultiplier;
         private float consumableDropRateMultiplier;
         private ObservableCollection<EnemyWave> enemyWaves;
+        private ObservableCollection<SpawnerInfo> spawnerInfos;
 
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -55,6 +56,9 @@ namespace loot_td
         public ObservableCollection<EnemyWave> EnemyWaves { get => enemyWaves; set => SetProperty(ref enemyWaves, value); }
 
         [JsonProperty]
+        public ObservableCollection<SpawnerInfo> SpawnerInfos { get => spawnerInfos; set => SetProperty(ref spawnerInfos, value); }
+
+        [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
         [JsonProperty]
         public int Act { get => act; set => SetProperty(ref act, value); }
@@ -76,6 +80,7 @@ namespace loot_td
             ArchetypeDropList = new ObservableCollection<WeightBase>();
             StageProperties = new ObservableCollection<string>();
             EnemyWaves = new ObservableCollection<EnemyWave>();
+            SpawnerInfos = new ObservableCollection<SpawnerInfo>();
         }
     }
 
@@ -157,5 +162,23 @@ namespace loot_td
 
         [JsonProperty]
         public int Weight { get => weight; set => SetProperty(ref weight, value); }
+    }
+
+    public class SpawnerInfo : BindableBase
+    {
+        private int spawner;
+        private ObservableCollection<int> possibleGoals;
+
+        [JsonProperty]
+        public int Spawner { get => spawner; set => SetProperty(ref spawner, value); }
+
+        [JsonProperty]
+        public ObservableCollection<int> PossibleGoals { get => possibleGoals; set => SetProperty(ref possibleGoals, value); }
+
+        public SpawnerInfo(int i)
+        {
+            spawner = i;
+            possibleGoals = new ObservableCollection<int>();
+        }
     }
 }
