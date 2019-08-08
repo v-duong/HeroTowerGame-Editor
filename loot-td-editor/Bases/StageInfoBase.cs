@@ -19,8 +19,10 @@ namespace loot_td
         private ObservableCollection<WeightBase> archetypeDropList;
         private ObservableCollection<string> stageProperties;
         private float expMultiplier;
-        private float equipmentDropRateMultiplier;
-        private float consumableDropRateMultiplier;
+        private int equipmentDropCountMin;
+        private int equipmentDropCountMax;
+        private int consumableDropCountMin;
+        private int consumableDropCountMax;
         private ObservableCollection<EnemyWave> enemyWaves;
         private ObservableCollection<SpawnerInfo> spawnerInfos;
 
@@ -47,10 +49,16 @@ namespace loot_td
         public float ExpMultiplier { get => expMultiplier; set => SetProperty(ref expMultiplier, value); }
 
         [JsonProperty]
-        public float EquipmentDropRateMultiplier { get => equipmentDropRateMultiplier; set => SetProperty(ref equipmentDropRateMultiplier, value); }
+        public int EquipmentDropCountMin { get => equipmentDropCountMin; set => SetProperty(ref equipmentDropCountMin, value); }
 
         [JsonProperty]
-        public float ConsumableDropRateMultiplier { get => consumableDropRateMultiplier; set => SetProperty(ref consumableDropRateMultiplier, value); }
+        public int EquipmentDropCountMax { get => equipmentDropCountMax; set => SetProperty(ref equipmentDropCountMax, value); }
+
+        [JsonProperty]
+        public int ConsumableDropCountMin { get => consumableDropCountMin; set => SetProperty(ref consumableDropCountMin, value); }
+
+        [JsonProperty]
+        public int ConsumableDropCountMax { get => consumableDropCountMax; set => SetProperty(ref consumableDropCountMax, value); }
 
         [JsonProperty]
         public ObservableCollection<EnemyWave> EnemyWaves { get => enemyWaves; set => SetProperty(ref enemyWaves, value); }
@@ -74,8 +82,8 @@ namespace loot_td
             MonsterLevel = 1;
             BaseExperience = 0;
             ExpMultiplier = 1;
-            EquipmentDropRateMultiplier = 1;
-            consumableDropRateMultiplier = 1;
+            EquipmentDropCountMin = 1;
+            consumableDropCountMin = 1;
             EquipmentDropList = new ObservableCollection<WeightBase>();
             ArchetypeDropList = new ObservableCollection<WeightBase>();
             StageProperties = new ObservableCollection<string>();

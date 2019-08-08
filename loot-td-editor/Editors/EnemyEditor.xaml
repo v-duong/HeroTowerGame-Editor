@@ -17,7 +17,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0.5*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid Grid.RowSpan="2">
@@ -79,6 +79,16 @@
             <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.HealthScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" DefaultValue="1" ValueChanged="Health_ValueChanged" FormatString="F3"/>
             <Label Content="MovementSpeed" Grid.Column="3" Grid.Row="2" />
             <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.MovementSpeed, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="2" Increment="0.1" DefaultValue="1" FormatString="F2"/>
+            <Label Content="TargetRange" Grid.Column="3" Grid.Row="3" />
+            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.AttackTargetRange, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="3" Increment="0.1" DefaultValue="1" FormatString="F2"/>
+            <Label Content="AttackSpeed" Grid.Column="3" Grid.Row="4" />
+            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.AttackSpeed, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="4" Increment="0.1" DefaultValue="1" FormatString="F2"/>
+            <Label Content="AttackCritical" Grid.Column="3" Grid.Row="5" />
+            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.AttackCriticalChance, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="5" Increment="0.1" DefaultValue="1" FormatString="F2"/>
+            <Label Content="AtkDmgMinMultiplier" Grid.Column="5" Grid.Row="3" />
+            <xctk:DoubleUpDown Grid.Column="6" Grid.ColumnSpan="1" Value="{Binding SelectedItem.AttackDamageMinMultiplier, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="3" Increment="0.1" DefaultValue="1" FormatString="F2"/>
+            <Label Content="AtkDmgMaxMultiplier" Grid.Column="5" Grid.Row="4" />
+            <xctk:DoubleUpDown Grid.Column="6" Grid.ColumnSpan="1" Value="{Binding SelectedItem.AttackDamageMaxMultiplier, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="4" Increment="0.1" DefaultValue="1" FormatString="F2"/>
             <Label Content="EnemyType" Grid.Column="0" Grid.Row="4" />
             <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" SelectedValue="{Binding SelectedItem.EnemyType, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:EnemyType}}}"/>
             <Label Content="SpriteName" Grid.Column="0" Grid.Row="5" />
@@ -89,7 +99,7 @@
             <Label Content="15" Grid.Column="6" Grid.Row="1" Name="HealthValue2" ContentStringFormat="F1"/>
 
         </Grid>
-        
+
         <!--
         <DataGrid Grid.Column="2" ItemsSource="{Binding SelectedItem.Resistances, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*"/>
         -->
@@ -100,7 +110,6 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="50" />
                 <ColumnDefinition Width="50" />
             </Grid.ColumnDefinitions>
             <Label Content="Resistances" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center"></Label>
@@ -124,13 +133,13 @@
 
             </StackPanel>
         </Grid>
-        
+
         <DataGrid Grid.Column="3" ItemsSource="{Binding SelectedItem.AbilitiesList, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridComboBoxColumn Header="Ability" SelectedValueBinding="{Binding AbilityName}" SelectedValuePath="IdName" ItemsSource="{Binding}" x:Name="DataGridAbilityName" DisplayMemberPath="IdName"></DataGridComboBoxColumn>
                 <DataGridTextColumn Header="Damage Multiplier" Binding="{Binding DamageMultiplier}"></DataGridTextColumn>
-                <DataGridTextColumn Header="Cooldown Multiplier" Binding="{Binding CooldownMultiplier}" ></DataGridTextColumn>
-
+                <DataGridTextColumn Header="Attack Per Sec Multiplier" Binding="{Binding AttackPerSecMultiplier}" ></DataGridTextColumn>
+                <DataGridCheckBoxColumn Header="Use Ability Scaling" Binding="{Binding UseAbilityScaling}"></DataGridCheckBoxColumn>
             </DataGrid.Columns>
         </DataGrid>
 

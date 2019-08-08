@@ -19,6 +19,11 @@ namespace loot_td
         private ObservableCollection<EnemyAbilityBase> abilitiesList;
         private string spriteName;
         private int actNumber;
+        private float attackTargetRange;
+        private float attackSpeed;
+        private float attackDamageMinMultiplier;
+        private float attackDamageMaxMultiplier;
+        private float attackCriticalChance;
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -54,6 +59,21 @@ namespace loot_td
         [JsonProperty]
         public int ActNumber { get => actNumber; set => SetProperty(ref actNumber, value); }
 
+        [JsonProperty]
+        public float AttackTargetRange { get => attackTargetRange; set => SetProperty(ref attackTargetRange, value); }
+
+        [JsonProperty]
+        public float AttackSpeed { get => attackSpeed; set => SetProperty(ref attackSpeed, value); }
+
+        [JsonProperty]
+        public float AttackDamageMinMultiplier { get => attackDamageMinMultiplier; set => SetProperty(ref attackDamageMinMultiplier, value); }
+
+        [JsonProperty]
+        public float AttackDamageMaxMultiplier { get => attackDamageMaxMultiplier; set => SetProperty(ref attackDamageMaxMultiplier, value); }
+
+        [JsonProperty]
+        public float AttackCriticalChance { get => attackCriticalChance; set => SetProperty(ref attackCriticalChance, value); }
+
         public EnemyBase()
         {
             IdName = "";
@@ -72,8 +92,10 @@ namespace loot_td
     public enum EnemyType
     {
         NON_ATTACKER,
-        ATTACKER,
-        HIT_AND_RUN
+        TARGET_ATTACKER,
+        HIT_AND_RUN,
+        AURA_USER,
+        DEBUFFER
     }
 
     public class EnemyAbilityBase : BindableBase
@@ -81,10 +103,12 @@ namespace loot_td
         private string abilityName;
         private float damageMultiplier;
         private float cooldownMultiplier;
+        private bool useAbilityScaling;
 
         public string AbilityName { get => abilityName; set => SetProperty(ref abilityName, value); }
         public float DamageMultiplier { get => damageMultiplier; set => SetProperty(ref damageMultiplier, value); }
-        public float CooldownMultiplier { get => cooldownMultiplier; set => SetProperty(ref cooldownMultiplier, value); }
+        public float AttackPerSecMultiplier { get => cooldownMultiplier; set => SetProperty(ref cooldownMultiplier, value); }
+        public bool UseAbilityScaling { get => useAbilityScaling; set => SetProperty(ref useAbilityScaling, value); }
 
         public EnemyAbilityBase()
         {

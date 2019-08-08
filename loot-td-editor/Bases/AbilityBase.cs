@@ -44,7 +44,8 @@ namespace loot_td
         private string effectSprite;
         private LinkedAbilityData linkedAbility;
         private List<AbilityEffectData> appliedEffects;
-        private bool useLinkedDamage;
+        private bool hasLinkedAbility;
+        private bool useWeaponRange;
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -130,7 +131,10 @@ namespace loot_td
         public List<AbilityEffectData> AppliedEffects { get => appliedEffects; set => SetProperty(ref appliedEffects, value); }
 
         [JsonProperty]
-        public bool HasLinkedAbility { get => useLinkedDamage; set => SetProperty(ref useLinkedDamage, value); }
+        public bool HasLinkedAbility { get => hasLinkedAbility; set => SetProperty(ref hasLinkedAbility, value); }
+
+        [JsonProperty]
+        public bool UseWeaponRange { get => useWeaponRange; set => SetProperty(ref useWeaponRange, value); }
 
         public AbilityBase()
         {

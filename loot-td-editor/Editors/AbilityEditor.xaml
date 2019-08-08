@@ -69,7 +69,7 @@
             <Label Content="Sprite" Grid.Row="2"></Label>
             <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="1" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.EffectSprite, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
 
-                <Label Content="AbilityType" Grid.Row="3" Grid.Column="0"></Label>
+            <Label Content="AbilityType" Grid.Row="3" Grid.Column="0"></Label>
             <ComboBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityType}}}"></ComboBox>
             <Label Content="ShotType" Grid.Row="4"  Grid.Column="0" ></Label>
             <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityShotType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityShotType}}}"></ComboBox>
@@ -91,18 +91,20 @@
 
             <Label Content="Attacks per sec" Grid.Column="3"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="TargetRange" Grid.Column="3" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="TargetType" Grid.Column="3" Grid.Row="2"></Label>
-            <ComboBox Grid.Column="4" Grid.Row="2" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}}"></ComboBox>
-            <Label Content="FlatDamageMult" Grid.Column="3" Grid.Row="3"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="3" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
-            <Label Content="Base Critical" Grid.Column="3" Grid.Row="4"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
+            <Label Content="UseWeaponRange" Grid.Column="3" Grid.Row="3"></Label>
+            <CheckBox Grid.Column="4" Grid.Row="3" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+            <Label Content="TargetRange" Grid.Column="3" Grid.Row="4"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+            <Label Content="TargetType" Grid.Column="3" Grid.Row="5"></Label>
+            <ComboBox Grid.Column="4" Grid.Row="5" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}}"></ComboBox>
+            <Label Content="FlatDamageMult" Grid.Column="3" Grid.Row="1"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
+            <Label Content="Base Critical" Grid.Column="3" Grid.Row="2"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
             <Label Content="BasePower" Grid.Column="5" Grid.Row="0"></Label>
-            <xctk:DoubleUpDown Grid.Column="6" Grid.Row="0" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseAbilityPower, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F4"/>
+            <xctk:DoubleUpDown Grid.Column="6" Grid.Row="0" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseAbilityPower, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.001" FormatString="F4"/>
             <Label Content="ScalingPower" Grid.Column="5" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="6" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F4"/>
+            <xctk:DoubleUpDown Grid.Column="6" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.001" FormatString="F4"/>
         </Grid>
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
@@ -125,7 +127,7 @@
                 <ColumnDefinition Width="60" />
                 <ColumnDefinition Width="auto" />
             </Grid.ColumnDefinitions>
-            
+
             <Label Content="Projectile Values" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
             <Label Content="Proj Speed" Grid.Column="0" Grid.Row="1"></Label>
             <xctk:DoubleUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
@@ -137,17 +139,17 @@
             <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.DoesProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></CheckBox>
             <Label Content="Proj Sprd Angle" Grid.Column="0" Grid.Row="5"></Label>
             <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
-            
+
             <Label Content="AoE Values" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
             <Label Content="Area Radius" Grid.Column="3" Grid.Row="1"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AreaRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
             <Label Content="Area Length" Grid.Column="3" Grid.Row="2"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AreaLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            
+
             <Label Content="Hitscan Values" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
             <Label Content="HitscanDelay" Grid.Column="0" Grid.Row="8"></Label>
             <xctk:IntegerUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
-            
+
             <Label Content="Weapon Skill Values" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
             <Label Content="BaseMult" Grid.Column="3" Grid.Row="6"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="6" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" ValueChanged="WeaponBaseMult_ValueChanged" Name="WeaponBaseMultInput"></xctk:DoubleUpDown>

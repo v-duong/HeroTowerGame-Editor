@@ -173,6 +173,9 @@ namespace loot_td_editor
 
         private void CalculateArmorValues(EquipmentBase b)
         {
+            int scalingMulti = 1;
+            if (ScalingMult.Value != null)
+                scalingMulti = (int)ScalingMult.Value;
             b.Armor = 0;
             b.Shield = 0;
             b.DodgeRating = 0;
@@ -181,45 +184,45 @@ namespace loot_td_editor
             switch (b.Group)
             {
                 case GroupType.STR_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 0, armorScaling);
+                    b.Armor = GetScaledDefense(b.DropLevel, 0, armorScaling) * scalingMulti;
                     break;
 
                 case GroupType.INT_ARMOR:
-                    b.Shield = GetScaledDefense(b.DropLevel, 0, shieldScaling);
+                    b.Shield = GetScaledDefense(b.DropLevel, 0, shieldScaling) * scalingMulti;
                     break;
 
                 case GroupType.AGI_ARMOR:
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling);
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti;
                     break;
 
                 case GroupType.STR_AGI_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling);
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling);
+                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti;
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling) * scalingMulti;
                     break;
 
                 case GroupType.STR_WILL_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 2, armorScaling);
-                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
+                    b.Armor = GetScaledDefense(b.DropLevel, 2, armorScaling) * scalingMulti;
+                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling) * scalingMulti;
                     break;
 
                 case GroupType.STR_INT_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling);
-                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling);
+                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti;
+                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti;
                     break;
 
                 case GroupType.INT_AGI_ARMOR:
-                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling);
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling);
+                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti;
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti;
                     break;
 
                 case GroupType.INT_WILL_ARMOR:
-                    b.Shield = GetScaledDefense(b.DropLevel, 2, shieldScaling);
-                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
+                    b.Shield = GetScaledDefense(b.DropLevel, 2, shieldScaling) * scalingMulti;
+                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling) * scalingMulti;
                     break;
 
                 case GroupType.AGI_WILL_ARMOR:
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling);
-                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling);
+                    b.DodgeRating = GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling) * scalingMulti;
+                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling) * scalingMulti;
                     break;
 
                 default:

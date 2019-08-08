@@ -76,17 +76,21 @@
                 <Label Content="Monster Level" Height="26"></Label>
                 <Label Content="Base Exp" Height="26"></Label>
                 <Label Content="Exp Multiplier" Height="26"></Label>
-                <Label Content="Equipment Drop Rate Multiplier" Height="26"></Label>
-                <Label Content="Consumable Drop Rate Multiplier" Height="26"></Label>
-            </StackPanel>
+                <Label Content="Equipment Drop Min" Height="26"></Label>
+                    <Label Content="Equipment Drop Max" Height="26"></Label>
+                    <Label Content="Consumable Drop Min" Height="26"></Label>
+                    <Label Content="Consumable Drop Max" Height="26"></Label>
+                </StackPanel>
             <StackPanel Grid.Column="3" Grid.RowSpan="2">
                 <xctk:IntegerUpDown Value="{Binding SelectedItem.MonsterLevel, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="150" Height="26"></xctk:IntegerUpDown>
                 <xctk:IntegerUpDown Value="{Binding SelectedItem.BaseExperience, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
                 <xctk:DoubleUpDown Value="{Binding SelectedItem.ExpMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Increment="0.1" Height="26" FormatString="F2"></xctk:DoubleUpDown>
-                <xctk:DoubleUpDown Value="{Binding SelectedItem.EquipmentDropRateMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" Minimum="0" Height="26" FormatString="F2"></xctk:DoubleUpDown>
-                <xctk:DoubleUpDown Value="{Binding SelectedItem.ConsumableDropRateMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" Minimum="0" Height="26" FormatString="F2"></xctk:DoubleUpDown>
+                <xctk:IntegerUpDown Value="{Binding SelectedItem.EquipmentDropCountMin, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Value="{Binding SelectedItem.EquipmentDropCountMax, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Value="{Binding SelectedItem.ConsumableDropCountMin, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Height="26"></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Value="{Binding SelectedItem.ConsumableDropCountMax, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Height="26"></xctk:IntegerUpDown>
 
-            </StackPanel>
+                </StackPanel>
             
         </Grid>
         </Border>

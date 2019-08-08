@@ -24,6 +24,13 @@ namespace loot_td_editor
         public bool saveAffix = true;
         public bool saveEnemy = true;
         public bool saveStage = true;
+
+        private int equipmentEditorCount = 0;
+        private int archetypeEditorCount = 0;
+        private int enemyEditorCount = 0;
+        private int stageEditorCount = 0;
+        private int affixEditorCount = 0;
+
         private Helpers.ErrorLog ErrorLog = new Helpers.ErrorLog();
 
         public MainWindow()
@@ -60,6 +67,17 @@ namespace loot_td_editor
             StageEditor.ArchetypeComboBox.ItemsSource = ArchetypeEditor.Archetypes;
             StageEditor.StagePropertiesComboBox.ItemsSource = EnemyAffixEditor.Affixes;
             StageEditor.WaveModComboBox.ItemsSource = EnemyAffixEditor.Affixes;
+
+            equipmentEditorCount += ArmorEditor.Equipments.Count;
+            equipmentEditorCount += WeaponEditor.Equipments.Count;
+            equipmentEditorCount += AccessoryEditor.Equipments.Count;
+
+            affixEditorCount = PrefixEditor.Affixes.Count + SuffixEditor.Affixes.Count + EnchantmentEditor.Affixes.Count + InnateEditor.Affixes.Count + EnemyAffixEditor.Affixes.Count;
+
+            stageEditorCount = StageEditor.Stages.Count;
+            enemyEditorCount = EnemyEditor.EnemyBaseList.Count;
+
+            archetypeEditorCount = ArchetypeEditor.Archetypes.Count;
         }
 
         private void JsonSettingsClick(object sender, RoutedEventArgs e)
@@ -269,6 +287,79 @@ namespace loot_td_editor
             equipList.AddRange(WeaponEditor.Equipments.ToList());
             equipList.AddRange(AccessoryEditor.Equipments.ToList());
 
+            List<AffixBase> a = new List<AffixBase>();
+            a.AddRange(PrefixEditor.Affixes.ToList());
+            a.AddRange(SuffixEditor.Affixes.ToList());
+            a.AddRange(EnchantmentEditor.Affixes.ToList());
+            a.AddRange(InnateEditor.Affixes.ToList());
+            a.AddRange(EnemyAffixEditor.Affixes.ToList());
+
+            int equipCount = equipList.Count;
+            int affixCount = a.Count;
+            int stageCount = StageEditor.Stages.Count;
+            int enemyCount = EnemyEditor.EnemyBaseList.Count;
+            int archetypeCount = ArchetypeEditor.Archetypes.Count;
+
+            string confirmString = "";
+            bool noChanges = false;
+
+            if (equipCount > equipmentEditorCount)
+            {
+                confirmString += "Equipment Entry +" + Math.Abs(equipCount - equipmentEditorCount) + "\n";
+            } else if (equipCount < equipmentEditorCount)
+            {
+                confirmString += "Equipment Entry -" + Math.Abs(equipCount - equipmentEditorCount) + "\n";
+            }
+
+            if (affixCount > affixEditorCount)
+            {
+                confirmString += "Affix Entry +" + Math.Abs(affixCount - affixEditorCount) + "\n";
+            }
+            else if (affixCount < affixEditorCount)
+            {
+                confirmString += "Affix Entry -" + Math.Abs(affixCount - affixEditorCount) + "\n";
+            }
+
+            if (archetypeCount > archetypeEditorCount)
+            {
+                confirmString += "Archetype Entry +" + Math.Abs(archetypeCount - archetypeEditorCount) + "\n";
+            }
+            else if (archetypeCount < archetypeEditorCount)
+            {
+                confirmString += "Archetype Entry -" + Math.Abs(archetypeCount - archetypeEditorCount) + "\n";
+            }
+
+            if (enemyCount > enemyEditorCount)
+            {
+                confirmString += "Enemy Entry +" + Math.Abs(enemyCount - enemyEditorCount) + "\n";
+            }
+            else if (enemyCount < enemyEditorCount)
+            {
+                confirmString += "Enemy Entry -" + Math.Abs(enemyCount - enemyEditorCount) + "\n";
+            }
+
+
+            if (stageCount > stageEditorCount)
+            {
+                confirmString += "Stage Entry +" + Math.Abs(stageCount - stageEditorCount) + "\n";
+            }
+            else if (stageCount < stageEditorCount)
+            {
+                confirmString += "Stage Entry -" + Math.Abs(stageCount - stageEditorCount) + "\n";
+            }
+
+            if (confirmString == "")
+            {
+                confirmString = "No Changes in Entry Counts";
+                noChanges = true;
+            }
+
+            confirmString += "\nProceed with Saving?";
+            MessageBoxResult result = MessageBox.Show(confirmString, "Confirmation", MessageBoxButton.YesNo);
+
+            if (result == MessageBoxResult.No)
+                return;
+
             if (!Helpers.ErrorCheckEquipment(equipList, ErrorLog))
             {
                 saveEquips = false;
@@ -281,12 +372,6 @@ namespace loot_td_editor
                 saveEquips = true;
             }
 
-            List<AffixBase> a = new List<AffixBase>();
-            a.AddRange(PrefixEditor.Affixes.ToList());
-            a.AddRange(SuffixEditor.Affixes.ToList());
-            a.AddRange(EnchantmentEditor.Affixes.ToList());
-            a.AddRange(InnateEditor.Affixes.ToList());
-            a.AddRange(EnemyAffixEditor.Affixes.ToList());
             if (!Helpers.ErrorCheckAffixes(a, ErrorLog))
             {
                 saveAffix = false;
