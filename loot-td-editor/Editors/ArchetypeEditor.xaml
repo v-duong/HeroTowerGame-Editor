@@ -125,7 +125,7 @@
                 <Button Content="ADD" Click="AddButtonClickNode" />
                 <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClickNode" />
                 <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClickNode" />
-                <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="NodesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+                <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="NodesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="NodesList_Selected">
                     <ListView.View>
                         <GridView AllowsColumnReorder="False">
                             <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="30" />

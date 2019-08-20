@@ -21,6 +21,7 @@ namespace loot_td_editor.Editors
     {
         public ObservableCollection<ArchetypeBase> Archetypes;
         private int currentID;
+        private int selectedNodeId = -1;
 
         public void InitializeList()
         {
@@ -224,15 +225,30 @@ namespace loot_td_editor.Editors
             if (selected.NodeList.Count == 0)
                 return;
 
+            Rectangle r;
+
             foreach (ArchetypeSkillNode node in selected.NodeList)
             {
-                Rectangle r = new Rectangle
+                if (node.Id == selectedNodeId)
                 {
-                    Height = 50,
-                    Width = 50,
-                    Stroke = System.Windows.Media.Brushes.Black,
-                    Fill = System.Windows.Media.Brushes.LightGray
-                };
+                    r = new Rectangle
+                    {
+                        Height = 50,
+                        Width = 50,
+                        Stroke = System.Windows.Media.Brushes.Red,
+                        Fill = System.Windows.Media.Brushes.LightGray
+                    };
+                }
+                else
+                {
+                    r = new Rectangle
+                    {
+                        Height = 50,
+                        Width = 50,
+                        Stroke = System.Windows.Media.Brushes.Black,
+                        Fill = System.Windows.Media.Brushes.LightGray
+                    };
+                }
 
                 r.MouseLeftButtonDown += mouseDown;
                 r.MouseLeftButtonUp += mouseUp;
@@ -516,7 +532,17 @@ namespace loot_td_editor.Editors
             dataView.Refresh();
         }
 
-
-
+        private void NodesList_Selected(object sender, RoutedEventArgs e)
+        {
+            ListView view = sender as ListView;
+            ArchetypeSkillNode archetypeSkillNode = view.SelectedItem as ArchetypeSkillNode;
+            if (archetypeSkillNode == null)
+            {
+                selectedNodeId = -1;
+                return;
+            }
+            selectedNodeId = archetypeSkillNode.Id;
+            DrawCanvas();
+        }
     }
 }

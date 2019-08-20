@@ -329,7 +329,10 @@ namespace loot_td
 
     public enum AbilityLinkType
     {
-        ON_HIT,
+        NONE,
+        ON_EVERY_HIT,
+        ON_FIRST_HIT,
+        ON_FINAL_HIT,
         TIME,
         ON_FADE,
     }
