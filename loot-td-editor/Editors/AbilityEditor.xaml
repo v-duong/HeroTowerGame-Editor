@@ -91,8 +91,10 @@
 
             <Label Content="Attacks per sec" Grid.Column="3"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="UseWeaponRange" Grid.Column="3" Grid.Row="3"></Label>
-            <CheckBox Grid.Column="4" Grid.Row="3" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+            <TextBlock Grid.Column="5" Grid.Row="5" Grid.RowSpan="2" TextWrapping="Wrap">WeaponRangeForTarget</TextBlock>
+            <CheckBox Grid.Column="6" Grid.Row="5" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRangeForTargeting, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+            <TextBlock Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" TextWrapping="Wrap">WeaponRangeForAOE</TextBlock>
+            <CheckBox Grid.Column="6" Grid.Row="3" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRangeForAOE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
             <Label Content="TargetRange" Grid.Column="3" Grid.Row="4"></Label>
             <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
             <Label Content="TargetType" Grid.Column="3" Grid.Row="5"></Label>

@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using loot_td;
+using System.Collections.ObjectModel;
 
 namespace loot_td_editor
 {
@@ -23,7 +24,7 @@ namespace loot_td_editor
     {
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
 
-        public List<AffixWeight> dic;
+        public ObservableCollection<AffixWeight> dic;
         public AffixWeight editTarget;
         public bool isEdit = false;
 

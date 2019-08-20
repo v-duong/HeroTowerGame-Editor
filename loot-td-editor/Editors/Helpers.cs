@@ -77,6 +77,7 @@ namespace loot_td_editor
                 nodeIdHash.Clear();
                 foreach (ArchetypeSkillNode n in a.NodeList)
                 {
+
                     if (n.IdName == "" || n.IdName == null)
                     {
                         errorLog.Add("ArchetypeNode in " + a.IdName  + " has null IdName");
@@ -102,6 +103,18 @@ namespace loot_td_editor
                     if (!nodePosition.Add(n.NodePosition.x + "," + n.NodePosition.y))
                     {
                         errorLog.Add("ArchetypeNode in " + a.IdName + " has overlapping nodes: " + n.IdName);
+                        flag = false;
+                    }
+
+                    if (n.AbilityId != null && n.Type != NodeType.ABILITY)
+                    {
+                        errorLog.Add("ArchetypeNode: " + n.IdName + " in " + a.IdName + " has mismatched nodeTypes");
+                        flag = false;
+                    }
+
+                    if (n.AbilityId == null && n.Type == NodeType.ABILITY)
+                    {
+                        errorLog.Add("ArchetypeNode: " + n.IdName + " in " + a.IdName + " has mismatched nodeTypes");
                         flag = false;
                     }
                 }

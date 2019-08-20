@@ -2,6 +2,7 @@
 using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace loot_td
 {
@@ -11,9 +12,9 @@ namespace loot_td
         private AffixType _affixType;
         private int _tier;
         private int _spawnLevel;
-        private List<AffixBonus> _affixBonuses;
-        private List<AffixWeight> _spawnWeight;
-        private List<GroupType> _groupTypes;
+        private ObservableCollection<AffixBonus> _affixBonuses;
+        private ObservableCollection<AffixWeight> _spawnWeight;
+        private ObservableCollection<GroupType> _groupTypes;
 
         [JsonProperty]
         public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
@@ -29,13 +30,13 @@ namespace loot_td
         public int SpawnLevel { get => _spawnLevel; set => SetProperty(ref _spawnLevel, value); }
 
         [JsonProperty]
-        public List<AffixBonus> AffixBonuses { get => _affixBonuses; set => SetProperty(ref _affixBonuses, value); }
+        public ObservableCollection<AffixBonus> AffixBonuses { get => _affixBonuses; set => SetProperty(ref _affixBonuses, value); }
 
         [JsonProperty]
-        public List<AffixWeight> SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
+        public ObservableCollection<AffixWeight> SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
 
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
-        public List<GroupType> GroupTypes { get => _groupTypes; set => SetProperty(ref _groupTypes, value); }
+        public ObservableCollection<GroupType> GroupTypes { get => _groupTypes; set => SetProperty(ref _groupTypes, value); }
 
         [JsonIgnore]
         public string ListString { get { return GetBonusTypesString(); } }
@@ -46,9 +47,9 @@ namespace loot_td
         public AffixBase()
         {
             IdName = "";
-            AffixBonuses = new List<AffixBonus>();
-            SpawnWeight = new List<AffixWeight>();
-            GroupTypes = new List<GroupType>();
+            AffixBonuses = new ObservableCollection<AffixBonus>();
+            SpawnWeight = new ObservableCollection<AffixWeight>();
+            GroupTypes = new ObservableCollection<GroupType>();
         }
 
         public AffixBase(AffixBase a)
@@ -58,7 +59,7 @@ namespace loot_td
             Tier = a.Tier;
             SpawnLevel = a.SpawnLevel;
 
-            AffixBonuses = new List<AffixBonus>();
+            AffixBonuses = new ObservableCollection<AffixBonus>();
             foreach (var b in a.AffixBonuses)
             {
                 AffixBonus bonus = new AffixBonus
@@ -71,7 +72,7 @@ namespace loot_td
                 AffixBonuses.Add(bonus);
             }
 
-            SpawnWeight = new List<AffixWeight>();
+            SpawnWeight = new ObservableCollection<AffixWeight>();
             foreach (var b in a.SpawnWeight)
             {
                 AffixWeight w = new AffixWeight
@@ -81,7 +82,7 @@ namespace loot_td
                 };
                 SpawnWeight.Add(w);
             }
-            GroupTypes = new List<GroupType>(a.GroupTypes);
+            GroupTypes = new ObservableCollection<GroupType>(a.GroupTypes);
         }
 
         public string GetBonusTypesString()
@@ -97,7 +98,7 @@ namespace loot_td
             return x;
         }
 
-        public static int WeightContainsType(List<AffixWeight> s, GroupType type)
+        public static int WeightContainsType(ObservableCollection<AffixWeight> s, GroupType type)
         {
             
             int i = 0;
@@ -148,6 +149,11 @@ namespace loot_td
 
         [JsonProperty]
         public int weight { get; set; }
+
+        public AffixWeight CloneWeight()
+        {
+            return (AffixWeight)this.MemberwiseClone();
+        }
     }
 
     public enum AffixType
