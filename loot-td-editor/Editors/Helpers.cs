@@ -60,7 +60,7 @@ namespace loot_td_editor
                 {
                     errorLog.Add("Archetype has null IdName");
                     flag = false;
-                } 
+                }
                 if (a.IdName == "UNTITLED NEW")
                 {
                     errorLog.Add("Archetype has default IdName");
@@ -77,10 +77,9 @@ namespace loot_td_editor
                 nodeIdHash.Clear();
                 foreach (ArchetypeSkillNode n in a.NodeList)
                 {
-
                     if (n.IdName == "" || n.IdName == null)
                     {
-                        errorLog.Add("ArchetypeNode in " + a.IdName  + " has null IdName");
+                        errorLog.Add("ArchetypeNode in " + a.IdName + " has null IdName");
                         flag = false;
                     }
                     if (n.IdName == "UNTITLED NEW")
@@ -233,7 +232,8 @@ namespace loot_td_editor
                 if (dict.ContainsKey(s))
                 {
                     dict[s]++;
-                } else
+                }
+                else
                 {
                     dict.Add(s, 1);
                 }
@@ -256,18 +256,28 @@ internal static class SafeNativeMethods
 
 public sealed class NaturalStringComparer : IComparer
 {
+    public int Compare(string x, string y)
+    {
+        return SafeNativeMethods.StrCmpLogicalW(x, y);
+    }
+
     public int Compare(object a, object b)
     {
         var lhs = (IStringId)a;
         var rhs = (IStringId)b;
         return SafeNativeMethods.StrCmpLogicalW(lhs.GetStringId(), rhs.GetStringId());
     }
+}
 
-    public int Compare(string x, string y)
+public sealed class BonusTypeComparer : IComparer
+{
+
+    public int Compare(object a, object b)
     {
-        return SafeNativeMethods.StrCmpLogicalW(x, y);
+        string lhs = ((BonusType)a).ToString();
+        string rhs = ((BonusType)b).ToString();
+        return SafeNativeMethods.StrCmpLogicalW(lhs, rhs);
     }
-
 }
 
 public interface IStringId

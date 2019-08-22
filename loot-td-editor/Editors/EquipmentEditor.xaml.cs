@@ -123,12 +123,16 @@ namespace loot_td_editor
 
         private void HasInnateBox_Checked(object sender, RoutedEventArgs e)
         {
+            if (EquipList.SelectedItem == null)
+                return;
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             t.HasInnate = true;
         }
 
         private void HasInnateBox_Unchecked(object sender, RoutedEventArgs e)
         {
+            if (EquipList.SelectedItem == null)
+                return;
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             t.HasInnate = false;
             t.InnateAffixId = null;
@@ -136,6 +140,8 @@ namespace loot_td_editor
 
         private void SetArmorValuesClick(object sender, RoutedEventArgs e)
         {
+            if (EquipList.SelectedItem == null)
+                return;
             EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
             if (t == null)
                 return;

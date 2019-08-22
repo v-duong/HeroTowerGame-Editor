@@ -1,6 +1,7 @@
 ﻿using loot_td;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -19,6 +20,17 @@ namespace loot_td_editor.Editors
     /// </summary>
     public partial class ArchetypeEditor : UserControl
     {
+        private IList<BonusType> _bonusTypes;
+        public IList<BonusType> BonusTypes
+        {
+            get
+            {
+                if (_bonusTypes == null)
+                    _bonusTypes = Enum.GetValues(typeof(BonusType)).Cast<BonusType>().ToList<BonusType>();
+                return _bonusTypes;
+            }
+        }
+
         public ObservableCollection<ArchetypeBase> Archetypes;
         private int currentID;
         private int selectedNodeId = -1;
@@ -543,6 +555,14 @@ namespace loot_td_editor.Editors
             }
             selectedNodeId = archetypeSkillNode.Id;
             DrawCanvas();
+        }
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.IsTextSearchEnabled = false;
+            box.ItemsSource = BonusTypes.ToList();
+            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(box.ItemsSource);
         }
     }
 }

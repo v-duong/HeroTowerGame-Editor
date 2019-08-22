@@ -175,7 +175,44 @@
                     <Label Content="Ability" Grid.Row="5"   Grid.Column="0"/>
                     <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
                 </Grid>
-                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="auto" AutoGenerateColumns="True" >
+                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="BonusType" Width="140">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=LostFocus}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                        <localx:FilterBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
+                                                </VirtualizingStackPanel>
+                                            </ItemsPanelTemplate>
+                                        </localx:FilterBox.ItemsPanel>
+                                    </localx:FilterBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="ModifyType">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="growth" Width="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <xctk:DoubleUpDown Value="{Binding growthValue}" Increment="0.1"></xctk:DoubleUpDown>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="final" Width="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <xctk:DoubleUpDown Value="{Binding finalLevelValue}" Increment="0.1"></xctk:DoubleUpDown>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
                 </DataGrid>
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
