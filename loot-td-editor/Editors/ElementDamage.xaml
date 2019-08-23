@@ -11,7 +11,7 @@
              d:DesignHeight="900" d:DesignWidth="200"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              >
-    <Grid Background="Wheat">
+    <Grid Background="Wheat" VirtualizingPanel.VirtualizationMode="Recycling" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
             <RowDefinition Height="25" />
@@ -20,10 +20,10 @@
         <Label Content="" FontWeight="Bold" Grid.Column="0" Margin="15,0,0,0" Name="EleLabel"></Label>
         <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Name="PhysCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
         <DockPanel Grid.Row="1">
-            <xctk:DoubleUpDown Width="70" Name="PhysMin" Value="{Binding BindAbilityDamage.MinMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3"></xctk:DoubleUpDown>
-            <xctk:DoubleUpDown Width="70" Name="PhysMax" Value="{Binding BindAbilityDamage.MaxMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Width="70" Name="PhysMin" Value="{Binding BindAbilityDamage.MinMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3" Minimum="0"></xctk:DoubleUpDown>
+            <xctk:DoubleUpDown Width="70" Name="PhysMax" Value="{Binding BindAbilityDamage.MaxMult}" IsEnabled="{Binding ElementName=PhysCheck,Path=IsChecked}" Increment="0.1" ValueChanged="PhysMin_ValueChanged" FormatString="F3" Minimum="0"></xctk:DoubleUpDown>
         </DockPanel>
-        <DataGrid Grid.Row="2" Name="PhysGrid" ItemsSource="{Binding BindAbilityDamage.Damage}" AutoGenerateColumns="True" LoadingRow="DataGrid_LoadingRow" ItemStringFormat="F1" IsReadOnly="True">
+        <DataGrid Grid.Row="2" Name="PhysGrid" ItemsSource="{Binding BindAbilityDamage.Damage}" AutoGenerateColumns="True" LoadingRow="DataGrid_LoadingRow" ItemStringFormat="F1" IsReadOnly="True" EnableRowVirtualization="True" EnableColumnVirtualization="True" VirtualizingPanel.VirtualizationMode="Recycling" ScrollViewer.CanContentScroll="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" RowHeight="22" >
 
         </DataGrid>
     </Grid>

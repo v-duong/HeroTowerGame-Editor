@@ -1,7 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
-using System.Windows;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
 
@@ -18,51 +16,68 @@ namespace loot_td
         private string _ability;
         private Vector2 _nodePosition;
         private string _iconPath;
+        private bool _hasError;
         private ObservableCollection<int> _requirements;
         private ObservableCollection<ArchetypeSkillNode> _requirements2;
 
         [JsonProperty]
-        public int Id { get => _id; set =>  SetProperty( ref _id, value); }
-        [JsonProperty]
-        public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
+        public int Id
+        {
+            get => _id;
+            set
+            {
+                SetProperty(ref _id, value);
+                RaisePropertyChanged("NumIdName");
+            }
+        }
 
         [JsonProperty]
-        public int InitialLevel { get => _initialLevel; set =>  SetProperty( ref _initialLevel, value); }
+        public string IdName { get => _idName; set { SetProperty(ref _idName, value); RaisePropertyChanged("NumIdName"); } }
 
         [JsonProperty]
-        public int MaxLevel { get => _maxLevel; set =>  SetProperty( ref _maxLevel, value); }
+        public int InitialLevel { get => _initialLevel; set => SetProperty(ref _initialLevel, value); }
+
+        [JsonProperty]
+        public int MaxLevel { get => _maxLevel; set => SetProperty(ref _maxLevel, value); }
 
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public NodeType Type { get => _type; set =>  SetProperty( ref _type, value); }
+        public NodeType Type { get => _type; set => SetProperty(ref _type, value); }
 
         [JsonProperty]
-        public ObservableCollection<ScalingBonusProperty_Int> Bonuses { get => _bonuses; set =>  SetProperty( ref _bonuses, value); }
+        public ObservableCollection<ScalingBonusProperty_Int> Bonuses { get => _bonuses; set => SetProperty(ref _bonuses, value); }
 
         [JsonProperty]
-        public string AbilityId { get => _ability; set =>  SetProperty( ref _ability, value); }
+        public string AbilityId { get => _ability; set => SetProperty(ref _ability, value); }
 
         [JsonProperty]
-        public Vector2 NodePosition { get => _nodePosition; set =>  SetProperty( ref _nodePosition, value); }
+        public Vector2 NodePosition { get => _nodePosition; set => SetProperty(ref _nodePosition, value); }
 
         [JsonProperty]
-        public string IconPath { get => _iconPath; set =>  SetProperty( ref _iconPath, value); }
+        public string IconPath { get => _iconPath; set => SetProperty(ref _iconPath, value); }
 
         [JsonProperty]
-        public ObservableCollection<int> Children { get => _requirements; set =>  SetProperty( ref _requirements, value); }
-        
+        public ObservableCollection<int> Children { get => _requirements; set => SetProperty(ref _requirements, value); }
+
         [JsonProperty]
         public ObservableCollection<ArchetypeSkillNode> ChildrenEditor { get => _requirements2; set => SetProperty(ref _requirements2, value); }
+
+        [JsonIgnore]
+        public string NumIdName { get => Id + " " + IdName; }
+
+        [JsonIgnore]
+        public bool HasError { get => _hasError; set => SetProperty(ref _hasError, value); }
 
         public ArchetypeSkillNode()
         {
             IdName = "";
-            NodePosition = new Vector2(0,0);
+            NodePosition = new Vector2(0, 0);
             Children = new ObservableCollection<int>();
             ChildrenEditor = new ObservableCollection<ArchetypeSkillNode>();
             Bonuses = new ObservableCollection<ScalingBonusProperty_Int>();
             IconPath = "";
             MaxLevel = 1;
+            HasError = false;
         }
 
         public string GetStringId()
@@ -71,7 +86,7 @@ namespace loot_td
         }
     }
 
-    public class ScalingBonusProperty_Int
+    public class ScalingBonusProperty_Int : BindableBase
     {
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -86,6 +101,11 @@ namespace loot_td
 
         [JsonProperty]
         public int finalLevelValue { get; set; }
+
+        private int _sum;
+
+        [JsonIgnore]
+        public int sum { get => _sum; set => SetProperty(ref _sum, value); }
     }
 
     public class ScalingBonusProperty_Float
@@ -121,9 +141,9 @@ namespace loot_td
 
     public class Vector2 : BindableBase
     {
-
         [JsonProperty]
         public int x { get => _x; set => SetProperty(ref _x, value); }
+
         [JsonProperty]
         public int y { get => _y; set => SetProperty(ref _y, value); }
 

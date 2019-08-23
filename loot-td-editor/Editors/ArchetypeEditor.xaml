@@ -8,7 +8,10 @@
              xmlns:loottd="clr-namespace:loot_td"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
-             d:DesignHeight="800" d:DesignWidth="1400">
+             d:DesignHeight="900" d:DesignWidth="1700">
+    <UserControl.Resources>
+        <local:EmptyBoolConverter x:Key="EmptyBool"/>
+    </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -132,6 +135,7 @@
                             <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="100" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=MaxLevel}" Header="MaxLevel" Width="40" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityId}" Header="AbilityId" Width="80" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=HasError, Converter={StaticResource EmptyBool}}" Header="Error" Width="40" />
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -164,21 +168,26 @@
                     <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=NodesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
                     <Label Content="Type" Grid.Column="2" />
                     <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="TypeBox_SelectionChanged"/>
-                    <Label Content="initalLevel" Grid.Row="3"/>
-                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.InitialLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"/>
-                    <Label Content="maxLevel" Grid.Row="3"   Grid.Column="2"/>
-                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="10" ValueChanged="MaxLevelChanged"/>
-                    <Label Content="PosX" Grid.Row="4"   Grid.Column="0"/>
-                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit" Name="Px"/>
-                    <Label Content="PosY" Grid.Row="4"   Grid.Column="2"/>
-                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="4" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit" Name="Py"/>
-                    <Label Content="Ability" Grid.Row="5"   Grid.Column="0"/>
-                    <ComboBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
+                    <Label Content="initalLevel" Grid.Row="2"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=NodesList,Path=SelectedItem.InitialLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"/>
+                    <Label Content="maxLevel" Grid.Row="2"   Grid.Column="2"/>
+                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="2" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="10" ValueChanged="MaxLevelChanged"/>
+                    <Label Content="PosX" Grid.Row="3"   Grid.Column="0"/>
+                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit" Name="Px"/>
+                    <Label Content="PosY" Grid.Row="3"   Grid.Column="2"/>
+                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit" Name="Py"/>
+                    <Label Content="Ability" Grid.Row="4"   Grid.Column="0"/>
+                    <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
                 </Grid>
-                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow">
                     <DataGrid.Columns>
                         <DataGridTemplateColumn Header="BonusType" Width="140">
                             <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding bonusType}" Padding="2"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=LostFocus}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
                                         <localx:FilterBox.ItemsPanel>
@@ -189,29 +198,46 @@
                                         </localx:FilterBox.ItemsPanel>
                                     </localx:FilterBox>
                                 </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="ModifyType">
+                        <DataGridTemplateColumn Header="ModifyType" Width="80">
                             <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding modifyType}" Padding="2"></TextBlock>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
                                 </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="growth" Width="60">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <xctk:DoubleUpDown Value="{Binding growthValue}" Increment="0.1"></xctk:DoubleUpDown>
+                                    <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <xctk:IntegerUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged"></xctk:IntegerUpDown>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Header="final" Width="60">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <xctk:DoubleUpDown Value="{Binding finalLevelValue}" Increment="0.1"></xctk:DoubleUpDown>
+                                    <TextBlock Text="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <xctk:IntegerUpDown Value="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged"></xctk:IntegerUpDown>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="sum" Binding="{Binding sum, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid Grid.Row="2">
@@ -226,7 +252,7 @@
                     </Grid.ColumnDefinitions>
                     <Button Content="ADD" Click="AddButtonClickChild" />
                     <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClickChild" />
-                    <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="IdName"></ComboBox>
+                    <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="NumIdName"></ComboBox>
                     <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Children, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,5,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Name="ChildList" SelectionChanged="ArchetypesList_SelectionChanged">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -242,6 +268,5 @@
         <ScrollViewer Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="ScrollViewer">
             <Canvas  Name="NodeTree" ClipToBounds="True" Width="1200" Height="1200"/>
         </ScrollViewer>
-
     </Grid>
 </UserControl>

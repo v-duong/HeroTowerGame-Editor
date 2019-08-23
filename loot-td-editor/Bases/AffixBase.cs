@@ -139,6 +139,11 @@ namespace loot_td
 
         [JsonProperty]
         public int MaxValue { get => _maxValue; set => SetProperty(ref _maxValue, value); }
+
+        public AffixBonus()
+        {
+
+        }
     }
 
     public class AffixWeight
@@ -169,7 +174,7 @@ namespace loot_td
     {
         ADDITIVE,       //all sources add together before modifying
         MULTIPLY,       //all sources multiply together before modifying
-        SET,            //sets value to modifier value, ignores all other increases
+        FIXED_TO,            //sets value to modifier value, ignores all other increases
         FLAT_ADDITION   //adds to base before any other calculation
     }
 }

@@ -77,6 +77,11 @@ namespace loot_td_editor
                 nodeIdHash.Clear();
                 foreach (ArchetypeSkillNode n in a.NodeList)
                 {
+                    if (n.HasError)
+                    {
+                        errorLog.Add("ArchetypeNode has an error in set children");
+                        flag = false;
+                    }
                     if (n.IdName == "" || n.IdName == null)
                     {
                         errorLog.Add("ArchetypeNode in " + a.IdName + " has null IdName");

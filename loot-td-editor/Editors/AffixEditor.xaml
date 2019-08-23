@@ -88,12 +88,17 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" ColumnWidth="*" AutoGenerateColumns="False" >
+            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses , UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="BonusType" Width="280">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <local:FilterBox SelectedValue="{Binding BonusType, UpdateSourceTrigger=LostFocus}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                <TextBlock Text="{Binding BonusType}" Padding="2"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <local:FilterBox SelectedValue="{Binding BonusType, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
                                     <local:FilterBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
@@ -102,28 +107,43 @@
                                     </local:FilterBox.ItemsPanel>
                                 </local:FilterBox>
                             </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="ModifyType">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox SelectedValue="{Binding ModifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{local:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                                <TextBlock Text="{Binding ModifyType}" Padding="2"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox SelectedValue="{Binding ModifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{local:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="MinValue" Width="60">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <xctk:IntegerUpDown Value="{Binding MinValue}"></xctk:IntegerUpDown>
+                                <TextBlock Text="{Binding MinValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <xctk:IntegerUpDown Value="{Binding MinValue, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="MaxValue" Width="60">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <xctk:IntegerUpDown Value="{Binding MaxValue}"></xctk:IntegerUpDown>
+                                <TextBlock Text="{Binding MaxValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <xctk:IntegerUpDown Value="{Binding MaxValue, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
                 </DataGrid.Columns>
                 <DataGrid.RowValidationRules>

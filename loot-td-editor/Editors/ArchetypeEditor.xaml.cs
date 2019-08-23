@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +22,7 @@ namespace loot_td_editor.Editors
     public partial class ArchetypeEditor : UserControl
     {
         private IList<BonusType> _bonusTypes;
+
         public IList<BonusType> BonusTypes
         {
             get
@@ -124,7 +126,7 @@ namespace loot_td_editor.Editors
 
             ArchetypeSkillNode selectedNode = (ArchetypeSkillNode)NodesList.SelectedItem;
             ArchetypeSkillNode temp = Helpers.DeepClone(selectedNode);
-            temp.Id++;
+            temp.Id = selected.NodeList.Count;
             selected.NodeList.Add(temp);
             //NodesList.Items.Refresh();
             //ChildNumRefresh();
@@ -409,6 +411,19 @@ namespace loot_td_editor.Editors
 
         private void CanvasEdit(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+            ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
+            foreach(ArchetypeSkillNode node in selected.NodeList)
+            {
+                foreach(int index in node.Children)
+                {
+                    if (selected.NodeList.Where(y => y.Id == index).Count() == 0)
+                        node.HasError = true;
+                    else
+                        node.HasError = false;
+                }
+            }
             DrawCanvas();
         }
 
@@ -420,6 +435,8 @@ namespace loot_td_editor.Editors
 
         private void ChildNumRefresh()
         {
+            if (ArchetypesList.SelectedItem == null)
+                return;
             ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
 
             ChildNum.ItemsSource = null;
@@ -455,23 +472,36 @@ namespace loot_td_editor.Editors
                 return;
             if (ArchetypesList.SelectedItem == null)
                 return;
+            if (NodesList.SelectedItem == null)
+                return;
 
             ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
 
             if (selected.NodeList.Count == 0)
                 return;
-
+            ArchetypeSkillNode selectedNode = NodesList.SelectedItem as ArchetypeSkillNode;
             TextBlock s = sender as TextBlock;
             if (s.Text == null || s.Text == "")
                 return;
 
             if (int.TryParse(s.Text, out int x))
-                s.Text = x + "\t" + selected.NodeList[x].IdName;
+            {
+                IEnumerable<ArchetypeSkillNode> targetNode = selected.NodeList.Where(y => y.Id == x);
+                if (targetNode.Count() == 0)
+                {
+                    s.Text = x + "\t ERROR";
+                }
+                else
+                {
+                    s.Text = x + "\t" + targetNode.First().IdName;
+                }
+            }
         }
 
         private void MaxLevelChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             CalculateTotalSkillPoints();
+            BonusGridSumValues();
         }
 
         private void CalculateTotalSkillPoints()
@@ -564,5 +594,85 @@ namespace loot_td_editor.Editors
             box.ItemsSource = BonusTypes.ToList();
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(box.ItemsSource);
         }
+
+        private void BonusGridSumValues()
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+            if (NodesList.SelectedItem == null)
+                return;
+            if (BonusGrid == null)
+                return;
+
+            ArchetypeSkillNode node = NodesList.SelectedItem as ArchetypeSkillNode;
+            for (int i = 0; i < BonusGrid.Items.Count; ++i)
+            {
+                int sum = 0;
+                var k = BonusGrid.Items[i];
+                if (k is ScalingBonusProperty_Int)
+                {
+                    ScalingBonusProperty_Int o = k as ScalingBonusProperty_Int;
+                    int growth = o.growthValue;
+                    int final = o.finalLevelValue;
+                    if (node.MaxLevel == 1)
+                        sum = growth;
+                    else
+                        sum = growth * (node.MaxLevel - 1) + final;
+                    o.sum = sum;
+                }
+            }
+        }
+
+
+        private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            BonusGridSumValues();
+        }
+
+        private void BonusGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+            if (NodesList.SelectedItem == null)
+                return;
+            ArchetypeSkillNode node = NodesList.SelectedItem as ArchetypeSkillNode;
+            DataGridRow r = e.Row;
+            int sum = 0;
+            int i = e.Row.GetIndex();
+            var k = e.Row.Item;
+            if (k is ScalingBonusProperty_Int)
+            {
+                ScalingBonusProperty_Int o = k as ScalingBonusProperty_Int;
+                int growth = o.growthValue;
+                int final = o.finalLevelValue;
+                if (node.MaxLevel == 1)
+                    sum = growth;
+                else
+                    sum = growth * (node.MaxLevel - 1) + final;
+                o.sum = sum;
+            }
+        }
     }
+
+    public class EmptyBoolConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is bool)
+            {
+                if ((bool)value)
+                    return "TRUE";
+                else
+                    return "";
+            }
+            else
+                return value;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
 }

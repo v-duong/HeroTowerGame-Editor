@@ -311,6 +311,7 @@ namespace loot_td_editor
             box.ItemsSource = BonusTypes.ToList();
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(box.ItemsSource);
         }
+
     }
 
     public class BonusDataValidationRule : ValidationRule
@@ -323,8 +324,6 @@ namespace loot_td_editor
             {
                 if (x.MinValue > x.MaxValue)
                     return new ValidationResult(false, "MinValue cannot be higher than MaxValue");
-                if (x.ModifyType == ModifyType.MULTIPLY && (x.MinValue < 0 || x.MaxValue < 0))
-                    return new ValidationResult(false, "Multiply values cannot be negative");
             }
 
             return ValidationResult.ValidResult;
