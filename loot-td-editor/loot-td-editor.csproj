@@ -108,14 +108,14 @@
     <Compile Include="Bases\ArchetypeSkillNode.cs" />
     <Compile Include="Bases\EnemyBase.cs" />
     <Compile Include="Bases\StageInfoBase.cs" />
+    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Abilities\StatusEffect\EffectType.cs">
+      <Link>Types\EffectType.cs</Link>
+    </Compile>
     <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\BonusType.cs">
       <Link>Types\BonusType.cs</Link>
     </Compile>
     <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\DifficultyType.cs">
       <Link>Types\DifficultyType.cs</Link>
-    </Compile>
-    <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\EffectType.cs">
-      <Link>Types\EffectType.cs</Link>
     </Compile>
     <Compile Include="E:\Unity Project\eeGame\Assets\Scripts\Common\ElementType.cs">
       <Link>Types\ElementType.cs</Link>

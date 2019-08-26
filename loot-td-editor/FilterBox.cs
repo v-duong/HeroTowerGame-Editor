@@ -96,7 +96,8 @@ namespace loot_td_editor
                 return false;
             if (currentSearchString.Length == 0)
                 return true;
-            return item.ToString().ToLower().Contains(currentSearchString.ToLower());
+            string s = item.ToString().Replace('_', ' ');
+            return s.ToLower().Contains(currentSearchString.ToLower());
         }
     }
 }

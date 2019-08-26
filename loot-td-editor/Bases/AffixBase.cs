@@ -124,7 +124,7 @@ namespace loot_td
         private ModifyType _modifyType;
         private int _minValue;
         private int _maxValue;
-
+        private GroupType _restriction;
 
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -133,6 +133,10 @@ namespace loot_td
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public ModifyType ModifyType { get => _modifyType; set => SetProperty(ref _modifyType, value); }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public GroupType Restriction { get => _restriction; set => SetProperty(ref _restriction, value); }
 
         [JsonProperty]
         public int MinValue { get => _minValue; set => SetProperty(ref _minValue, value); }

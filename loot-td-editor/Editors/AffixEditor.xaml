@@ -9,7 +9,7 @@
              xmlns:loottd="clr-namespace:loot_td"
              xmlns:localx="clr-namespace:loot_td_editor"
              mc:Ignorable="d" 
-             d:DesignHeight="900" d:DesignWidth="1400">
+             d:DesignHeight="900" d:DesignWidth="1600">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -88,9 +88,9 @@
                     </MultiBinding>
                 </TextBlock.Text>
             </TextBlock>
-            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses , UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False">
+            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses , UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="BonusType" Width="280">
+                    <DataGridTemplateColumn Header="BonusType" Width="3*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding BonusType}" Padding="2"/>
@@ -109,7 +109,7 @@
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="ModifyType">
+                    <DataGridTemplateColumn Header="ModifyType" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding ModifyType}" Padding="2"/>
@@ -118,6 +118,18 @@
                         <DataGridTemplateColumn.CellEditingTemplate>
                             <DataTemplate>
                                 <ComboBox SelectedValue="{Binding ModifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{local:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="Restriction" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Restriction}" Padding="2"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <ComboBox SelectedValue="{Binding Restriction , UpdateSourceTrigger=PropertyChanged}" Loaded="GroupComboBoxLoaded"></ComboBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellEditingTemplate>
                     </DataGridTemplateColumn>

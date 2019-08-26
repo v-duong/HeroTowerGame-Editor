@@ -22,6 +22,7 @@ namespace loot_td_editor.Editors
     public partial class ArchetypeEditor : UserControl
     {
         private IList<BonusType> _bonusTypes;
+        public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
 
         public IList<BonusType> BonusTypes
         {
@@ -607,18 +608,11 @@ namespace loot_td_editor.Editors
             ArchetypeSkillNode node = NodesList.SelectedItem as ArchetypeSkillNode;
             for (int i = 0; i < BonusGrid.Items.Count; ++i)
             {
-                int sum = 0;
                 var k = BonusGrid.Items[i];
                 if (k is ScalingBonusProperty_Int)
                 {
                     ScalingBonusProperty_Int o = k as ScalingBonusProperty_Int;
-                    int growth = o.growthValue;
-                    int final = o.finalLevelValue;
-                    if (node.MaxLevel == 1)
-                        sum = growth;
-                    else
-                        sum = growth * (node.MaxLevel - 1) + final;
-                    o.sum = sum;
+                    SetBonusEditorValues(o, node);
                 }
             }
         }
@@ -637,20 +631,31 @@ namespace loot_td_editor.Editors
                 return;
             ArchetypeSkillNode node = NodesList.SelectedItem as ArchetypeSkillNode;
             DataGridRow r = e.Row;
-            int sum = 0;
             int i = e.Row.GetIndex();
             var k = e.Row.Item;
             if (k is ScalingBonusProperty_Int)
             {
                 ScalingBonusProperty_Int o = k as ScalingBonusProperty_Int;
-                int growth = o.growthValue;
-                int final = o.finalLevelValue;
-                if (node.MaxLevel == 1)
-                    sum = growth;
-                else
-                    sum = growth * (node.MaxLevel - 1) + final;
-                o.sum = sum;
+                SetBonusEditorValues(o, node);
             }
+        }
+
+        private void SetBonusEditorValues(ScalingBonusProperty_Int bonus, ArchetypeSkillNode node)
+        {
+            if (node.MaxLevel == 1)
+            {
+                bonus.sum = bonus.growthValue;
+            } else
+            {
+                bonus.sum = bonus.growthValue * (node.MaxLevel - 1) + bonus.finalLevelValue;
+            }
+            bonus.perPoint = (float)bonus.sum / node.MaxLevel;
+        }
+
+        private void GroupComboBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.ItemsSource = GroupTypes.ToList();
         }
     }
 

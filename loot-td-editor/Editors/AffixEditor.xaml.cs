@@ -312,6 +312,11 @@ namespace loot_td_editor
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(box.ItemsSource);
         }
 
+        private void GroupComboBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.ItemsSource = GroupTypes.ToList();
+        }
     }
 
     public class BonusDataValidationRule : ValidationRule

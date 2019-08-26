@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:loot_td_editor.Editors"
              xmlns:localx="clr-namespace:loot_td_editor"
              xmlns:loottd="clr-namespace:loot_td"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1700">
@@ -179,9 +180,9 @@
                     <Label Content="Ability" Grid.Row="4"   Grid.Column="0"/>
                     <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
                 </Grid>
-                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow">
+                <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
                     <DataGrid.Columns>
-                        <DataGridTemplateColumn Header="BonusType" Width="140">
+                        <DataGridTemplateColumn Header="BonusType" Width="3*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding bonusType}" Padding="2"></TextBlock>
@@ -200,7 +201,7 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="ModifyType" Width="80">
+                        <DataGridTemplateColumn Header="ModifyType" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding modifyType}" Padding="2"></TextBlock>
@@ -212,7 +213,19 @@
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="growth" Width="60">
+                        <DataGridTemplateColumn Header="Restriction" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding restriction}" Padding="2"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox SelectedValue="{Binding restriction , UpdateSourceTrigger=PropertyChanged}" Loaded="GroupComboBoxLoaded"></ComboBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="growth" Width="40">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
@@ -220,11 +233,11 @@
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <xctk:IntegerUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged"></xctk:IntegerUpDown>
+                                    <xctk:DoubleUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged" Increment="1"></xctk:DoubleUpDown>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTemplateColumn Header="final" Width="60">
+                        <DataGridTemplateColumn Header="final" Width="40">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
@@ -232,12 +245,25 @@
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <xctk:IntegerUpDown Value="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged"></xctk:IntegerUpDown>
+                                    <xctk:DoubleUpDown Value="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged" Increment="1"></xctk:DoubleUpDown>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTextColumn Header="sum" Binding="{Binding sum, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
+                        <DataGridTextColumn Header="perpoint" Binding="{Binding perPoint, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat={}0.00}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
                     </DataGrid.Columns>
                 </DataGrid>
                 <Grid Grid.Row="2">

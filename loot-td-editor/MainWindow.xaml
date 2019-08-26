@@ -45,7 +45,7 @@
             <TabItem Header="_Affixes">
                 <TabControl Name="AffixesTabControl">
                     <TabItem Header="_Prefix">
-                        <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor"/>
+                        <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor" />
                     </TabItem>
                     <TabItem Header="_Suffix">
                         <local:AffixEditor AffixProp="SUFFIX" x:Name="SuffixEditor"/>

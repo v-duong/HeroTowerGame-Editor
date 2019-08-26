@@ -96,16 +96,25 @@ namespace loot_td
         [JsonProperty]
         public ModifyType modifyType { get; set; }
 
+        [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public int growthValue { get; set; }
+        public GroupType restriction { get; set; }
 
         [JsonProperty]
-        public int finalLevelValue { get; set; }
+        public float growthValue { get; set; }
 
-        private int _sum;
+        [JsonProperty]
+        public float finalLevelValue { get; set; }
+
+
+        private float _sum;
+        private float _perpoint;
 
         [JsonIgnore]
-        public int sum { get => _sum; set => SetProperty(ref _sum, value); }
+        public float sum { get => _sum; set => SetProperty(ref _sum, value); }
+
+        [JsonIgnore]
+        public float perPoint { get => _perpoint; set => SetProperty(ref _perpoint, value); }
     }
 
     public class ScalingBonusProperty_Float
@@ -117,6 +126,10 @@ namespace loot_td
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public ModifyType modifyType { get; set; }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public GroupType restriction { get; set; }
 
         [JsonProperty]
         public float initialValue { get; set; }

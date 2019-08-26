@@ -68,7 +68,12 @@ namespace loot_td_editor
             StageEditor.StagePropertiesComboBox.ItemsSource = EnemyAffixEditor.Affixes;
             StageEditor.WaveModComboBox.ItemsSource = EnemyAffixEditor.Affixes;
 
-            equipmentEditorCount += ArmorEditor.Equipments.Count;
+            GetCounts();
+        }
+
+        private void GetCounts()
+        {
+            equipmentEditorCount = ArmorEditor.Equipments.Count;
             equipmentEditorCount += WeaponEditor.Equipments.Count;
             equipmentEditorCount += AccessoryEditor.Equipments.Count;
 
@@ -395,6 +400,7 @@ namespace loot_td_editor
             if (ErrorLog.Count == 0)
             {
                 MessageBox.Show("Save Complete", "Save Complete", MessageBoxButton.OK);
+                GetCounts();
             }
             else
             {
