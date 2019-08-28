@@ -47,6 +47,7 @@ namespace loot_td
         private bool hasLinkedAbility;
         private bool useWeaponRange;
         private bool useWeaponRangeAoe;
+        private bool useBothWeaponsForDual;
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -139,6 +140,9 @@ namespace loot_td
 
         [JsonProperty]
         public bool UseWeaponRangeForAOE { get => useWeaponRangeAoe; set => SetProperty(ref useWeaponRangeAoe, value); }
+
+        [JsonProperty]
+        public bool UseBothWeaponsForDual { get => useBothWeaponsForDual; set => SetProperty(ref useBothWeaponsForDual, value); }
 
         public AbilityBase()
         {

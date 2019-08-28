@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:loot_td_editor"
         xmlns:localed="clr-namespace:loot_td_editor.Editors"
         mc:Ignorable="d"
-        Title="MainWindow" Height="960" Width="1780"
+        Title="MainWindow" Height="960" Width="1870"
         WindowStartupLocation="CenterScreen" >
     <DockPanel>
         <Menu DockPanel.Dock="Top">

@@ -1,5 +1,6 @@
 ﻿using loot_td;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -51,7 +52,14 @@ namespace loot_td_editor.Editors
                 return;
             }
             string json = System.IO.File.ReadAllText(filePath);
-            Archetypes = JsonConvert.DeserializeObject<ObservableCollection<ArchetypeBase>>(json);
+            Archetypes = JsonConvert.DeserializeObject<ObservableCollection<ArchetypeBase>>(json, 
+                new JsonSerializerSettings {
+                    Error = delegate (object sender, ErrorEventArgs args)
+                    {
+                        System.Windows.MessageBox.Show(args.ErrorContext.Error.Message, "Confirmation", MessageBoxButton.YesNo);
+                        args.ErrorContext.Handled = true;
+                    }
+            });
 
             foreach (ArchetypeBase k in Archetypes)
             {
@@ -340,6 +348,7 @@ namespace loot_td_editor.Editors
             if (rect.DataContext != null)
             {
                 ArchetypeSkillNode a = (ArchetypeSkillNode)rect.DataContext;
+                NodesList.SelectedItem = a;
                 a.NodePosition.x = (int)Math.Round((Canvas.GetLeft(rect) - NodeTree.ActualWidth / 2) / GridSpacing, 0);
                 a.NodePosition.y = (int)Math.Round(Canvas.GetBottom(rect) / GridSpacing, 0);
             }
