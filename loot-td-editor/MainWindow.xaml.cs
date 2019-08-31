@@ -221,6 +221,11 @@ namespace loot_td_editor
                 return;
             }
 
+            foreach(ArchetypeBase archetype in ArchetypeEditor.Archetypes.ToList())
+            {
+                archetype.NodeList = new System.Collections.ObjectModel.ObservableCollection<ArchetypeSkillNode>( archetype.NodeList.OrderBy(x=>x.Id) );
+            }
+
             string s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.json";
             string o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList(), settings);
             System.IO.File.WriteAllText(s, o);

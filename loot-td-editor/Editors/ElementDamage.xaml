@@ -17,6 +17,7 @@
             <RowDefinition Height="25" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+        
         <Label Content="" FontWeight="Bold" Grid.Column="0" Margin="15,0,0,0" Name="EleLabel"></Label>
         <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Name="PhysCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
         <DockPanel Grid.Row="1">

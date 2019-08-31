@@ -71,24 +71,7 @@
             <TextBox Grid.Column="4" Grid.Row="0" Text="{Binding ElementName=AffixesList,Path=SelectedItem.AffixType}" IsReadOnly="True" Background="LightGray"></TextBox>
         </Grid>
         <Grid Grid.Column="1" Grid.Row="1" Margin="5,5,5,5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Name="CountText">
-                <TextBlock.Text>
-                    <MultiBinding StringFormat=" Count: {0}">
-                        <Binding ElementName="AffixesList" Path="SelectedItem.GetBonusCountString" Mode="OneWay"/>
-                    </MultiBinding>
-                </TextBlock.Text>
-            </TextBlock>
-            <DataGrid Grid.Row="1" Grid.ColumnSpan="4" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses , UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+            <DataGrid ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.AffixBonuses , UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling" >
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="BonusType" Width="3*">
                         <DataGridTemplateColumn.CellTemplate>

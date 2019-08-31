@@ -157,27 +157,6 @@ namespace loot_td_editor
             //AffixesList.Items.Refresh();
         }
 
-        private void AddBonusButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (AffixesList.SelectedItem == null)
-                return;
-            AffixBonus b = new AffixBonus();
-            AffixBase temp = (AffixBase)AffixesList.SelectedItem;
-            temp.AffixBonuses.Add(b);
-            //BonusGrid.Items.Refresh();
-            CountText.Text = "Count: " + temp.GetBonusCountString;
-        }
-
-        private void RemoveBonusButtonClick(object sender, RoutedEventArgs e)
-        {
-            if (AffixesList.SelectedItem == null)
-                return;
-            AffixBase temp = (AffixBase)AffixesList.SelectedItem;
-            temp.AffixBonuses.Remove((AffixBonus)BonusGrid.SelectedItem);
-            //BonusGrid.Items.Refresh();
-            CountText.Text = "Count: " + temp.GetBonusCountString;
-        }
-
         private void BonusGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             //AffixesList.Items.Refresh();

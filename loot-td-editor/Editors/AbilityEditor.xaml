@@ -8,17 +8,14 @@
              xmlns:loottd="clr-namespace:loot_td"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
-             d:DesignHeight="900" d:DesignWidth="1600">
+             d:DesignHeight="900" d:DesignWidth="1850">
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="1.25*"/>
-            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="1.6*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="4.25*"/>
         </Grid.ColumnDefinitions>
         <Grid Grid.RowSpan="2">
             <Grid.RowDefinitions>
@@ -38,228 +35,247 @@
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityType}" Header="AbilityType" Width="90"/>
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityShotType}" Header="AbilityShotType" Width="110"/>
                     </GridView>
                 </ListView.View>
             </ListView>
         </Grid>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="60" />
-            </Grid.ColumnDefinitions>
-            <Label Content="IdName" Grid.Row="0" />
-            <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-            <Label Content="Sprite" Grid.Row="2"></Label>
-            <TextBox Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="1" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.EffectSprite, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+        <TabControl Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <TabItem Header="_Main">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1"/>
+                        <ColumnDefinition Width="1.25*"/>
+                        <ColumnDefinition Width="0.75*"/>
+                        <ColumnDefinition Width="0.20*"/>
+                        <ColumnDefinition Width="0.30*"/>
+                        <ColumnDefinition Width="0.20*"/>
+                        <ColumnDefinition Width="0.30*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="150" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="80" />
+                        </Grid.ColumnDefinitions>
+                        <VirtualizingStackPanel Grid.Column="0">
+                            <Label Content="IdName" Height="26" />
+                            <Label Content="Sprite" Height="26" />
+                            <Label Content="AbilityType" Height="26"></Label>
+                            <Label Content="ShotType" Height="26"></Label>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel Grid.Column="1">
+                            <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                            <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.EffectSprite, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                            <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityType}}}"></ComboBox>
+                            <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityShotType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityShotType}}}"></ComboBox>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel Grid.Column="2">
+                            <Label Content="Attacks per sec" Height="26"></Label>
+                            <Label Content="FlatDamageMult" Height="26"></Label>
+                            <Label Content="Base Critical" Height="26"></Label>
+                            <Label Height="13"></Label>
+                            <Label Content="TargetRange" Height="26"></Label>
+                            <Label Content="TargetType" Height="26"></Label>
+                            <Label Height="13"></Label>
+                            <TextBlock Height="35" TextWrapping="Wrap" TextAlignment="Center" >Weapon Range For Target Range</TextBlock>
+                            <TextBlock Height="35" TextWrapping="Wrap" TextAlignment="Center" >Weapon Range For AOE Radius</TextBlock>
+                            <TextBlock Height="35" TextWrapping="Wrap" TextAlignment="Center" >Use Both Weapons At Once For Dual</TextBlock>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel Grid.Column="3">
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
+                            <Label Height="13"></Label>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                            <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}}"></ComboBox>
+                            <Label Height="13"></Label>
+                            <CheckBox Height="35" VerticalContentAlignment="Center" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRangeForTargeting, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+                            <CheckBox Height="35" VerticalContentAlignment="Center"   IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRangeForAOE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+                            <CheckBox Height="35" VerticalContentAlignment="Center"    IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseBothWeaponsForDual, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel Grid.Column="4" VerticalAlignment="Bottom">
+                            <Label Content="Hit Count" Height="26"></Label>
+                            <Label Content="Per Hit Power" Height="26"></Label>
+                            <Label Content="Delay Between" Height="26"></Label>
+                            <Label Height="13"></Label>
+                            <Label Content="BasePower" Height="26"></Label>
+                            <Label Content="ScalingPower" Height="26"></Label>
+                        </VirtualizingStackPanel>
+                        <VirtualizingStackPanel Grid.Column="5" VerticalAlignment="Bottom">
+                            <xctk:IntegerUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"/>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitDamageModifier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0.01"  Increment="0.01" FormatString="F3"/>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.DelayBetweenHits, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0.01"  Increment="0.01" FormatString="F3"/>
 
-            <Label Content="AbilityType" Grid.Row="3" Grid.Column="0"></Label>
-            <ComboBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="2" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityType}}}"></ComboBox>
-            <Label Content="ShotType" Grid.Row="4"  Grid.Column="0" ></Label>
-            <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="2" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityShotType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityShotType}}}"></ComboBox>
+                            <Label Height="13"></Label>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseAbilityPower, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.001" FormatString="F4"/>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.001" FormatString="F4"/>
+                        </VirtualizingStackPanel>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90" />
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="80" />
+                            <ColumnDefinition Width="60" />
+                            <ColumnDefinition Width="auto" />
+                        </Grid.ColumnDefinitions>
 
-            <Label Content="HasLinked?" Grid.Row="5"  Grid.Column="0" ></Label>
-            <CheckBox Grid.Column="1" Grid.Row="5" Grid.ColumnSpan="2" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
-            <Label Content="LinkedAbility" Grid.Row="6"  Grid.Column="0" ></Label>
-            <ComboBox Grid.Column="1" Grid.Row="6" Grid.ColumnSpan="2" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding}" Name="LinkedAbilityList" SelectedValuePath="IdName" DisplayMemberPath="IdName" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></ComboBox>
-            <Label Content="InheritsDamage?" Grid.Row="7"  Grid.Column="0" ></Label>
-            <CheckBox Grid.Column="1" Grid.Row="7" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.InheritsDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></CheckBox>
-            <Label Content="Inherit %" Grid.Column="0" Grid.Row="8"></Label>
-            <xctk:DoubleUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.InheritDamagePercent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
-            <Label Content="Inherit % Scale" Grid.Column="0" Grid.Row="9"></Label>
-            <xctk:DoubleUpDown Grid.Column="1" Grid.Row="9" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.InheritDamagePercentScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F3" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
-            <Label Content="LinkedType" Grid.Column="2" Grid.Row="7"></Label>
-            <ComboBox Grid.Column="3" Grid.Row="7"  SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityLinkType}}}" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></ComboBox>
-            <Label Content="Link Time" Grid.Column="2" Grid.Row="8"></Label>
-            <xctk:DoubleUpDown Grid.Column="3" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.Time, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F2" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
+                        <Label Content="Projectile Values" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
+                        <Label Content="Proj Speed" Grid.Column="0" Grid.Row="1"></Label>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="Proj Size" Grid.Column="0" Grid.Row="2"></Label>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="Proj Count" Grid.Column="0" Grid.Row="3"></Label>
+                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
+                        <Label Content="Proj Spread?" Grid.Column="0" Grid.Row="4"></Label>
+                        <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.DoesProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></CheckBox>
+                        <Label Content="Proj Sprd Angle" Grid.Column="0" Grid.Row="5"></Label>
+                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
 
-            <Label Content="Attacks per sec" Grid.Column="3"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <TextBlock Grid.Column="5" Grid.Row="5" Grid.RowSpan="2" TextWrapping="Wrap">WeaponRangeForTarget</TextBlock>
-            <CheckBox Grid.Column="6" Grid.Row="5" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRangeForTargeting, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
-            <TextBlock Grid.Column="5" Grid.Row="3" Grid.RowSpan="2" TextWrapping="Wrap">WeaponRangeForAOE</TextBlock>
-            <CheckBox Grid.Column="6" Grid.Row="3" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseWeaponRangeForAOE, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
-            <TextBlock Grid.Column="5" Grid.Row="7" Grid.RowSpan="2" TextWrapping="Wrap">UseBothWeaponsForDual</TextBlock>
-            <CheckBox Grid.Column="6" Grid.Row="7" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseBothWeaponsForDual, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
-            <Label Content="TargetRange" Grid.Column="3" Grid.Row="4"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="TargetType" Grid.Column="3" Grid.Row="5"></Label>
-            <ComboBox Grid.Column="4" Grid.Row="5" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}}"></ComboBox>
-            <Label Content="FlatDamageMult" Grid.Column="3" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
-            <Label Content="Base Critical" Grid.Column="3" Grid.Row="2"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"/>
-            <Label Content="BasePower" Grid.Column="5" Grid.Row="0"></Label>
-            <xctk:DoubleUpDown Grid.Column="6" Grid.Row="0" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseAbilityPower, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.001" FormatString="F4"/>
-            <Label Content="ScalingPower" Grid.Column="5" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="6" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.001" FormatString="F4"/>
-        </Grid>
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="90" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="80" />
-                <ColumnDefinition Width="60" />
-                <ColumnDefinition Width="auto" />
-            </Grid.ColumnDefinitions>
+                        <Label Content="AoE Values" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
+                        <Label Content="Area Radius" Grid.Column="3" Grid.Row="1"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AreaRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="Area Length" Grid.Column="3" Grid.Row="2"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AreaLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
 
-            <Label Content="Projectile Values" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
-            <Label Content="Proj Speed" Grid.Column="0" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="Proj Size" Grid.Column="0" Grid.Row="2"></Label>
-            <xctk:DoubleUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="Proj Count" Grid.Column="0" Grid.Row="3"></Label>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
-            <Label Content="Proj Spread?" Grid.Column="0" Grid.Row="4"></Label>
-            <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.DoesProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></CheckBox>
-            <Label Content="Proj Sprd Angle" Grid.Column="0" Grid.Row="5"></Label>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
+                        <Label Content="Hitscan Values" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
+                        <Label Content="HitscanDelay" Grid.Column="0" Grid.Row="8"></Label>
+                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
 
-            <Label Content="AoE Values" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
-            <Label Content="Area Radius" Grid.Column="3" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AreaRadius, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="Area Length" Grid.Column="3" Grid.Row="2"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AreaLength, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-
-            <Label Content="Hitscan Values" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
-            <Label Content="HitscanDelay" Grid.Column="0" Grid.Row="8"></Label>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
-
-            <Label Content="Weapon Skill Values" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
-            <Label Content="BaseMult" Grid.Column="3" Grid.Row="6"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="6" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" ValueChanged="WeaponBaseMult_ValueChanged" Name="WeaponBaseMultInput"></xctk:DoubleUpDown>
-            <Label Content="Scaling" Grid.Column="3" Grid.Row="7"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="7" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplierScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F3" ValueChanged="DoubleUpDown_ValueChanged_1" Name="WeaponScaleInput"></xctk:DoubleUpDown>
-            <Label Content="" Grid.Column="5" Grid.Row="6" Name="WeaponMultLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
-            <Label Content="" Grid.Column="5" Grid.Row="7" Name="WeaponScaleLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
-            <Label Content="" Grid.Column="5" Grid.Row="8" Name="WeaponSumLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <!--
-            <Label Content="Cold" FontWeight="Bold" Grid.Column="2" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="2" Name="ColdCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
-            <Label Content="Lightning" FontWeight="Bold" Grid.Column="3" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="3" Name="LightningCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
-            <Label Content="Earth" FontWeight="Bold" Grid.Column="4" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="4" Name="EarthCheck" Checked="Checked" Unchecked="Unchecked" ></CheckBox>
-            <Label Content="Divine" FontWeight="Bold" Grid.Column="5" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="5" Name="DivineCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
-            <Label Content="Void" FontWeight="Bold" Grid.Column="6" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="6" Name="VoidCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
-
-            <Label Content="Physical" FontWeight="Bold" Grid.Column="0" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Name="PhysCheck" Checked="Checked" Unchecked="Unchecked" IsChecked="{Binding ElementName=AbilitiesList, Path=SelectedItem.HasPhysical, Mode=OneWay}"></CheckBox>
-            <DockPanel Grid.Row="1">
-                <xctk:DoubleUpDown Width="50" Value="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetPhysical.MinMult}" IsEnabled="{Binding ElementName=PhysCheck, Path=IsChecked}" Name="PhysMin"></xctk:DoubleUpDown>
-                <xctk:DoubleUpDown Width="50" Value="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetPhysical.MaxMult}" IsEnabled="{Binding ElementName=PhysCheck, Path=IsChecked}" Name="PhysMax"></xctk:DoubleUpDown>
-            </DockPanel>
-            <DataGrid Grid.Row="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetPhysical.Damage}" Name="PhysGrid">
-            </DataGrid>
-
-            <Label Content="Fire" FontWeight="Bold" Grid.Column="1" Margin="15,0,0,0"></Label>
-            <CheckBox HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="1" Name="FireCheck" Checked="Checked" Unchecked="Unchecked"></CheckBox>
-            -->
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="0" ElementProp="PHYSICAL" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetPhysical , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="1" ElementProp="FIRE" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetFire , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="2" ElementProp="COLD" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetCold , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="3" ElementProp="LIGHTNING" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetLightning , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="4" ElementProp="EARTH" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetEarth , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="5" ElementProp="DIVINE" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetDivine , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
-            <local:ElementDamage Grid.RowSpan="3" Grid.Column="5" ElementProp="VOID" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetVoid , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <Label Content="Weapon Skill Values" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
+                        <Label Content="BaseMult" Grid.Column="3" Grid.Row="6"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="6" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" ValueChanged="WeaponBaseMult_ValueChanged" Name="WeaponBaseMultInput"></xctk:DoubleUpDown>
+                        <Label Content="Scaling" Grid.Column="3" Grid.Row="7"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="7" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.WeaponMultiplierScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F4" ValueChanged="DoubleUpDown_ValueChanged_1" Name="WeaponScaleInput"></xctk:DoubleUpDown>
+                        <Label Content="" Grid.Column="5" Grid.Row="6" Name="WeaponMultLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
+                        <Label Content="" Grid.Column="5" Grid.Row="7" Name="WeaponScaleLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
+                        <Label Content="" Grid.Column="5" Grid.Row="8" Name="WeaponSumLabel" FontWeight="Bold" ContentStringFormat="P"></Label>
+                    </Grid>
+                    <VirtualizingStackPanel Orientation="Horizontal"  Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2">
+                        <local:ElementDamage ElementProp="PHYSICAL" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetPhysical , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <local:ElementDamage ElementProp="FIRE" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetFire , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <local:ElementDamage ElementProp="COLD" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetCold , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <local:ElementDamage ElementProp="LIGHTNING" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetLightning , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <local:ElementDamage ElementProp="EARTH" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetEarth , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <local:ElementDamage ElementProp="DIVINE" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetDivine , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                        <local:ElementDamage ElementProp="VOID" BindBase="{Binding ElementName=AbilitiesList,Path=SelectedItem, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" BindAbilityDamage="{Binding ElementName=AbilitiesList, Path=SelectedItem.GetVoid , UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></local:ElementDamage>
+                    </VirtualizingStackPanel>
+                    <VirtualizingStackPanel Grid.Column="3" >
+                         <Label Content="HasLinked?" Height="25" ></Label>
+                        <Label Content="LinkedAbility" Height="25"  ></Label>
+                        <Label Content="InheritsDamage?" Height="25"  ></Label>
+                        <Label Content="Inherit %" Height="25"  ></Label>
+                        <Label Content="Inherit % Scale" Height="25" ></Label>
+                        <Label Content="LinkedType" Height="25" ></Label>
+                        <Label Content="Link Time" Height="25" ></Label>
+                    </VirtualizingStackPanel>
+                    <VirtualizingStackPanel Grid.Column="4">
+                        <CheckBox Height="25"  IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+                        <ComboBox Height="25"  SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding}" Name="LinkedAbilityList" SelectedValuePath="IdName" DisplayMemberPath="IdName" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></ComboBox>
+                        <CheckBox Height="25"  IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.InheritsDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></CheckBox>
+                        <xctk:DoubleUpDown Height="25"  Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.InheritDamagePercent, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
+                        <xctk:DoubleUpDown Height="25"  Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.InheritDamagePercentScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F3" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
+                        <ComboBox  Height="25"  SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityLinkType}}}" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></ComboBox>
+                        <xctk:DoubleUpDown Height="25"  Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.Time, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F2" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
+                    </VirtualizingStackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="_Second">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.RowSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="26"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Label Content="Ability Bonus Properties" FontWeight="Bold"></Label>
+                        <Label Grid.Row="2" Content="Applied Buff/Debuff Effects" FontWeight="Bold"></Label>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
+                        <DataGrid Grid.Row="3" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="25"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.ColumnSpan="2"  Grid.Row="1" Name="FilterBox" TextChanged="FilterBox_TextChanged"></TextBox>
+                        <ListBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Name="GroupList" ItemsSource="{Binding}">
+                        </ListBox>
+                        <Grid Grid.Column="0" Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Grid.Row="1" Content="Add" Click="GroupAddButtonClick"/>
+                            <Button Grid.Column="1" Grid.Row="1" Content="Remove" Click="GroupRemoveButtonClick"/>
+                        </Grid>
+                        <Grid Grid.Column="1" Grid.Row="3">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="1*"/>
+                            </Grid.ColumnDefinitions>
+                            <Button Grid.Column="0" Grid.Row="1" Content="Add" Click="RestrictAddButtonClick"/>
+                            <Button Grid.Column="1" Grid.Row="1" Content="Remove" Click="RestrictRemoveButtonClick"/>
+                        </Grid>
+                        <ListView Grid.Row="4" Grid.ColumnSpan="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.GroupTypes, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="GroupTagList">
+                            <ListView.View>
+                                <GridView AllowsColumnReorder="False">
+                                    <GridViewColumn Header="Tag" Width="120"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <ListView Grid.Row="4" Grid.ColumnSpan="1" Grid.Column="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.WeaponRestrictions, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="RestrictionList">
+                            <ListView.View>
+                                <GridView AllowsColumnReorder="False">
+                                    <GridViewColumn Header="Restrictions" Width="120"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </TabItem>
+        </TabControl>
 
 
-        </Grid>
-        <Grid Grid.Column="3" Grid.Row="0" Grid.RowSpan="2" Margin="5,5,5,5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="25"/>
-                <RowDefinition Height="200"/>
-                <RowDefinition Height="150"/>
-                <RowDefinition Height="150"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="1*"/>
-            </Grid.ColumnDefinitions>
-            <TextBox Grid.ColumnSpan="2" Name="FilterBox" TextChanged="FilterBox_TextChanged"></TextBox>
-            <ListBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Name="GroupList" ItemsSource="{Binding}">
-            </ListBox>
-            <Grid Grid.Column="0" Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Grid.Row="1" Content="Add" Click="GroupAddButtonClick"/>
-                <Button Grid.Column="1" Grid.Row="1" Content="Remove" Click="GroupRemoveButtonClick"/>
-            </Grid>
-            <Grid Grid.Column="1" Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Grid.Row="1" Content="Add" Click="RestrictAddButtonClick"/>
-                <Button Grid.Column="1" Grid.Row="1" Content="Remove" Click="RestrictRemoveButtonClick"/>
-            </Grid>
-            <ListView Grid.Row="3" Grid.ColumnSpan="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.GroupTypes, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="GroupTagList">
-                <ListView.View>
-                    <GridView AllowsColumnReorder="False">
-                        <GridViewColumn Header="Tag" Width="120"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <ListView Grid.Row="3" Grid.ColumnSpan="1" Grid.Column="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.WeaponRestrictions, UpdateSourceTrigger=PropertyChanged}"  SelectionMode="Single" Name="RestrictionList">
-                <ListView.View>
-                    <GridView AllowsColumnReorder="False">
-                        <GridViewColumn Header="Restrictions" Width="120"/>
-                    </GridView>
-                </ListView.View>
-            </ListView>
-            <DataGrid Grid.Row="4" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
-        </Grid>
     </Grid>
+
 </UserControl>

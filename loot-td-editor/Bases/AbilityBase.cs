@@ -40,14 +40,18 @@ namespace loot_td
 
         private ObservableCollection<GroupType> groupTypes;
         private ObservableCollection<GroupType> weaponRestrictions;
-        private List<ScalingBonusProperty_Float> bonusProperties;
+        private ObservableCollection<ScalingBonusProperty_Float> bonusProperties;
         private string effectSprite;
         private LinkedAbilityData linkedAbility;
-        private List<AbilityEffectData> appliedEffects;
+        private ObservableCollection<AbilityAppliedEffect> appliedEffects;
         private bool hasLinkedAbility;
         private bool useWeaponRange;
         private bool useWeaponRangeAoe;
         private bool useBothWeaponsForDual;
+        private int hitCount;
+        private float hitDamageModifier;
+        private float delayBetweenHits;
+
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -121,7 +125,7 @@ namespace loot_td
         public ObservableCollection<GroupType> WeaponRestrictions { get => weaponRestrictions; set => SetProperty(ref weaponRestrictions, value); }
 
         [JsonProperty]
-        public List<ScalingBonusProperty_Float> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
+        public ObservableCollection<ScalingBonusProperty_Float> BonusProperties { get => bonusProperties; set => SetProperty(ref bonusProperties, value); }
 
         [JsonProperty]
         public string EffectSprite { get => effectSprite; set => SetProperty(ref effectSprite, value); }
@@ -130,7 +134,7 @@ namespace loot_td
         public LinkedAbilityData LinkedAbility { get => linkedAbility; set => SetProperty(ref linkedAbility, value); }
 
         [JsonProperty]
-        public List<AbilityEffectData> AppliedEffects { get => appliedEffects; set => SetProperty(ref appliedEffects, value); }
+        public ObservableCollection<AbilityAppliedEffect> AppliedEffects { get => appliedEffects; set => SetProperty(ref appliedEffects, value); }
 
         [JsonProperty]
         public bool HasLinkedAbility { get => hasLinkedAbility; set => SetProperty(ref hasLinkedAbility, value); }
@@ -144,13 +148,23 @@ namespace loot_td
         [JsonProperty]
         public bool UseBothWeaponsForDual { get => useBothWeaponsForDual; set => SetProperty(ref useBothWeaponsForDual, value); }
 
+
+        [JsonProperty]
+        public int HitCount { get => hitCount; set => SetProperty(ref hitCount, value); }
+
+        [JsonProperty]
+        public float HitDamageModifier { get => hitDamageModifier; set => SetProperty(ref hitDamageModifier, value); }
+
+        [JsonProperty]
+        public float DelayBetweenHits { get => delayBetweenHits; set => SetProperty(ref delayBetweenHits, value); }
+
         public AbilityBase()
         {
             DamageLevels = new Dictionary<ElementType, AbilityDamageBase>();
             GroupTypes = new ObservableCollection<GroupType>();
             WeaponRestrictions = new ObservableCollection<GroupType>();
-            BonusProperties = new List<ScalingBonusProperty_Float>();
-            AppliedEffects = new List<AbilityEffectData>();
+            BonusProperties = new ObservableCollection<ScalingBonusProperty_Float>();
+            AppliedEffects = new ObservableCollection<AbilityAppliedEffect>();
             LinkedAbility = new LinkedAbilityData();
             effectSprite = "";
         }
@@ -286,35 +300,6 @@ namespace loot_td
         }
     }
 
-    [Serializable]
-    public class AbilityEffectData : BindableBase
-    {
-        private EffectType effect;
-        private float chanceToApply;
-        private float value1;
-        private float chanceToApplyScaling;
-        private float value1Scaling;
-
-        // private float value2;
-        [JsonProperty]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public EffectType Effect { get => effect; set => SetProperty(ref effect, value); }
-
-        [JsonProperty]
-        public float ChanceToApply { get => chanceToApply; set => SetProperty(ref chanceToApply, value); }
-
-        [JsonProperty]
-        public float EffectPower { get => value1; set => SetProperty(ref value1, value); }
-
-        [JsonProperty]
-        public float ChanceToApplyScaling { get => chanceToApplyScaling; set => SetProperty(ref chanceToApplyScaling, value); }
-
-        [JsonProperty]
-        public float EffectPowerScaling { get => value1Scaling; set => SetProperty(ref value1Scaling, value); }
-
-        //[JsonProperty]
-        //public float Value2 { get => value2; set => SetProperty( ref value2, value); }
-    }
 
     public enum AbilityType
     {
@@ -363,7 +348,34 @@ namespace loot_td
         ENEMY,
         ALLY,
         ALL,
+        SELF,
         NONE
+    }
+
+    [Serializable]
+    public class AbilityAppliedEffect
+    {
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public BonusType bonusType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public ModifyType modifyType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public AbilityTargetType targetType { get; set; }
+        [JsonProperty]
+        public float chance { get; set; }
+        [JsonProperty]
+        public float initialValue { get; set; }
+        [JsonProperty]
+        public float growthValue { get; set; }
+        [JsonProperty]
+        public float duration { get; set; }
+        [JsonProperty]
+        public int stacks { get; set; }
+        [JsonProperty]
+        public bool useLastRoll { get; set; }
     }
 
     public interface IIdName
