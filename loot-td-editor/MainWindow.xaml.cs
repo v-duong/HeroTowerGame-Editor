@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Collections.ObjectModel;
 
 namespace loot_td_editor
 {
@@ -223,7 +224,7 @@ namespace loot_td_editor
 
             foreach(ArchetypeBase archetype in ArchetypeEditor.Archetypes.ToList())
             {
-                archetype.NodeList = new System.Collections.ObjectModel.ObservableCollection<ArchetypeSkillNode>( archetype.NodeList.OrderBy(x=>x.Id) );
+                archetype.NodeList = new ObservableCollection<ArchetypeSkillNode>( archetype.NodeList.OrderBy(x=>x.Id) );
             }
 
             string s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.json";
@@ -376,9 +377,9 @@ namespace loot_td_editor
             }
             else
             {
-                SaveToJson<EquipmentBase>("\\items\\armor", ArmorEditor.Equipments.ToList());
-                SaveToJson<EquipmentBase>("\\items\\weapon", WeaponEditor.Equipments.ToList());
-                SaveToJson<EquipmentBase>("\\items\\accessory", AccessoryEditor.Equipments.ToList());
+                SaveToJson("\\items\\armor", ArmorEditor.Equipments.ToList());
+                SaveToJson("\\items\\weapon", WeaponEditor.Equipments.ToList());
+                SaveToJson("\\items\\accessory", AccessoryEditor.Equipments.ToList());
                 saveEquips = true;
             }
 

@@ -273,6 +273,20 @@ public sealed class NaturalStringComparer : IComparer
         return SafeNativeMethods.StrCmpLogicalW(lhs.GetStringId(), rhs.GetStringId());
     }
 }
+public sealed class NaturalStringComparer2 : IComparer<string>
+{
+    public int Compare(string x, string y)
+    {
+        return SafeNativeMethods.StrCmpLogicalW(x, y);
+    }
+
+    public int Compare(object a, object b)
+    {
+        var lhs = (IStringId)a;
+        var rhs = (IStringId)b;
+        return SafeNativeMethods.StrCmpLogicalW(lhs.GetStringId(), rhs.GetStringId());
+    }
+}
 
 public sealed class BonusTypeComparer : IComparer
 {

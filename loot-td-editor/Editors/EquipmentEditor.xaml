@@ -34,7 +34,7 @@
             <Button Content="ADD" Click="AddButtonClick" />
             <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick" />
             <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick" />
-            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="EquipList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="EquipList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" >
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
@@ -44,6 +44,9 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            <Button Grid.Row="2" Grid.Column="2" Content="SORTNAME" Click="SortButton_Click" />
+            <Button Grid.Row="2" Grid.Column="1" Content="SET ALL REQ" Click="ReqButton_Click" />
+            <Button Grid.Row="2" Grid.Column="0" Content="SET ALL DEF" Click="ValueButton_Click" />
         </Grid>
         <Grid Grid.Column="1" Grid.RowSpan="2">
             <Grid.RowDefinitions>
@@ -85,7 +88,7 @@
                 <Label Content="Use Scaling" Grid.Column="3" Grid.Row="6"></Label>
                 <CheckBox Grid.Column="4" Grid.Row="6" VerticalAlignment="Center" Name="UseScalingBox" Checked="UseScalingBox_Checked" Unchecked="UseScalingBox_Unchecked" IsChecked="True"></CheckBox>
                 <Label Content="ValueMult" Grid.Column="3" Grid.Row="7"></Label>
-                <xctk:IntegerUpDown Grid.Column="4" Grid.Row="7" Minimum="0" Maximum="3" Name="ScalingMult" ValueChanged="ScalingMult_ValueChanged" IsEnabled="{Binding ElementName=UseScalingBox, Path=IsChecked}"></xctk:IntegerUpDown>
+                <xctk:DoubleUpDown Grid.Column="4" Grid.Row="7" Minimum="0" Maximum="3" Name="ScalingMult" ValueChanged="ScalingMult_ValueChanged" IsEnabled="{Binding ElementName=UseScalingBox, Path=IsChecked}" Increment="0.2"></xctk:DoubleUpDown>
 
             </Grid>
             <Grid Grid.Row="1">

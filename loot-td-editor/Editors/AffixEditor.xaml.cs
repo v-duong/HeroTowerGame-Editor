@@ -296,6 +296,12 @@ namespace loot_td_editor
             ComboBox box = sender as ComboBox;
             box.ItemsSource = GroupTypes.ToList();
         }
+
+        private void SortButton_Click(object sender, RoutedEventArgs e)
+        {
+            Affixes = new ObservableCollection<AffixBase>(Affixes.OrderBy(x => x.IdName, new NaturalStringComparer2()));
+            AffixesList.ItemsSource = Affixes;
+        }
     }
 
     public class BonusDataValidationRule : ValidationRule

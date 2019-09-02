@@ -6,8 +6,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -22,19 +20,19 @@ namespace loot_td_editor
         public static float armorScaling = 3f;
         public static float shieldScaling = 4.5f;
         public static float dodgeRatingScaling = 2.3f;
-        public static float resolveRatingScaling = 1.12f;
+        public static float resolveRatingScaling = 1.5f;
         public static float hybridMult = 0.5f;
         public static float willHybridMult = 0.75f;
 
-        public static float mainAttrScaling = 2.5f;
-        public static float subAttrScaling = 1.0f;
+        public static float mainAttrScaling = 1.5f;
+        public static float subAttrScaling = 0.8f;
         public static float hybridFactor = 1.6f;
         public static int startingAttr = 10;
 
         public ObservableCollection<AffixBase> innatesList { get; set; }
         public ObservableCollection<EquipmentBase> Equipments;
-        public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
-        public IList<EquipSlotType> EquipSlotTypes { get { return Enum.GetValues(typeof(EquipSlotType)).Cast<EquipSlotType>().ToList<EquipSlotType>(); } }
+        public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList(); } }
+        public IList<EquipSlotType> EquipSlotTypes { get { return Enum.GetValues(typeof(EquipSlotType)).Cast<EquipSlotType>().ToList(); } }
 
         private int currentID = 0;
 
@@ -179,9 +177,9 @@ namespace loot_td_editor
 
         private void CalculateArmorValues(EquipmentBase b)
         {
-            int scalingMulti = 1;
+            float scalingMulti = 1;
             if (ScalingMult.Value != null)
-                scalingMulti = (int)ScalingMult.Value;
+                scalingMulti = (float)ScalingMult.Value;
             b.Armor = 0;
             b.Shield = 0;
             b.DodgeRating = 0;
@@ -190,50 +188,55 @@ namespace loot_td_editor
             switch (b.Group)
             {
                 case GroupType.STR_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 0, armorScaling) * scalingMulti;
+                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 0, armorScaling) * scalingMulti);
                     break;
 
                 case GroupType.INT_ARMOR:
-                    b.Shield = GetScaledDefense(b.DropLevel, 0, shieldScaling) * scalingMulti;
+                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 0, shieldScaling) * scalingMulti);
                     break;
 
                 case GroupType.AGI_ARMOR:
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti;
+                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti);
                     break;
 
                 case GroupType.STR_AGI_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti;
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling) * scalingMulti;
+                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti);
+                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling) * scalingMulti);
                     break;
 
                 case GroupType.STR_WILL_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 2, armorScaling) * scalingMulti;
-                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling) * scalingMulti;
+                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 2, armorScaling) * scalingMulti);
+                    b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
                     break;
 
                 case GroupType.STR_INT_ARMOR:
-                    b.Armor = GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti;
-                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti;
+                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti);
+                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti);
                     break;
 
                 case GroupType.INT_AGI_ARMOR:
-                    b.Shield = GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti;
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti;
+                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti);
+                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti);
                     break;
 
                 case GroupType.INT_WILL_ARMOR:
-                    b.Shield = GetScaledDefense(b.DropLevel, 2, shieldScaling) * scalingMulti;
-                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling) * scalingMulti;
+                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 2, shieldScaling) * scalingMulti);
+                    b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
                     break;
 
                 case GroupType.AGI_WILL_ARMOR:
-                    b.DodgeRating = GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling) * scalingMulti;
-                    b.ResolveRating = GetScaledDefense(b.DropLevel, 0, resolveRatingScaling) * scalingMulti;
+                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling) * scalingMulti);
+                    b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
                     break;
 
                 default:
                     return;
             }
+        }
+
+        private int ResolveRatingValue(int level)
+        {
+            return (int)(level * resolveRatingScaling);
         }
 
         private void CalculateReqValues(EquipmentBase b)
@@ -379,13 +382,15 @@ namespace loot_td_editor
             if (sortBy == "IdName")
             {
                 dataView.CustomSort = new NaturalStringComparer();
-            } else
+            }
+            else
             {
                 SortDescription sd = new SortDescription(sortBy, direction);
                 dataView.SortDescriptions.Add(sd);
             }
             dataView.Refresh();
         }
+
 
         private void DPS_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
@@ -396,6 +401,27 @@ namespace loot_td_editor
             dps = ((t.MinDamage + t.MaxDamage) / 2d) * t.AttackSpeed;
             DPSLabel.Content = dps;
         }
+
+        private void SortButton_Click(object sender, RoutedEventArgs e)
+        {
+            Equipments = new ObservableCollection<EquipmentBase>(Equipments.OrderBy(x => x.IdName, new NaturalStringComparer2()));
+            EquipList.ItemsSource = Equipments;
+        }
+
+        private void ReqButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (EquipmentBase equipment in Equipments)
+            {
+                CalculateReqValues(equipment);
+            }
+        }
+
+        private void ValueButton_Click(object sender, RoutedEventArgs e)
+        {
+            foreach (EquipmentBase equipment in Equipments)
+            {
+                CalculateArmorValues(equipment);
+            }
+        }
     }
 }
-

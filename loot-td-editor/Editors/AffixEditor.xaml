@@ -44,6 +44,7 @@
                     </GridView>
                 </ListView.View>
             </ListView>
+            <Button Grid.Row="2" Grid.Column="2" Content="SORTNAME" Click="SortButton_Click" />
         </Grid>
         <Grid Grid.Column="1" Margin="5,5,5,5">
             <Grid.RowDefinitions>
