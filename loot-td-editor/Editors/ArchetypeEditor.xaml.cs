@@ -52,14 +52,15 @@ namespace loot_td_editor.Editors
                 return;
             }
             string json = System.IO.File.ReadAllText(filePath);
-            Archetypes = JsonConvert.DeserializeObject<ObservableCollection<ArchetypeBase>>(json, 
-                new JsonSerializerSettings {
+            Archetypes = JsonConvert.DeserializeObject<ObservableCollection<ArchetypeBase>>(json,
+                new JsonSerializerSettings
+                {
                     Error = delegate (object sender, ErrorEventArgs args)
                     {
                         System.Windows.MessageBox.Show(args.ErrorContext.Error.Message, "Confirmation", MessageBoxButton.YesNo);
                         args.ErrorContext.Handled = true;
                     }
-            });
+                });
 
             foreach (ArchetypeBase k in Archetypes)
             {
@@ -424,9 +425,9 @@ namespace loot_td_editor.Editors
             if (ArchetypesList.SelectedItem == null)
                 return;
             ArchetypeBase selected = (ArchetypeBase)ArchetypesList.SelectedItem;
-            foreach(ArchetypeSkillNode node in selected.NodeList)
+            foreach (ArchetypeSkillNode node in selected.NodeList)
             {
-                foreach(int index in node.Children)
+                foreach (int index in node.Children)
                 {
                     if (selected.NodeList.Where(y => y.Id == index).Count() == 0)
                         node.HasError = true;
@@ -654,7 +655,8 @@ namespace loot_td_editor.Editors
             if (node.MaxLevel == 1)
             {
                 bonus.sum = bonus.growthValue;
-            } else
+            }
+            else
             {
                 bonus.sum = bonus.growthValue * (node.MaxLevel - 1) + bonus.finalLevelValue;
             }

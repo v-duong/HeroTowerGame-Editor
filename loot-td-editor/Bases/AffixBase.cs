@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
 
 namespace loot_td
 {
@@ -30,7 +31,7 @@ namespace loot_td
         public int SpawnLevel { get => _spawnLevel; set => SetProperty(ref _spawnLevel, value); }
 
         [JsonProperty]
-        public ObservableCollection<AffixBonus> AffixBonuses { get => _affixBonuses; set => SetProperty(ref _affixBonuses, value); }
+        public ObservableCollection<AffixBonus> AffixBonuses { get => _affixBonuses; set { SetProperty(ref _affixBonuses, value); } }
 
         [JsonProperty]
         public ObservableCollection<AffixWeight> SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
@@ -98,9 +99,31 @@ namespace loot_td
             return x;
         }
 
+        public void RaiseListStringChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                {
+                    item.PropertyChanged -= RaiseListStringChanged_;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                {
+                    item.PropertyChanged += RaiseListStringChanged_;
+                }
+            }
+        }
+
+        public void RaiseListStringChanged_(object sender, PropertyChangedEventArgs e)
+        {
+            RaisePropertyChanged("ListString");
+        }
+
         public static int WeightContainsType(ObservableCollection<AffixWeight> s, GroupType type)
         {
-            
             int i = 0;
             foreach (AffixWeight x in s)
             {
@@ -119,7 +142,6 @@ namespace loot_td
 
     public class AffixBonus : BindableBase
     {
-
         private BonusType _bonusType;
         private ModifyType _modifyType;
         private int _minValue;
@@ -128,7 +150,7 @@ namespace loot_td
 
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
-        public BonusType BonusType { get => _bonusType; set => SetProperty(ref _bonusType, value); }
+        public BonusType BonusType { get => _bonusType; set { SetProperty(ref _bonusType, value); } }
 
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -146,7 +168,6 @@ namespace loot_td
 
         public AffixBonus()
         {
-
         }
     }
 
@@ -171,7 +192,8 @@ namespace loot_td
         SUFFIX,
         ENCHANTMENT,
         INNATE,
-        MONSTERMOD
+        MONSTERMOD,
+        UNIQUE
     }
 
     public enum ModifyType

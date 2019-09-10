@@ -21,9 +21,10 @@ namespace loot_td_editor
     public partial class AffixEditor : UserControl
     {
         public ObservableCollection<AffixBase> Affixes;
-        
+
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
         private IList<BonusType> _bonusTypes;
+
         public IList<BonusType> BonusTypes
         {
             get
@@ -162,7 +163,6 @@ namespace loot_td_editor
             //AffixesList.Items.Refresh();
         }
 
-
         private void GroupAddButtonClick(object sender, RoutedEventArgs e)
         {
             if (GroupList.SelectedItem == null || AffixesList.SelectedItem == null)
@@ -269,7 +269,6 @@ namespace loot_td_editor
                 return;
 
             AffixBase first = (AffixBase)AffixesList.SelectedItems[0];
-            ObservableCollection<AffixWeight> firstList = first.SpawnWeight;
 
             foreach (AffixBase b in AffixesList.SelectedItems)
             {
@@ -281,20 +280,6 @@ namespace loot_td_editor
                     b.SpawnWeight.Add(w.CloneWeight());
                 }
             }
-        }
-
-        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            ComboBox box = sender as ComboBox;
-            box.IsTextSearchEnabled = false;
-            box.ItemsSource = BonusTypes.ToList();
-            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(box.ItemsSource);
-        }
-
-        private void GroupComboBoxLoaded(object sender, RoutedEventArgs e)
-        {
-            ComboBox box = sender as ComboBox;
-            box.ItemsSource = GroupTypes.ToList();
         }
 
         private void SortButton_Click(object sender, RoutedEventArgs e)

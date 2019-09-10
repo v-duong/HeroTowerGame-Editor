@@ -1,22 +1,14 @@
-﻿using System;
+﻿using loot_td;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using loot_td;
-using Newtonsoft.Json;
 using Xceed.Wpf.Toolkit;
 
 namespace loot_td_editor.Editors
@@ -26,7 +18,6 @@ namespace loot_td_editor.Editors
     /// </summary>
     public partial class AbilityEditor : UserControl
     {
-
         public ObservableCollection<AbilityBase> Abilities;
         private int currentID;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
@@ -57,7 +48,6 @@ namespace loot_td_editor.Editors
             }
 
             AbilitiesList.ItemsSource = Abilities;
-
         }
 
         public AbilityEditor()
@@ -74,7 +64,6 @@ namespace loot_td_editor.Editors
         {
             AbilityBase temp = new AbilityBase
             {
-
                 IdName = "UNTITLED NEW",
             };
             Abilities.Add(temp);
@@ -234,5 +223,4 @@ namespace loot_td_editor.Editors
             dataView.Refresh();
         }
     }
-
 }

@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="loot_td_editor.UniqueEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:local="clr-namespace:loot_td_editor"
+             xmlns:dd ="urn:gong-wpf-dragdrop"
+             xmlns:loottd="clr-namespace:loot_td"
+             mc:Ignorable="d"
+             d:DesignHeight="900" d:DesignWidth="1700">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="2.5*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.RowSpan="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="24*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="ADD" Click="AddButtonClick" />
+            <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick" />
+            <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick" />
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="EquipList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" >
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=DropLevel}" Header="DropLevel" Width="35" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=EquipSlot}" Header="EquipSlot" Width="90" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=Group}" Header="Group" Width="90" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Grid.Row="2" Grid.Column="2" Content="SORTNAME" Click="SortButton_Click" />
+            <Button Grid.Row="2" Grid.Column="1" Content="SET ALL REQ" Click="ReqButton_Click" />
+            <Button Grid.Row="2" Grid.Column="0" Content="SET ALL DEF" Click="ValueButton_Click" />
+        </Grid>
+        <local:EquipBaseFields Grid.Column="1" Grid.ColumnSpan="2" x:Name="BaseFields" SelectedBase="{Binding ElementName=EquipList, Path=SelectedItem}" Margin="3,3,3,3" />
+        <local:AffixBonusPropGrid  Grid.Column="1" Grid.Row="1" x:Name="BonusPropGrid" SelectedAffix="{Binding}"/>
+        <Grid Grid.Column="2" Grid.Row="1" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="ADD" Click="FixedAddButtonClick" />
+            <Button Grid.Column="1" Content="ADD COPY" Click="FixedCopyButtonClick" />
+            <Button Grid.Column="2" Content="REMOVE" Click="FixedRemoveButtonClick" />
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=EquipList, Path=SelectedItem.FixedUniqueAffixes}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="FixedAffixesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" SelectionChanged="RandomAffixesList_SelectionChanged" GotFocus="FixedAffixesList_GotFocus" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" >
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=ListString}" Header="ListString" Width="200" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            <Button Grid.Row="2" Content="ADD" Click="RandomAddButtonClick" />
+            <Button Grid.Row="2"  Grid.Column="1" Content="ADD COPY" Click="RandomCopyButtonClick" />
+            <Button Grid.Row="2"  Grid.Column="2" Content="REMOVE" Click="RandomRemoveButtonClick" />
+            <ListView Grid.Row="3" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=EquipList, Path=SelectedItem.RandomUniqueAffixes}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="RandomAffixesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" SelectionChanged="RandomAffixesList_SelectionChanged" GotFocus="FixedAffixesList_GotFocus">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="False">
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Path=ListString}" Header="ListString" Width="auto" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="3">
+            <Grid.RowDefinitions>
+                <RowDefinition  Height="30"/>
+                <RowDefinition  Height="*"/>
+            </Grid.RowDefinitions>
+            <DockPanel HorizontalAlignment="Left">
+                <Label Content="UniqueVersion" />
+                <xctk:IntegerUpDown Width="50" Value="{Binding ElementName=EquipList, Path=SelectedItem.UniqueVersion}" />
+            </DockPanel>
+            <TextBlock Grid.Row="1" Name="InfoBlock" Text="{Binding ElementName=EquipList, Path=SelectedItem.ItemAffixString}" Margin="10"></TextBlock>
+
+        </Grid>
+    </Grid>
+</UserControl>

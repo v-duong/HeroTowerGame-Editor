@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Prism.Mvvm;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace loot_td

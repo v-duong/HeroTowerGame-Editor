@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using loot_td_editor;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
 using System.Collections.ObjectModel;
@@ -68,6 +69,9 @@ namespace loot_td
         [JsonIgnore]
         public bool HasError { get => _hasError; set => SetProperty(ref _hasError, value); }
 
+        [JsonIgnore]
+        public string BonusString => GetBonusString();
+
         public ArchetypeSkillNode()
         {
             IdName = "";
@@ -83,6 +87,21 @@ namespace loot_td
         public string GetStringId()
         {
             return this.IdName;
+        }
+
+        private string GetBonusString()
+        {
+            string s = "";
+            foreach (ScalingBonusProperty_Int b in Bonuses)
+            {
+                float val;
+                if (MaxLevel > 1)
+                    val = b.growthValue * (MaxLevel - 1) + b.finalLevelValue;
+                else
+                    val = b.growthValue;
+                s += Localization.GetBonusTypeString(b.bonusType, b.modifyType, val, val, b.restriction);
+            }
+            return s;
         }
     }
 
@@ -105,7 +124,6 @@ namespace loot_td
 
         [JsonProperty]
         public float finalLevelValue { get; set; }
-
 
         private float _sum;
         private float _perpoint;

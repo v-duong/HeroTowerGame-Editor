@@ -17,17 +17,6 @@ namespace loot_td_editor
     /// </summary>
     public partial class EquipmentEditor : UserControl
     {
-        public static float armorScaling = 3f;
-        public static float shieldScaling = 4.5f;
-        public static float dodgeRatingScaling = 2.3f;
-        public static float resolveRatingScaling = 1.5f;
-        public static float hybridMult = 0.5f;
-        public static float willHybridMult = 0.75f;
-
-        public static float mainAttrScaling = 1.5f;
-        public static float subAttrScaling = 0.8f;
-        public static float hybridFactor = 1.6f;
-        public static int startingAttr = 10;
 
         public ObservableCollection<AffixBase> innatesList { get; set; }
         public ObservableCollection<EquipmentBase> Equipments;
@@ -81,8 +70,6 @@ namespace loot_td_editor
         public EquipmentEditor()
         {
             InitializeComponent();
-            EquipSlotBox.ItemsSource = EquipSlotTypes;
-            GroupTypeBox.ItemsSource = GroupTypes;
         }
 
         public void AddButtonClick()
@@ -97,7 +84,6 @@ namespace loot_td_editor
                 InnateAffixId = null
             };
             Equipments.Add(temp);
-            EquipList.Items.Refresh();
             currentID++;
         }
 
@@ -107,7 +93,6 @@ namespace loot_td_editor
                 return;
             EquipmentBase temp = Helpers.DeepClone((EquipmentBase)EquipList.SelectedItem);
             Equipments.Add(temp);
-            EquipList.Items.Refresh();
             currentID++;
         }
 
@@ -116,224 +101,9 @@ namespace loot_td_editor
             if (EquipList.SelectedItem == null)
                 return;
             Equipments.Remove((EquipmentBase)EquipList.SelectedItem);
-            EquipList.Items.Refresh();
         }
 
-        private void HasInnateBox_Checked(object sender, RoutedEventArgs e)
-        {
-            if (EquipList.SelectedItem == null)
-                return;
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            t.HasInnate = true;
-        }
 
-        private void HasInnateBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            if (EquipList.SelectedItem == null)
-                return;
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            t.HasInnate = false;
-            t.InnateAffixId = null;
-        }
-
-        private void SetArmorValuesClick(object sender, RoutedEventArgs e)
-        {
-            if (EquipList.SelectedItem == null)
-                return;
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            if (t == null)
-                return;
-            CalculateArmorValues(t);
-        }
-
-        private void SetOffenseValuesClick(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void SetReqValuesClick(object sender, RoutedEventArgs e)
-        {
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            if (t == null)
-                return;
-            CalculateReqValues(t);
-        }
-
-        private int GetScaledDefense(int droplevel, int hybridtype, float scaling)
-        {
-            if (hybridtype == 0)
-            {
-                return (int)Math.Floor(Helpers.EquipScalingFormula(droplevel) * scaling + 10);
-            }
-            else if (hybridtype == 1)
-            {
-                return (int)Math.Floor((Helpers.EquipScalingFormula(droplevel) * scaling + 10) * hybridMult);
-            }
-            else if (hybridtype == 2)
-            {
-                return (int)Math.Floor((Helpers.EquipScalingFormula(droplevel) * scaling + 10) * willHybridMult);
-            }
-            return 0;
-        }
-
-        private void CalculateArmorValues(EquipmentBase b)
-        {
-            float scalingMulti = 1;
-            if (ScalingMult.Value != null)
-                scalingMulti = (float)ScalingMult.Value;
-            b.Armor = 0;
-            b.Shield = 0;
-            b.DodgeRating = 0;
-            b.ResolveRating = 0;
-            b.SellValue = 0;
-            switch (b.Group)
-            {
-                case GroupType.STR_ARMOR:
-                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 0, armorScaling) * scalingMulti);
-                    break;
-
-                case GroupType.INT_ARMOR:
-                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 0, shieldScaling) * scalingMulti);
-                    break;
-
-                case GroupType.AGI_ARMOR:
-                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti);
-                    break;
-
-                case GroupType.STR_AGI_ARMOR:
-                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti);
-                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling) * scalingMulti);
-                    break;
-
-                case GroupType.STR_WILL_ARMOR:
-                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 2, armorScaling) * scalingMulti);
-                    b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
-                    break;
-
-                case GroupType.STR_INT_ARMOR:
-                    b.Armor = (int)(GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti);
-                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti);
-                    break;
-
-                case GroupType.INT_AGI_ARMOR:
-                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti);
-                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti);
-                    break;
-
-                case GroupType.INT_WILL_ARMOR:
-                    b.Shield = (int)(GetScaledDefense(b.DropLevel, 2, shieldScaling) * scalingMulti);
-                    b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
-                    break;
-
-                case GroupType.AGI_WILL_ARMOR:
-                    b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling) * scalingMulti);
-                    b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
-                    break;
-
-                default:
-                    return;
-            }
-        }
-
-        private int ResolveRatingValue(int level)
-        {
-            return (int)(level * resolveRatingScaling);
-        }
-
-        private void CalculateReqValues(EquipmentBase b)
-        {
-            b.StrengthReq = 0;
-            b.AgilityReq = 0;
-            b.IntelligenceReq = 0;
-            b.WillReq = 0;
-
-            int mainreq = (int)Math.Floor(b.DropLevel * mainAttrScaling + startingAttr);
-            int hybridmain = (int)Math.Floor(b.DropLevel * mainAttrScaling * hybridFactor + startingAttr);
-            int hybridsub = (int)Math.Floor(b.DropLevel * subAttrScaling + startingAttr);
-
-            switch (b.Group)
-            {
-                case GroupType.STR_ARMOR:
-                    b.StrengthReq = mainreq;
-                    break;
-
-                case GroupType.INT_ARMOR:
-                    b.IntelligenceReq = mainreq;
-                    break;
-
-                case GroupType.AGI_ARMOR:
-                    b.AgilityReq = mainreq;
-                    break;
-
-                case GroupType.STR_AGI_ARMOR:
-                    b.StrengthReq = hybridmain;
-                    b.AgilityReq = hybridmain;
-                    break;
-
-                case GroupType.STR_WILL_ARMOR:
-                    b.StrengthReq = hybridmain;
-                    b.WillReq = hybridsub;
-                    break;
-
-                case GroupType.STR_INT_ARMOR:
-                    b.StrengthReq = hybridmain;
-                    b.IntelligenceReq = hybridmain;
-                    break;
-
-                case GroupType.INT_AGI_ARMOR:
-                    b.IntelligenceReq = hybridmain;
-                    b.AgilityReq = hybridmain;
-                    break;
-
-                case GroupType.INT_WILL_ARMOR:
-                    b.IntelligenceReq = hybridmain;
-                    b.WillReq = hybridsub;
-                    break;
-
-                case GroupType.AGI_WILL_ARMOR:
-                    b.AgilityReq = hybridmain;
-                    b.WillReq = hybridsub;
-                    break;
-
-                default:
-                    return;
-            }
-        }
-
-        private void EquipSlotBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        private void InnateBox_DropDownOpened(object sender, EventArgs e)
-        {
-        }
-
-        private void ScalingMult_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            if (t == null)
-                return;
-            CalculateArmorValues(t);
-        }
-
-        private void UseScalingBox_Checked(object sender, RoutedEventArgs e)
-        {
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-
-            if (ScalingMult != null)
-                ScalingMult.Value = 1;
-
-            if (t == null)
-                return;
-
-            CalculateArmorValues(t);
-            CalculateReqValues(t);
-        }
-
-        private void UseScalingBox_Unchecked(object sender, RoutedEventArgs e)
-        {
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            ScalingMult.Value = 1;
-        }
 
         private GridViewColumnHeader _lastHeaderClicked = null;
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
@@ -391,17 +161,6 @@ namespace loot_td_editor
             dataView.Refresh();
         }
 
-
-        private void DPS_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
-        {
-            EquipmentBase t = (EquipmentBase)EquipList.SelectedItem;
-            if (t == null)
-                return;
-            double dps = 0;
-            dps = ((t.MinDamage + t.MaxDamage) / 2d) * t.AttackSpeed;
-            DPSLabel.Content = dps;
-        }
-
         private void SortButton_Click(object sender, RoutedEventArgs e)
         {
             Equipments = new ObservableCollection<EquipmentBase>(Equipments.OrderBy(x => x.IdName, new NaturalStringComparer2()));
@@ -412,7 +171,7 @@ namespace loot_td_editor
         {
             foreach (EquipmentBase equipment in Equipments)
             {
-                CalculateReqValues(equipment);
+                BaseFields.CalculateReqValues(equipment);
             }
         }
 
@@ -420,7 +179,7 @@ namespace loot_td_editor
         {
             foreach (EquipmentBase equipment in Equipments)
             {
-                CalculateArmorValues(equipment);
+                BaseFields.CalculateArmorValues(equipment);
             }
         }
     }

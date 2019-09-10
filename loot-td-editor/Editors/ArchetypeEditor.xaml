@@ -180,7 +180,7 @@
                     <Label Content="Ability" Grid.Row="4"   Grid.Column="0"/>
                     <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
                 </Grid>
-
+                <TextBlock Grid.Row="1" Name="InfoBlock" Margin="10" Text="{Binding ElementName=NodesList,Path=SelectedItem.BonusString}" />
                 <Grid Grid.Row="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="25" />

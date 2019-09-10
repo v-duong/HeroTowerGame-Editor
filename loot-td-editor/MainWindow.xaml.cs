@@ -3,13 +3,13 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Collections.ObjectModel;
 
 namespace loot_td_editor
 {
@@ -31,6 +31,7 @@ namespace loot_td_editor
         private int enemyEditorCount = 0;
         private int stageEditorCount = 0;
         private int affixEditorCount = 0;
+        private int uniqueEditorCount = 0;
 
         private Helpers.ErrorLog ErrorLog = new Helpers.ErrorLog();
 
@@ -43,9 +44,9 @@ namespace loot_td_editor
             WeaponEditor.innatesList = InnateEditor.Affixes;
             AccessoryEditor.innatesList = InnateEditor.Affixes;
 
-            ArmorEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
-            WeaponEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
-            AccessoryEditor.InnateBox.ItemsSource = InnateEditor.Affixes;
+            ArmorEditor.BaseFields.InnateBox.ItemsSource = InnateEditor.Affixes;
+            WeaponEditor.BaseFields.InnateBox.ItemsSource = InnateEditor.Affixes;
+            AccessoryEditor.BaseFields.InnateBox.ItemsSource = InnateEditor.Affixes;
 
             ArchetypeEditor.NodeAbilityList.ItemsSource = AbilityEditor.Abilities;
             EnemyEditor.DataGridAbilityName.ItemsSource = AbilityEditor.Abilities;
@@ -77,6 +78,8 @@ namespace loot_td_editor
             equipmentEditorCount = ArmorEditor.Equipments.Count;
             equipmentEditorCount += WeaponEditor.Equipments.Count;
             equipmentEditorCount += AccessoryEditor.Equipments.Count;
+
+            uniqueEditorCount = UniqueItemEditor.Uniques.Count;
 
             affixEditorCount = PrefixEditor.Affixes.Count + SuffixEditor.Affixes.Count + EnchantmentEditor.Affixes.Count + InnateEditor.Affixes.Count + EnemyAffixEditor.Affixes.Count;
 
@@ -222,9 +225,9 @@ namespace loot_td_editor
                 return;
             }
 
-            foreach(ArchetypeBase archetype in ArchetypeEditor.Archetypes.ToList())
+            foreach (ArchetypeBase archetype in ArchetypeEditor.Archetypes.ToList())
             {
-                archetype.NodeList = new ObservableCollection<ArchetypeSkillNode>( archetype.NodeList.OrderBy(x=>x.Id) );
+                archetype.NodeList = new ObservableCollection<ArchetypeSkillNode>(archetype.NodeList.OrderBy(x => x.Id));
             }
 
             string s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.json";
@@ -310,6 +313,7 @@ namespace loot_td_editor
             int stageCount = StageEditor.Stages.Count;
             int enemyCount = EnemyEditor.EnemyBaseList.Count;
             int archetypeCount = ArchetypeEditor.Archetypes.Count;
+            int uniqueCount = UniqueItemEditor.Uniques.Count;
 
             string confirmString = "";
             bool noChanges = false;
@@ -317,7 +321,8 @@ namespace loot_td_editor
             if (equipCount > equipmentEditorCount)
             {
                 confirmString += "Equipment Entry +" + Math.Abs(equipCount - equipmentEditorCount) + "\n";
-            } else if (equipCount < equipmentEditorCount)
+            }
+            else if (equipCount < equipmentEditorCount)
             {
                 confirmString += "Equipment Entry -" + Math.Abs(equipCount - equipmentEditorCount) + "\n";
             }
@@ -349,7 +354,6 @@ namespace loot_td_editor
                 confirmString += "Enemy Entry -" + Math.Abs(enemyCount - enemyEditorCount) + "\n";
             }
 
-
             if (stageCount > stageEditorCount)
             {
                 confirmString += "Stage Entry +" + Math.Abs(stageCount - stageEditorCount) + "\n";
@@ -357,6 +361,15 @@ namespace loot_td_editor
             else if (stageCount < stageEditorCount)
             {
                 confirmString += "Stage Entry -" + Math.Abs(stageCount - stageEditorCount) + "\n";
+            }
+
+            if (uniqueCount > uniqueEditorCount)
+            {
+                confirmString += "Unique Item Entry +" + Math.Abs(uniqueCount - uniqueEditorCount) + "\n";
+            }
+            else if (uniqueCount < uniqueEditorCount)
+            {
+                confirmString += "Unique Item Entry -" + Math.Abs(uniqueCount - uniqueEditorCount) + "\n";
             }
 
             if (confirmString == "")
@@ -380,6 +393,7 @@ namespace loot_td_editor
                 SaveToJson("\\items\\armor", ArmorEditor.Equipments.ToList());
                 SaveToJson("\\items\\weapon", WeaponEditor.Equipments.ToList());
                 SaveToJson("\\items\\accessory", AccessoryEditor.Equipments.ToList());
+                SaveToJson("\\items\\unique", UniqueItemEditor.Uniques.ToList());
                 saveEquips = true;
             }
 
@@ -657,6 +671,16 @@ namespace loot_td_editor
                         keys.Remove("affix." + a.IdName);
                 }
                 */
+            }
+        }
+
+        private void ReloadLocalization_Click(object sender, RoutedEventArgs e)
+        {
+            Localization.LoadStrings();
+            if (UniqueItemEditor.EquipList.SelectedItem != null)
+            {
+                UniqueBase u = UniqueItemEditor.EquipList.SelectedItem as UniqueBase;
+                u.RaisePropertyAffixString_(null, null);
             }
         }
     }

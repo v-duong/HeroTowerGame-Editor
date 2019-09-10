@@ -105,10 +105,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="AffixBonusPropGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="AffixBonusPropGrid.xaml.cs">
+      <DependentUpon>AffixBonusPropGrid.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Bases\AbilityBase.cs" />
     <Compile Include="Bases\AffixBase.cs" />
     <Compile Include="Bases\ArchetypeBase.cs" />
@@ -145,6 +152,9 @@
     <Compile Include="Editors\EnemyEditor.xaml.cs">
       <DependentUpon>EnemyEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Editors\UniqueEditor.xaml.cs">
+      <DependentUpon>UniqueEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Editors\Helpers.cs" />
     <Compile Include="Editors\StageEditor.xaml.cs">
       <DependentUpon>StageEditor.xaml</DependentUpon>
@@ -154,7 +164,11 @@
     <Compile Include="Editors\EquipmentEditor.xaml.cs">
       <DependentUpon>EquipmentEditor.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EquipBaseFields.xaml.cs">
+      <DependentUpon>EquipBaseFields.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FilterBox.cs" />
+    <Compile Include="Localization.cs" />
     <Compile Include="ObservableDictionary.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="JSONSettingsWindow.xaml.cs">
@@ -184,11 +198,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Editors\UniqueEditor.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Editors\EquipmentEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Editors\StageEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EquipBaseFields.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

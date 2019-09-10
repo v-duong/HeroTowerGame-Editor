@@ -1,19 +1,9 @@
-﻿using System;
+﻿using loot_td;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using System.Diagnostics;
-using loot_td;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 
 namespace loot_td_editor
 {
@@ -58,7 +48,7 @@ namespace loot_td_editor
 
         private void ConfirmClick(object sender, RoutedEventArgs e)
         {
-            
+
             if (Groups.SelectedItem == null)
             {
                 MessageBox.Show("Type not selected", "Error", MessageBoxButton.OK);
@@ -66,7 +56,7 @@ namespace loot_td_editor
             }
             GroupType selectedType = GetSelectedType();
             int t = AffixBase.WeightContainsType(dic, selectedType);
-            if( WeightInteger.Value == null )
+            if (WeightInteger.Value == null)
             {
                 MessageBox.Show("Value NaN", "Error", MessageBoxButton.OK);
                 return;
@@ -74,9 +64,10 @@ namespace loot_td_editor
 
             if (t != -1)
             {
-                    MessageBox.Show("Key Already Exists", "Error", MessageBoxButton.OK);
-                    return;
-            } else
+                MessageBox.Show("Key Already Exists", "Error", MessageBoxButton.OK);
+                return;
+            }
+            else
             {
                 if (isEdit)
                 {
@@ -90,12 +81,12 @@ namespace loot_td_editor
                         type = selectedType,
                         weight = (int)WeightInteger.Value
                     };
-                    dic.Insert(0,w);
+                    dic.Insert(0, w);
                 }
                 this.Close();
                 return;
             }
-            
+
         }
 
         private void CancelClick(object sender, RoutedEventArgs e)
@@ -104,5 +95,5 @@ namespace loot_td_editor
         }
     }
 
-   
+
 }

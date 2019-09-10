@@ -7,23 +7,24 @@
         xmlns:localed="clr-namespace:loot_td_editor.Editors"
         mc:Ignorable="d"
         Title="MainWindow" Height="960" Width="1870"
-        WindowStartupLocation="CenterScreen" >
+        WindowStartupLocation="CenterScreen">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_File">
-                <MenuItem Header="_Save as JSON" Click="SaveOneJsonClick"/>
-                <MenuItem Header="_Save all JSON" Click="SaveJsonAll"/>
+                <MenuItem Header="_Save as JSON" Click="SaveOneJsonClick" />
+                <MenuItem Header="_Save all JSON" Click="SaveJsonAll" />
                 <MenuItem Header="_Save as Binary " />
                 <MenuItem Header="_Save all Binary " />
                 <Separator />
                 <MenuItem Header="_Exit" />
             </MenuItem>
             <MenuItem Header="_Settings">
-                <MenuItem Header="_JSON Paths" Click="JsonSettingsClick"/>
+                <MenuItem Header="_Reload Localization" Click="ReloadLocalization_Click"/>
+                <MenuItem Header="_JSON Paths" Click="JsonSettingsClick" />
             </MenuItem>
         </Menu>
-        <TabControl Name="Cat1TabControl">
-            <TabItem Header="_Equipment">
+        <TabControl Name="Cat1TabControl" KeyboardNavigation.TabNavigation="None" KeyboardNavigation.ControlTabNavigation="None">
+            <TabItem Header="_Equipment" KeyboardNavigation.TabNavigation="None" KeyboardNavigation.ControlTabNavigation="None">
                 <TabControl Name="EquipTabControl">
                     <TabItem Header="_Armor">
                         <local:EquipmentEditor EquipProp="Armor"  x:Name="ArmorEditor" />
@@ -36,11 +37,14 @@
                     </TabItem>
                 </TabControl>
             </TabItem>
+            <TabItem Name="UniqueControl" Header="Uniques">
+                <local:UniqueEditor x:Name="UniqueItemEditor"></local:UniqueEditor>
+            </TabItem>
             <TabItem Header="_Archetypes">
-                <localed:ArchetypeEditor x:Name="ArchetypeEditor"/>
+                <localed:ArchetypeEditor x:Name="ArchetypeEditor" />
             </TabItem>
             <TabItem Header="_Abilities">
-                <localed:AbilityEditor x:Name="AbilityEditor"/>
+                <localed:AbilityEditor x:Name="AbilityEditor" />
             </TabItem>
             <TabItem Header="_Affixes">
                 <TabControl Name="AffixesTabControl">
@@ -48,21 +52,24 @@
                         <local:AffixEditor AffixProp="PREFIX" x:Name="PrefixEditor" />
                     </TabItem>
                     <TabItem Header="_Suffix">
-                        <local:AffixEditor AffixProp="SUFFIX" x:Name="SuffixEditor"/>
+                        <local:AffixEditor AffixProp="SUFFIX" x:Name="SuffixEditor" />
                     </TabItem>
                     <TabItem Header="_Enchantment">
-                        <local:AffixEditor AffixProp="ENCHANTMENT" x:Name="EnchantmentEditor"/>
+                        <local:AffixEditor AffixProp="ENCHANTMENT" x:Name="EnchantmentEditor" />
                     </TabItem>
                     <TabItem Header="_Innate">
-                        <local:AffixEditor AffixProp="INNATE" x:Name="InnateEditor"/>
+                        <local:AffixEditor AffixProp="INNATE" x:Name="InnateEditor" />
                     </TabItem>
                     <TabItem Header="_Enemy">
-                        <local:AffixEditor AffixProp="MONSTERMOD" x:Name="EnemyAffixEditor"/>
+                        <local:AffixEditor AffixProp="MONSTERMOD" x:Name="EnemyAffixEditor" />
+                    </TabItem>
+                    <TabItem Header="_Unique">
+                        <local:AffixEditor AffixProp="UNIQUE" x:Name="UniqueAffixEditor" />
                     </TabItem>
                 </TabControl>
             </TabItem>
             <TabItem Header="_Enemies">
-                <localed:EnemyEditor x:Name="EnemyEditor"/>
+                <localed:EnemyEditor x:Name="EnemyEditor" />
             </TabItem>
             <TabItem Header="_Stages">
                 <localed:StageEditor x:Name="StageEditor" />

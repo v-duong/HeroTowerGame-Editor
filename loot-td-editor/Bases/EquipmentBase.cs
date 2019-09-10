@@ -1,6 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using loot_td_editor;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Linq;
 
 namespace loot_td
 {
@@ -28,7 +35,6 @@ namespace loot_td
         private string _innateAffixId;
         private int _dropLevel;
         private int _spawnWeight;
-
 
         [JsonProperty]
         public string IdName { get => _idName; set => SetProperty(ref _idName, value); }
@@ -62,6 +68,7 @@ namespace loot_td
 
         [JsonProperty]
         public float CriticalChance { get => _criticalChance; set => SetProperty(ref _criticalChance, value); }
+
         [JsonProperty]
         public float AttackSpeed { get => _attackSpeed; set => SetProperty(ref _attackSpeed, value); }
 
@@ -129,6 +136,105 @@ namespace loot_td
         public string GetStringId()
         {
             return this.IdName;
+        }
+    }
+
+    public class UniqueBase : EquipmentBase
+    {
+        private ObservableCollection<AffixBase> fixedUniqueAffixes;
+
+        private ObservableCollection<AffixBase> randomUniqueAffixes;
+
+        private int randomAffixesToSpawn;
+
+        private int uniqueVersion;
+
+        [JsonProperty]
+        public ObservableCollection<AffixBase> FixedUniqueAffixes { get => fixedUniqueAffixes; set => SetProperty(ref fixedUniqueAffixes, value); }
+
+        [JsonProperty]
+        public ObservableCollection<AffixBase> RandomUniqueAffixes { get => randomUniqueAffixes; set => SetProperty(ref randomUniqueAffixes, value); }
+
+        [JsonProperty]
+        public int RandomAffixesToSpawn { get => randomAffixesToSpawn; set => SetProperty(ref randomAffixesToSpawn, value); }
+
+        [JsonProperty]
+        public int UniqueVersion { get => uniqueVersion; set => SetProperty(ref uniqueVersion, value); }
+
+        [JsonIgnore]
+        public string ItemAffixString => BuildItemAffixString();
+
+        private string BuildItemAffixString()
+        {
+            string s = "";
+            foreach (AffixBase affixBase in FixedUniqueAffixes)
+            {
+                List<int> bonusesToSkip = new List<int>();
+
+                for (int i = 0; i < affixBase.AffixBonuses.Count; i++)
+                {
+                    if (bonusesToSkip.Contains(i))
+                    {
+                        continue;
+                    }
+                    AffixBonus b = affixBase.AffixBonuses[i];
+
+                    if (b.BonusType.ToString().Contains("DAMAGE_MIN") && b.ModifyType == ModifyType.FLAT_ADDITION)
+                    {
+                        BonusType maxType = (BonusType)Enum.Parse(typeof(BonusType), b.BonusType.ToString().Replace("_MIN", "_MAX"));
+                        int matchedIndex = affixBase.AffixBonuses.ToList().FindIndex(x => x.BonusType == maxType);
+
+                        if (matchedIndex > 0 && affixBase.AffixBonuses[matchedIndex].ModifyType == ModifyType.FLAT_ADDITION)
+                        {
+                            bonusesToSkip.Add(matchedIndex);
+                            AffixBonus b2 = affixBase.AffixBonuses[matchedIndex];
+
+                            if (b.Restriction != GroupType.NO_GROUP)
+                            {
+                                s += Localization.GetGroupTypeRestriction(b.Restriction) + ", ";
+                            }
+
+                            s += Localization.GetLocalizationText("bonusType." + b.BonusType.ToString().Replace("_MIN","")) + " ";
+                            s += "+(" + b.MinValue + "-" + b.MaxValue + ")-(" + b2.MinValue + "-" + b2.MaxValue + ")\n";
+
+                            continue;
+                        }
+                    }
+
+                    s += Localization.GetBonusTypeString(b.BonusType, b.ModifyType, b.MinValue, b.MaxValue, b.Restriction);
+                }
+            }
+            return s;
+        }
+
+        public void RaisePropertyAffixString_(object sender, PropertyChangedEventArgs e)
+        {
+            RaisePropertyChanged("ItemAffixString");
+        }
+
+        public void RaisePropertyAffixString(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.OldItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.OldItems)
+                {
+                    item.PropertyChanged -= RaisePropertyAffixString_;
+                }
+            }
+            if (e.NewItems != null)
+            {
+                foreach (INotifyPropertyChanged item in e.NewItems)
+                {
+                    item.PropertyChanged += RaisePropertyAffixString_;
+                }
+            }
+        }
+
+        public UniqueBase()
+        {
+            FixedUniqueAffixes = new ObservableCollection<AffixBase>();
+            RandomUniqueAffixes = new ObservableCollection<AffixBase>();
+            uniqueVersion = 0;
         }
     }
 

@@ -1,0 +1,124 @@
+﻿<UserControl x:Class="loot_td_editor.EquipBaseFields"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:loot_td_editor"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="900"
+             x:Name="BaseFields">
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.35*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="1.35*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="0.2*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="IdName" Grid.Row="0"></Label>
+            <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=BaseFields,Path=SelectedBase.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+            <Label Content="DropLevel" Grid.Row="3"></Label>
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=BaseFields,Path=SelectedBase.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
+            <Label Content="SpawnWeight" Grid.Row="4"></Label>
+            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="4" Value="{Binding ElementName=BaseFields,Path=SelectedBase.SpawnWeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"></xctk:IntegerUpDown>
+            <Label Content="EquipSlot" Grid.Column="3"></Label>
+            <ComboBox ItemsSource="{Binding}" Name="EquipSlotBox" Grid.Column="4" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.EquipSlot, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></ComboBox>
+            <Label Content="Type" Grid.Column="3" Grid.Row="1"></Label>
+            <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.Group, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="GroupTypeBox" Grid.Column="4" Grid.Row="1"></ComboBox>
+            <Label Content="Has Innate?" Grid.Column="3" Grid.Row="3"></Label>
+            <CheckBox Grid.Column="4" Grid.Row="3" VerticalAlignment="Center" Name="HasInnateBox" Checked="HasInnateBox_Checked" Unchecked="HasInnateBox_Unchecked" IsChecked="{Binding ElementName=EquipList, Path=SelectedItem.HasInnate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+            <Label Content="InnateAffix" Grid.Column="3" Grid.Row="4"></Label>
+            <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.InnateAffixId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="InnateBox" Grid.Column="4" Grid.Row="4" DisplayMemberPath="IdName" SelectedValuePath="IdName" IsEnabled="{Binding ElementName=HasInnateBox, Path=IsChecked}" IsEditable="True" IsTextSearchEnabled="True"></ComboBox>
+            <Label Content="Use Scaling" Grid.Column="3" Grid.Row="6"></Label>
+            <CheckBox Grid.Column="4" Grid.Row="6" VerticalAlignment="Center" Name="UseScalingBox" Checked="UseScalingBox_Checked" Unchecked="UseScalingBox_Unchecked" IsChecked="True"></CheckBox>
+            <Label Content="ValueMult" Grid.Column="3" Grid.Row="7"></Label>
+            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="7" Minimum="0" Maximum="3" Name="ScalingMult" ValueChanged="ScalingMult_ValueChanged" IsEnabled="{Binding ElementName=UseScalingBox, Path=IsChecked}" Increment="0.2"></xctk:DoubleUpDown>
+
+        </Grid>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="25" />
+                <RowDefinition Height="25" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="25" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Content="Defense Values" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="1"></Label>
+            <Label Content="DPS" FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="0"></Label>
+            <Label Content="" Name="DPSLabel" Grid.Column="3" HorizontalAlignment="Center" Grid.Row="0" ContentStringFormat="F3"></Label>
+            <Label Content="Defense Values" FontWeight="Bold" Grid.ColumnSpan="2" HorizontalAlignment="Center" Grid.Row="1"></Label>
+            <StackPanel Grid.Row="2" Margin="2">
+                <Label Content="Armor" Height="27"></Label>
+                <Label Content="Shield" Height="27"></Label>
+                <Label Content="DodgeRating" Height="27"></Label>
+                <Label Content="ResolveRating" Height="27"></Label>
+                <Label Content="SellValue" Height="27"></Label>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="2" Margin="2">
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.Armor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.Shield, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.DodgeRating, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.ResolveRating, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:DoubleUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.SellValue, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:DoubleUpDown>
+            </StackPanel>
+            <Label Content="Offense Values" FontWeight="Bold" Grid.Column="2" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Center"></Label>
+            <StackPanel Grid.Row="2" Grid.Column="2" Margin="2">
+                <Label Content="minDamage" Height="27"></Label>
+                <Label Content="maxDamage" Height="27"></Label>
+                <Label Content="CriticalChance" Height="27"></Label>
+                <Label Content="AttackSpeed" Height="27"></Label>
+                <Label Content="WeaponRange" Height="27"></Label>
+            </StackPanel>
+            <StackPanel Grid.Column="3" Grid.Row="2" Margin="2">
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.MinDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ValueChanged="DPS_ValueChanged"></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.MaxDamage, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ValueChanged="DPS_ValueChanged"></xctk:IntegerUpDown>
+                <xctk:DoubleUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.CriticalChance, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FormatString="F2"></xctk:DoubleUpDown>
+                <xctk:DoubleUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.AttackSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ValueChanged="DPS_ValueChanged" FormatString="F2"></xctk:DoubleUpDown>
+                <xctk:DoubleUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.WeaponRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" FormatString="F2"></xctk:DoubleUpDown>
+            </StackPanel>
+            <Label Content="Stat Requirements" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="1" HorizontalAlignment="Center"></Label>
+            <StackPanel Grid.Row="2" Grid.Column="4" Margin="2">
+                <Label Content="StrReq" Height="27"></Label>
+                <Label Content="IntReq" Height="27"></Label>
+                <Label Content="AgiReq" Height="27"></Label>
+                <Label Content="WillReq" Height="27"></Label>
+            </StackPanel>
+            <StackPanel Grid.Column="5" Grid.Row="2" Margin="2">
+                <xctk:IntegerUpDown Minimum="0" Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.StrengthReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Minimum="0"  Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.IntelligenceReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown  Minimum="0" Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.AgilityReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown  Minimum="0" Height="27" Value="{Binding ElementName=BaseFields,Path=SelectedBase.WillReq, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></xctk:IntegerUpDown>
+            </StackPanel>
+            <Button Grid.Row="3" Content="Set Armor Values" Click="SetArmorValuesClick"></Button>
+            <Button Grid.Row="3" Grid.Column="2" Content="Set Offense Values" Click="SetOffenseValuesClick"></Button>
+            <Button Grid.Row="3" Grid.Column="4" Content="Set Req Values" Click="SetReqValuesClick"></Button>
+        </Grid>
+    </Grid>
+</UserControl>

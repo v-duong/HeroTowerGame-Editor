@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-class HeroArchetypeData
+﻿class HeroArchetypeData
 {
     public const int LocalBonusStart = 0x900;
 }

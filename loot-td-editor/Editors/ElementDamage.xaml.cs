@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using loot_td;
+using System;
 using System.Diagnostics;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using loot_td;
-using Xceed.Wpf.Toolkit;
 
 namespace loot_td_editor.Editors
 {
@@ -73,11 +60,12 @@ namespace loot_td_editor.Editors
         public static void OnPropChange3(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             ElementDamage a = d as ElementDamage;
-            
+
             if (a.BindAbilityDamage != null)
             {
                 a.PhysCheck.IsChecked = true;
-            } else
+            }
+            else
                 a.PhysCheck.IsChecked = false;
 
         }
@@ -92,12 +80,13 @@ namespace loot_td_editor.Editors
 
         }
 
-        public void Init() {
+        public void Init()
+        {
             ElementType e;
             Enum.TryParse<ElementType>(ElementProp, out e);
 
         }
-        
+
         private void Checked(object sender, RoutedEventArgs e)
         {
             if (BindBase == null)
