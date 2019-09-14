@@ -52,7 +52,6 @@ namespace loot_td
         private float hitDamageModifier;
         private float delayBetweenHits;
 
-
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
 
@@ -147,7 +146,6 @@ namespace loot_td
 
         [JsonProperty]
         public bool UseBothWeaponsForDual { get => useBothWeaponsForDual; set => SetProperty(ref useBothWeaponsForDual, value); }
-
 
         [JsonProperty]
         public int HitCount { get => hitCount; set => SetProperty(ref hitCount, value); }
@@ -300,7 +298,6 @@ namespace loot_td
         }
     }
 
-
     public enum AbilityType
     {
         ATTACK,
@@ -357,23 +354,34 @@ namespace loot_td
     {
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
+        public EffectType effectType { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
         public BonusType bonusType { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public ModifyType modifyType { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public AbilityTargetType targetType { get; set; }
+
         [JsonProperty]
         public float chance { get; set; }
+
         [JsonProperty]
         public float initialValue { get; set; }
+
         [JsonProperty]
         public float growthValue { get; set; }
+
         [JsonProperty]
         public float duration { get; set; }
+
         [JsonProperty]
         public int stacks { get; set; }
+
         [JsonProperty]
         public bool useLastRoll { get; set; }
     }

@@ -83,7 +83,7 @@ namespace loot_td_editor
                 InnateAffixId = null
             };
             Uniques.Add(temp);
-            currentID++;
+            
         }
 
         private void CopyButtonClick(object sender, RoutedEventArgs e)
@@ -92,7 +92,28 @@ namespace loot_td_editor
                 return;
             UniqueBase temp = Helpers.DeepClone((UniqueBase)EquipList.SelectedItem);
             Uniques.Add(temp);
-            currentID++;
+            foreach (AffixBase b in temp.FixedUniqueAffixes)
+            {
+                b.AffixBonuses.CollectionChanged += b.RaiseListStringChanged;
+                b.AffixBonuses.CollectionChanged += temp.RaisePropertyAffixString;
+
+                foreach (AffixBonus bonus in b.AffixBonuses)
+                {
+                    bonus.PropertyChanged += b.RaiseListStringChanged_;
+                    bonus.PropertyChanged += temp.RaisePropertyAffixString_;
+                }
+            }
+            foreach (AffixBase b in temp.RandomUniqueAffixes)
+            {
+                b.AffixBonuses.CollectionChanged += b.RaiseListStringChanged;
+                b.AffixBonuses.CollectionChanged += temp.RaisePropertyAffixString;
+
+                foreach (AffixBonus bonus in b.AffixBonuses)
+                {
+                    bonus.PropertyChanged += b.RaiseListStringChanged_;
+                    bonus.PropertyChanged += temp.RaisePropertyAffixString_;
+                }
+            }
         }
 
         private void RemoveButtonClick(object sender, RoutedEventArgs e)

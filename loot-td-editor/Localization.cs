@@ -73,6 +73,8 @@ namespace loot_td_editor
 
         public static string GetGroupTypeRestriction(GroupType g)
         {
+            if (localization == null)
+                LoadStrings();
             string stringId = g.ToString();
             if (localization.TryGetValue("groupType." + stringId + ".restriction", out string value))
             {
@@ -94,6 +96,8 @@ namespace loot_td_editor
 
         public static string GetGroupType(GroupType g)
         {
+            if (localization == null)
+                LoadStrings();
             string stringId = g.ToString();
             if (localization.TryGetValue("groupType." + stringId, out string value))
             {
@@ -109,6 +113,8 @@ namespace loot_td_editor
 
         public static string GetGroupTypePlural(GroupType g)
         {
+            if (localization == null)
+                LoadStrings();
             string stringId = g.ToString();
             if (localization.TryGetValue("groupType." + stringId + ".plural", out string value))
             {
@@ -124,6 +130,8 @@ namespace loot_td_editor
 
         public static string GetLocalizationText(string stringId)
         {
+            if (localization == null)
+                LoadStrings();
             if (localization.TryGetValue(stringId, out string value))
             {
                 if (value == "")

@@ -15,6 +15,7 @@ namespace loot_td
         private int _spawnLevel;
         private ObservableCollection<AffixBonus> _affixBonuses;
         private ObservableCollection<AffixWeight> _spawnWeight;
+        private ObservableCollection<AddedEffectBonusProperty> addedEffects;
         private ObservableCollection<GroupType> _groupTypes;
 
         [JsonProperty]
@@ -34,6 +35,9 @@ namespace loot_td
         public ObservableCollection<AffixBonus> AffixBonuses { get => _affixBonuses; set { SetProperty(ref _affixBonuses, value); } }
 
         [JsonProperty]
+        public ObservableCollection<AddedEffectBonusProperty> TriggeredEffects { get => addedEffects; set { SetProperty(ref addedEffects, value); } }
+
+        [JsonProperty]
         public ObservableCollection<AffixWeight> SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
 
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
@@ -51,6 +55,7 @@ namespace loot_td
             AffixBonuses = new ObservableCollection<AffixBonus>();
             SpawnWeight = new ObservableCollection<AffixWeight>();
             GroupTypes = new ObservableCollection<GroupType>();
+            TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
         }
 
         public AffixBase(AffixBase a)
@@ -144,9 +149,10 @@ namespace loot_td
     {
         private BonusType _bonusType;
         private ModifyType _modifyType;
-        private int _minValue;
-        private int _maxValue;
+        private float _minValue;
+        private float _maxValue;
         private GroupType _restriction;
+        private bool _readAsFloat;
 
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
@@ -161,14 +167,86 @@ namespace loot_td
         public GroupType Restriction { get => _restriction; set => SetProperty(ref _restriction, value); }
 
         [JsonProperty]
-        public int MinValue { get => _minValue; set => SetProperty(ref _minValue, value); }
+        public float MinValue { get => _minValue; set => SetProperty(ref _minValue, value); }
 
         [JsonProperty]
-        public int MaxValue { get => _maxValue; set => SetProperty(ref _maxValue, value); }
+        public float MaxValue { get => _maxValue; set => SetProperty(ref _maxValue, value); }
+
+        [JsonProperty]
+        public bool ReadAsFloat { get => _readAsFloat; set => SetProperty(ref _readAsFloat, value); }
 
         public AffixBonus()
         {
         }
+    }
+
+    public class AddedEffectBonusProperty : BindableBase
+    {
+        private TriggerType applicationType;
+
+        private float applicationTriggerValue;
+
+        private GroupType restriction;
+
+        private AbilityTargetType effectTargetType;
+
+        private EffectType effectType;
+
+        private BonusType statBonusType;
+
+        private ModifyType statModifyType;
+
+        private float applicationChance;
+
+        private float effectMinValue;
+
+        private float effectMaxValue;
+
+        private float effectDuration;
+
+        private bool _readAsFloat;
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public TriggerType TriggerType { get => applicationType; set => SetProperty(ref applicationType, value); }
+
+        [JsonProperty]
+        public float TriggerValue { get => applicationTriggerValue; set => SetProperty(ref applicationTriggerValue, value); }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public GroupType Restriction { get => restriction; set => SetProperty(ref restriction, value); }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public AbilityTargetType EffectTargetType { get => effectTargetType; set => SetProperty(ref effectTargetType, value); }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public EffectType EffectType { get => effectType; set => SetProperty(ref effectType, value); }
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public BonusType StatBonusType { get => statBonusType; set => SetProperty(ref statBonusType, value); }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public ModifyType StatModifyType { get => statModifyType; set => SetProperty(ref statModifyType, value); }
+
+        [JsonProperty]
+        public float TriggerChance { get => applicationChance; set => SetProperty(ref applicationChance, value); }
+
+        [JsonProperty]
+        public float EffectMinValue { get => effectMinValue; set => SetProperty(ref effectMinValue, value); }
+
+        [JsonProperty]
+        public float EffectMaxValue { get => effectMaxValue; set => SetProperty(ref effectMaxValue, value); }
+
+        [JsonProperty]
+        public float EffectDuration { get => effectDuration; set => SetProperty(ref effectDuration, value); }
+
+        [JsonProperty]
+        public bool ReadAsFloat { get => _readAsFloat; set => SetProperty(ref _readAsFloat, value); }
+
     }
 
     public class AffixWeight
@@ -194,6 +272,17 @@ namespace loot_td
         INNATE,
         MONSTERMOD,
         UNIQUE
+    }
+
+    public enum TriggerType
+    {
+        ON_HIT,
+        WHEN_HIT_BY,
+        WHEN_HITTING,
+        ON_KILL,
+        HEALTH_THRESHOLD,
+        SHIELD_THRESHOLD,
+        SOULPOINT_THRESHOLD
     }
 
     public enum ModifyType

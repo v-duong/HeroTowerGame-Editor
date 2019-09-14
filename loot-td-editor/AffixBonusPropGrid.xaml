@@ -11,6 +11,10 @@
              d:DesignHeight="450" d:DesignWidth="800"
              x:Name="BonusPropUc">
     <Grid Margin="3,3,3,3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <DataGrid ItemsSource="{Binding ElementName=BonusPropUc, Path=SelectedAffix.AffixBonuses , UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling">
             <DataGrid.Columns>
                 <DataGridTemplateColumn Header="BonusType" Width="3*">
@@ -64,7 +68,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <xctk:IntegerUpDown Value="{Binding MinValue, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
+                            <xctk:DoubleUpDown Value="{Binding MinValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -76,7 +80,19 @@
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
-                            <xctk:IntegerUpDown Value="{Binding MaxValue, UpdateSourceTrigger=PropertyChanged}"></xctk:IntegerUpDown>
+                            <xctk:DoubleUpDown Value="{Binding MaxValue, UpdateSourceTrigger=PropertyChanged}"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="ReadAsFloat" Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding ReadAsFloat, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Padding="2"></CheckBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding ReadAsFloat, UpdateSourceTrigger=PropertyChanged}"></CheckBox>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -85,5 +101,6 @@
                 <local:BonusDataValidationRule ValidationStep="UpdatedValue" />
             </DataGrid.RowValidationRules>
         </DataGrid>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=BonusPropUc, Path=SelectedAffix.TriggeredEffects}" AutoGenerateColumns="True"></DataGrid>
     </Grid>
 </UserControl>

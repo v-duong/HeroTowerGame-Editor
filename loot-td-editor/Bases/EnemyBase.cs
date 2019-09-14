@@ -81,7 +81,7 @@ namespace loot_td
             IsBoss = false;
             healthScaling = 1f;
             movementSpeed = 2.5f;
-            resistances = new int[(int)ElementType.COUNT];
+            resistances = new int[(int)ElementType.VOID+1];
             abilitiesList = new ObservableCollection<EnemyAbilityBase>();
             spriteName = "";
             actNumber = 0;
