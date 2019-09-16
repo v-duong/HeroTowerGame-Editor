@@ -73,14 +73,12 @@ namespace loot_td_editor
         {
             if (SelectedBase == null)
                 return;
-            SelectedBase.HasInnate = true;
         }
 
         private void HasInnateBox_Unchecked(object sender, RoutedEventArgs e)
         {
             if (SelectedBase == null)
                 return;
-            SelectedBase.HasInnate = false;
             SelectedBase.InnateAffixId = null;
         }
 

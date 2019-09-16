@@ -20,6 +20,7 @@ namespace loot_td
         private bool _hasError;
         private ObservableCollection<int> _requirements;
         private ObservableCollection<ArchetypeSkillNode> _requirements2;
+        private ObservableCollection<AddedEffectBonusProperty> addedEffectBonuses;
 
         [JsonProperty]
         public int Id
@@ -63,6 +64,9 @@ namespace loot_td
         [JsonProperty]
         public ObservableCollection<ArchetypeSkillNode> ChildrenEditor { get => _requirements2; set => SetProperty(ref _requirements2, value); }
 
+        [JsonProperty]
+        public ObservableCollection<AddedEffectBonusProperty> TriggeredEffects { get => addedEffectBonuses; set => SetProperty(ref addedEffectBonuses, value); }
+
         [JsonIgnore]
         public string NumIdName { get => Id + " " + IdName; }
 
@@ -79,6 +83,7 @@ namespace loot_td
             Children = new ObservableCollection<int>();
             ChildrenEditor = new ObservableCollection<ArchetypeSkillNode>();
             Bonuses = new ObservableCollection<ScalingBonusProperty_Int>();
+            TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
             IconPath = "";
             MaxLevel = 1;
             HasError = false;
@@ -101,6 +106,12 @@ namespace loot_td
                     val = b.growthValue;
                 s += Localization.GetBonusTypeString(b.bonusType, b.modifyType, val, val, b.restriction);
             }
+
+            foreach(AddedEffectBonusProperty added in TriggeredEffects)
+            {
+                s += Localization.GetLocalizationText_TriggeredEffect(added, added.EffectMinValue);
+            }
+
             return s;
         }
     }

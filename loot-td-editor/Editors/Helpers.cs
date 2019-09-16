@@ -42,7 +42,7 @@ namespace loot_td_editor
         {
             // formula
             // Scaling^(level/2) * (level*levelFactor) + level*2
-            double ret1 = Math.Pow(abilityScaling, level / 1.333) * level * LEVEL_SCALING_FACTOR * 2 * abilityBaseFactor;
+            double ret1 = Math.Pow(abilityScaling, level / 1.333) * level * LEVEL_SCALING_FACTOR * 4 * abilityBaseFactor;
 
             return ret1;
         }

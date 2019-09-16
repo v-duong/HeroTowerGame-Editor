@@ -75,7 +75,7 @@
                         <VirtualizingStackPanel Grid.Column="1">
                             <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
                             <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.EffectSprite, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
-                            <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityType}}}"></ComboBox>
+                            <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityType}}}" SelectionChanged="AbilityTypeChanged"></ComboBox>
                             <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityShotType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityShotType}}}"></ComboBox>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="2">
@@ -91,9 +91,9 @@
                             <TextBlock Height="35" TextWrapping="Wrap" TextAlignment="Center" >Use Both Weapons At Once For Dual</TextBlock>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="3">
-                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" />
-                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" />
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="AttacksPerSecBox"></xctk:DoubleUpDown>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="FlatDamageMultiBox"/>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="BaseCriticalBox"/>
                             <Label Height="13"></Label>
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
                             <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}}"></ComboBox>
@@ -103,6 +103,8 @@
                             <CheckBox Height="35" VerticalContentAlignment="Center"    IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseBothWeaponsForDual, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="4" VerticalAlignment="Bottom">
+                            <Label Content="Approx DPS" Height="26"></Label>
+                            <Label Height="13"></Label>
                             <Label Content="Hit Count" Height="26"></Label>
                             <Label Content="Per Hit Power" Height="26"></Label>
                             <Label Content="Delay Between" Height="26"></Label>
@@ -111,6 +113,8 @@
                             <Label Content="ScalingPower" Height="26"></Label>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="5" VerticalAlignment="Bottom">
+                            <Label Content="{Binding ElementName=AbilitiesList,Path=SelectedItem.GetDPS}" Height="26" Name="DPSLabel"></Label>
+                            <Label Height="13"></Label>
                             <xctk:IntegerUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" />
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitDamageModifier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0.01"  Increment="0.01" FormatString="F3" />
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.DelayBetweenHits, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0.01"  Increment="0.01" FormatString="F3" />
@@ -162,7 +166,7 @@
 
                         <Label Content="Hitscan Values" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
                         <Label Content="HitscanDelay" Grid.Column="0" Grid.Row="8"></Label>
-                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.05"></xctk:DoubleUpDown>
 
                         <Label Content="Weapon Skill Values" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
                         <Label Content="BaseMult" Grid.Column="3" Grid.Row="6"></Label>

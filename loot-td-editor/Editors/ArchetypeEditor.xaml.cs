@@ -75,8 +75,7 @@ namespace loot_td_editor.Editors
         {
             InitializeComponent();
             InitializeList();
-            ScrollViewer.ScrollToBottom();
-            ScrollViewer.ScrollToHorizontalOffset(270);
+
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -200,7 +199,7 @@ namespace loot_td_editor.Editors
 
         private void DrawGrid()
         {
-            for (int i = 0; i < 18; i++)
+            for (int i = 0; i < 23; i++)
             {
                 Line l = new Line()
                 {
@@ -216,7 +215,7 @@ namespace loot_td_editor.Editors
                 Canvas.SetZIndex(l, -2);
             }
 
-            for (int i = -8; i < 9; i++)
+            for (int i = -12; i < 13; i++)
             {
                 Line l = new Line()
                 {
@@ -370,7 +369,7 @@ namespace loot_td_editor.Editors
             double left = mousePos.X - (rect.ActualWidth / 2);
             double top = -mousePos.Y + (NodeTree.ActualHeight) + (rect.ActualHeight / 2);
 
-            Canvas.SetLeft(rect, Math.Round((left + 10) / GridSpacing, 0) * GridSpacing - rect.ActualWidth / 2);
+            Canvas.SetLeft(rect, Math.Round((left + 50) / GridSpacing, 0) * GridSpacing - rect.ActualWidth / 2 - 25);
             Canvas.SetBottom(rect, Math.Round((top - 50) / GridSpacing, 0) * GridSpacing);
         }
 
@@ -667,6 +666,23 @@ namespace loot_td_editor.Editors
         {
             ComboBox box = sender as ComboBox;
             box.ItemsSource = GroupTypes.ToList();
+        }
+
+        private void ShiftAllClick(object sender, RoutedEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+
+            ArchetypeBase archetypeBase = ArchetypesList.SelectedItem as ArchetypeBase;
+            int xShift = (int)ShiftX.Value;
+            int yShift = (int)ShiftY.Value;
+
+            foreach (ArchetypeSkillNode node in archetypeBase.NodeList)
+            {
+                node.NodePosition.x += xShift;
+                node.NodePosition.y += yShift;
+            }
+            DrawCanvas();
         }
     }
 

@@ -120,6 +120,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="25" />
                     <RowDefinition Height="1*" />
+                    <RowDefinition Height="25" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -140,6 +141,9 @@
                         </GridView>
                     </ListView.View>
                 </ListView>
+                <Button Content="Shift All" Grid.Column="0" Grid.Row="2" Click="ShiftAllClick"/>
+                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Name="ShiftX" DefaultValue="0"></xctk:IntegerUpDown>
+                <xctk:IntegerUpDown Grid.Column="2" Grid.Row="2" Name="ShiftY" DefaultValue="0"></xctk:IntegerUpDown>
             </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
@@ -208,12 +212,13 @@
         </Grid>
         <Grid Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2">
             <Grid.RowDefinitions>
+                <RowDefinition Height="5*" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="200" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="ScrollViewer">
-                <Canvas  Name="NodeTree" ClipToBounds="True" Width="1200" Height="1200"/>
-            </ScrollViewer>
+            <xctk:Zoombox ZoomModifiers="" KeepContentInBounds="True" Position="-350,-700" Name="ScrollViewer">
+                <Canvas  Name="NodeTree" ClipToBounds="True" Width="1600" Height="1600" />
+            </xctk:Zoombox>
             <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single"  SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="BonusType" Width="3*">
@@ -300,6 +305,8 @@
 
                 </DataGrid.Columns>
             </DataGrid>
+            <DataGrid Grid.Row="2" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.TriggeredEffects, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single"  SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="True" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/> 
         </Grid>
+
     </Grid>
 </UserControl>

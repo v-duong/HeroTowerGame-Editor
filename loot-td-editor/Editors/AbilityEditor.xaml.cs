@@ -222,5 +222,23 @@ namespace loot_td_editor.Editors
             }
             dataView.Refresh();
         }
+
+        private void AbilityTypeChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AbilitiesList.SelectedItem == null)
+                return;
+            AbilityBase b = AbilitiesList.SelectedItem as AbilityBase;
+            if (b.AbilityType == AbilityType.ATTACK)
+            {
+                AttacksPerSecBox.IsEnabled = false;
+                BaseCriticalBox.IsEnabled = false;
+                FlatDamageMultiBox.IsEnabled = false;
+            } else
+            {
+                AttacksPerSecBox.IsEnabled = true;
+                BaseCriticalBox.IsEnabled = true;
+                FlatDamageMultiBox.IsEnabled = true;
+            }
+        }
     }
 }

@@ -8,6 +8,28 @@ namespace loot_td_editor
     {
         private static Dictionary<string, string> localization;
 
+
+        public static string GetLocalizationText_TriggeredEffect(AddedEffectBonusProperty triggeredEffect, float value)
+        {
+            localization.TryGetValue("triggerType." + triggeredEffect.TriggerType.ToString(), out string s);
+            string restrictionString = "";
+            if (triggeredEffect.Restriction != GroupType.NO_GROUP)
+            {
+                restrictionString = GetGroupTypeRestriction(triggeredEffect.Restriction);
+                string[] split = restrictionString.Split(' ');
+                restrictionString = restrictionString.Replace(split[0], split[0].ToLower());
+            }
+            s = string.Format(s, restrictionString);
+            switch (triggeredEffect.TriggerType)
+            {
+                case TriggerType.WHEN_HITTING:
+                    s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
+                    break;
+            }
+
+            return s;
+        }
+
         public static string GetBonusTypeString(BonusType b, ModifyType m, float min, float max, GroupType restriction)
         {
             if (localization == null)
@@ -62,7 +84,7 @@ namespace loot_td_editor
                     }
 
                 case ModifyType.FIXED_TO:
-                    s += " is" + val;
+                    s += " is " + val;
                     break;
             }
 

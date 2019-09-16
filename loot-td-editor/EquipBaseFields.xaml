@@ -46,7 +46,7 @@
             <Label Content="Type" Grid.Column="3" Grid.Row="1"></Label>
             <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.Group, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="GroupTypeBox" Grid.Column="4" Grid.Row="1"></ComboBox>
             <Label Content="Has Innate?" Grid.Column="3" Grid.Row="3"></Label>
-            <CheckBox Grid.Column="4" Grid.Row="3" VerticalAlignment="Center" Name="HasInnateBox" Checked="HasInnateBox_Checked" Unchecked="HasInnateBox_Unchecked" IsChecked="{Binding ElementName=EquipList, Path=SelectedItem.HasInnate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+            <CheckBox Grid.Column="4" Grid.Row="3" VerticalAlignment="Center" Name="HasInnateBox" Checked="HasInnateBox_Checked" Unchecked="HasInnateBox_Unchecked" IsChecked="{Binding ElementName=BaseFields,Path=SelectedBase.HasInnate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
             <Label Content="InnateAffix" Grid.Column="3" Grid.Row="4"></Label>
             <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.InnateAffixId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="InnateBox" Grid.Column="4" Grid.Row="4" DisplayMemberPath="IdName" SelectedValuePath="IdName" IsEnabled="{Binding ElementName=HasInnateBox, Path=IsChecked}" IsEditable="True" IsTextSearchEnabled="True"></ComboBox>
             <Label Content="Use Scaling" Grid.Column="3" Grid.Row="6"></Label>

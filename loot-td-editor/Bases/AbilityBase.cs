@@ -64,7 +64,10 @@ namespace loot_td
         public AbilityShotType AbilityShotType { get => abilityShotType; set => SetProperty(ref abilityShotType, value); }
 
         [JsonProperty]
-        public float AttacksPerSec { get => cooldown; set => SetProperty(ref cooldown, value); }
+        public float AttacksPerSec
+        {
+            get => cooldown; set { SetProperty(ref cooldown, value); RaisePropertyChanged("GetDPS"); }
+        }
 
         [JsonProperty]
         public float TargetRange { get => targetRange; set => SetProperty(ref targetRange, value); }
@@ -112,10 +115,10 @@ namespace loot_td
         public float FlatDamageMultiplier { get => flatDamageMultiplier; set => SetProperty(ref flatDamageMultiplier, value); }
 
         [JsonProperty]
-        public float BaseAbilityPower { get => baseAbilityPower; set => SetAndCalc(ref baseAbilityPower, value); }
+        public float BaseAbilityPower { get => baseAbilityPower; set { SetAndCalc(ref baseAbilityPower, value); RaisePropertyChanged("GetDPS"); } }
 
         [JsonProperty]
-        public float AbilityScaling { get => abilityScaling; set => SetAndCalc(ref abilityScaling, value); }
+        public float AbilityScaling { get => abilityScaling; set { SetAndCalc(ref abilityScaling, value); RaisePropertyChanged("GetDPS"); } }
 
         [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
         public ObservableCollection<GroupType> GroupTypes { get => groupTypes; set => SetProperty(ref groupTypes, value); }
@@ -148,13 +151,16 @@ namespace loot_td
         public bool UseBothWeaponsForDual { get => useBothWeaponsForDual; set => SetProperty(ref useBothWeaponsForDual, value); }
 
         [JsonProperty]
-        public int HitCount { get => hitCount; set => SetProperty(ref hitCount, value); }
+        public int HitCount { get => hitCount; set { SetProperty(ref hitCount, value); RaisePropertyChanged("GetDPS"); } }
 
         [JsonProperty]
-        public float HitDamageModifier { get => hitDamageModifier; set => SetProperty(ref hitDamageModifier, value); }
+        public float HitDamageModifier { get => hitDamageModifier; set { SetProperty(ref hitDamageModifier, value); RaisePropertyChanged("GetDPS"); } }
 
         [JsonProperty]
         public float DelayBetweenHits { get => delayBetweenHits; set => SetProperty(ref delayBetweenHits, value); }
+
+        [JsonIgnore]
+        public float GetDPS { get => CalcDPS(); }
 
         public AbilityBase()
         {
@@ -207,6 +213,29 @@ namespace loot_td
         public string GetStringId()
         {
             return this.IdName;
+        }
+
+        public float CalcDPS()
+        {
+            float totalMin = 0;
+            float totalMax = 0;
+            if (abilityType == AbilityType.SPELL)
+            {
+                foreach (ElementType e in Enum.GetValues(typeof(ElementType)))
+                {
+                    AbilityDamageBase b = GetElementDamage(e);
+                    if (b != null)
+                    {
+                        totalMin += b.Damage[50].Min;
+                        totalMax += b.Damage[50].Max;
+                    }
+                }
+
+                float dps = (totalMin + totalMax) / 2f * AttacksPerSec * HitCount * HitDamageModifier;
+                return dps;
+            }
+            else
+                return 0f;
         }
     }
 
@@ -355,6 +384,7 @@ namespace loot_td
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public EffectType effectType { get; set; }
+
         [JsonConverter(typeof(StringEnumConverter))]
         [JsonProperty]
         public BonusType bonusType { get; set; }
