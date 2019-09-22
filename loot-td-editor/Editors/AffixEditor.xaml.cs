@@ -108,6 +108,8 @@ namespace loot_td_editor
             {
                 if (k.IdName == null)
                     k.IdName = "";
+                if (k.TriggeredEffects == null)
+                    k.TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
             }
             AffixesList.ItemsSource = Affixes;
         }
@@ -142,9 +144,9 @@ namespace loot_td_editor
         {
             if (AffixesList.SelectedItem == null)
                 return;
-            AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem)
-            {
-            };
+            //AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem);
+
+            AffixBase temp = Helpers.DeepClone<AffixBase>((AffixBase)AffixesList.SelectedItem);
             Affixes.Add(temp);
             //AffixesList.Items.Refresh();
             currentID++;
@@ -181,9 +183,10 @@ namespace loot_td_editor
             if (GroupTagList.SelectedItem == null || AffixesList.SelectedItem == null)
                 return;
             var temp = AffixesList.SelectedItems;
+            GroupType g = (GroupType)GroupTagList.SelectedItem;
             foreach (AffixBase affix in temp)
             {
-                affix.GroupTypes.Remove((GroupType)GroupTagList.SelectedItem);
+                affix.GroupTypes.Remove(g);
             }
             GroupTagList.Items.Refresh();
         }

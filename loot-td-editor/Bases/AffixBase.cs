@@ -88,6 +88,9 @@ namespace loot_td
                 };
                 SpawnWeight.Add(w);
             }
+
+            TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
+
             GroupTypes = new ObservableCollection<GroupType>(a.GroupTypes);
         }
 

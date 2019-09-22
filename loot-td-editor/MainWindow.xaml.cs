@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace loot_td_editor
 {
@@ -26,6 +27,8 @@ namespace loot_td_editor
         public bool saveEnemy = true;
         public bool saveStage = true;
 
+        public static RoutedCommand saveCommand = new RoutedCommand();
+
         private int equipmentEditorCount = 0;
         private int archetypeEditorCount = 0;
         private int enemyEditorCount = 0;
@@ -38,6 +41,8 @@ namespace loot_td_editor
         public MainWindow()
         {
             InitializeComponent();
+            saveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
+            CommandBindings.Add(new CommandBinding(saveCommand, SaveJsonAll));
             Debug.WriteLine("Setting innatesLists");
 
             ArmorEditor.innatesList = InnateEditor.Affixes;
@@ -177,7 +182,7 @@ namespace loot_td_editor
             }
             string s = Properties.Settings.Default.JsonSavePath + path + ".json";
             string o = JsonConvert.SerializeObject(list);
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
         }
 
         private void SaveAbilitiesJson()
@@ -200,11 +205,11 @@ namespace loot_td_editor
 
             string s = Properties.Settings.Default.JsonSavePath + "\\abilities\\abilities.json";
             string o = JsonConvert.SerializeObject(AbilityEditor.Abilities.ToList(), settings);
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
 
             s = Properties.Settings.Default.JsonSavePath + "\\abilities\\abilities.editor.json";
             o = JsonConvert.SerializeObject(AbilityEditor.Abilities.ToList());
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
         }
 
         private void SaveArchetypesJson()
@@ -232,13 +237,25 @@ namespace loot_td_editor
 
             string s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.json";
             string o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList(), settings);
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
+            
 
             s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.editor.json";
             o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList());
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
 
             saveArchetype = true;
+        }
+
+        private void TrySave(string file, string o)
+        {
+            try
+            {
+                System.IO.File.WriteAllText(file, o);
+            } catch (System.IO.IOException)
+            {
+                MessageBox.Show("IOException", "Error", MessageBoxButton.OK);
+            }
         }
 
         private void SaveEnemiesJson()
@@ -261,11 +278,11 @@ namespace loot_td_editor
 
             string s = Properties.Settings.Default.JsonSavePath + "\\enemies\\enemies.json";
             string o = JsonConvert.SerializeObject(EnemyEditor.EnemyBaseList.ToList(), settings);
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
 
             s = Properties.Settings.Default.JsonSavePath + "\\enemies\\enemies.editor.json";
             o = JsonConvert.SerializeObject(EnemyEditor.EnemyBaseList.ToList());
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
 
             saveEnemy = true;
         }
@@ -287,7 +304,7 @@ namespace loot_td_editor
             */
             string s = Properties.Settings.Default.JsonSavePath + "\\stages\\stages.json";
             string o = JsonConvert.SerializeObject(StageEditor.Stages.ToList());
-            System.IO.File.WriteAllText(s, o);
+            TrySave(s, o);
 
             saveStage = true;
         }
@@ -466,7 +483,7 @@ namespace loot_td_editor
             }
 
             string o = JsonConvert.SerializeObject(localization);
-            System.IO.File.WriteAllText(filepath, o);
+            TrySave(filepath, o);
         }
 
         private void SaveLocalizationEquipment(string locale)
@@ -495,7 +512,7 @@ namespace loot_td_editor
             }
 
             string o = JsonConvert.SerializeObject(localization);
-            System.IO.File.WriteAllText(filepath, o);
+            TrySave(filepath, o);
         }
 
         private void SaveLocalizationEnemy(string locale)
@@ -522,7 +539,7 @@ namespace loot_td_editor
             }
 
             string o = JsonConvert.SerializeObject(localization);
-            System.IO.File.WriteAllText(filepath, o);
+            TrySave(filepath, o);
         }
 
         private void SaveLocalizationStage(string locale)
@@ -549,7 +566,7 @@ namespace loot_td_editor
             }
 
             string o = JsonConvert.SerializeObject(localization);
-            System.IO.File.WriteAllText(filepath, o);
+            TrySave(filepath, o);
         }
 
         private void SaveLocalizationArchetype(string locale)
@@ -592,7 +609,7 @@ namespace loot_td_editor
             }
 
             string o = JsonConvert.SerializeObject(localization);
-            System.IO.File.WriteAllText(filepath, o);
+            TrySave(filepath, o);
         }
 
         private void SaveLocalizationAbility(string locale)
@@ -624,7 +641,7 @@ namespace loot_td_editor
             }
 
             string o = JsonConvert.SerializeObject(localization);
-            System.IO.File.WriteAllText(filepath, o);
+            TrySave(filepath, o);
         }
 
         private void InitializeLocalizationSaving(string locale, string filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys)
