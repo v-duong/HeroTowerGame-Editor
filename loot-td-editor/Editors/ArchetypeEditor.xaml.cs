@@ -75,7 +75,6 @@ namespace loot_td_editor.Editors
         {
             InitializeComponent();
             InitializeList();
-
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -262,7 +261,16 @@ namespace loot_td_editor.Editors
                         Fill = System.Windows.Media.Brushes.LightGray
                     };
                 }
-                else
+                else if (SearchBox.Text != "" && node.Bonuses.ToList().FindAll(x=>x.bonusType.ToString().ToLower().Contains(SearchBox.Text.ToLower())).Any())
+                {
+                    r = new Rectangle
+                    {
+                        Height = 50,
+                        Width = 50,
+                        Stroke = System.Windows.Media.Brushes.Black,
+                        Fill = System.Windows.Media.Brushes.LightSkyBlue
+                    };
+                } else
                 {
                     r = new Rectangle
                     {
@@ -414,7 +422,8 @@ namespace loot_td_editor.Editors
 
             double totalstats = 0, totalhpsp = 0, total = 0;
             totalstats = selected.StrengthGrowth + selected.IntelligenceGrowth + selected.AgilityGrowth + selected.WillGrowth;
-            totalhpsp = selected.HealthGrowth + selected.SoulPointGrowth * 50;
+            //totalhpsp = selected.HealthGrowth + selected.SoulPointGrowth * 50;
+            totalhpsp = selected.HealthGrowth;
             total = totalhpsp + totalstats;
             TotalL.Content = totalstats.ToString("F2") + " + " + totalhpsp.ToString("F2") + " = " + total.ToString("F2");
         }
@@ -626,7 +635,6 @@ namespace loot_td_editor.Editors
             }
         }
 
-
         private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             BonusGridSumValues();
@@ -684,6 +692,101 @@ namespace loot_td_editor.Editors
             }
             DrawCanvas();
         }
+
+        private void ArchetypeTotalsClick(object sender, RoutedEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+
+            ArchetypeBase archetypeBase = ArchetypesList.SelectedItem as ArchetypeBase;
+
+            Dictionary<string, NodeTotalInfo> nodeDict = new Dictionary<string, NodeTotalInfo>();
+
+            foreach (ArchetypeSkillNode node in archetypeBase.NodeList)
+            {
+                foreach (ScalingBonusProperty_Int prop in node.Bonuses)
+                {
+                    string s = prop.bonusType + "#" + prop.modifyType + "#" + prop.restriction;
+
+                    if (!nodeDict.ContainsKey(s))
+                        nodeDict[s] = new NodeTotalInfo(prop.bonusType, prop.modifyType, prop.restriction);
+
+                    NodeTotalInfo totalInfo = nodeDict[s];
+                    float finalStat;
+
+                    if (node.MaxLevel == 1)
+                        finalStat = prop.growthValue;
+                    else
+                        finalStat = prop.growthValue * (node.MaxLevel - 1) + prop.finalLevelValue;
+
+                    if (finalStat < 0)
+                    {
+                        totalInfo.negTotal += finalStat;
+                        totalInfo.negTotalLevel += node.MaxLevel;
+                    }
+                    else
+                    {
+                        totalInfo.posTotal += finalStat;
+                        totalInfo.posTotalLevel += node.MaxLevel;
+                    }
+                }
+            }
+
+            string display = "";
+            List<NodeTotalInfo> list = nodeDict.Values.OrderBy(x => x.bonus).ToList();
+
+            foreach (NodeTotalInfo nodeInfo in list)
+            {
+                if (nodeInfo.mod == ModifyType.MULTIPLY || nodeInfo.mod == ModifyType.FIXED_TO)
+                    continue;
+                if (nodeInfo.posTotal > 0)
+                {
+                    float posAvg = nodeInfo.posTotal / nodeInfo.posTotalLevel;
+
+                    display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.posTotal, nodeInfo.posTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.posTotalLevel + ", Avg: " + posAvg.ToString("n2") + "\n\n";
+                }
+                if (nodeInfo.negTotal < 0)
+                {
+                    float negAvg = nodeInfo.negTotal / nodeInfo.negTotalLevel;
+                    display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.negTotal, nodeInfo.negTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.negTotalLevel + ", Avg: " + negAvg.ToString("n2") + "\n\n";
+                }
+            }
+
+            //MessageBoxResult result = System.Windows.MessageBox.Show(display, "Totals", MessageBoxButton.OK);
+            TotalsDisplay totalsDisplay = new TotalsDisplay(display);
+            totalsDisplay.ShowDialog();
+        }
+
+        private class NodeTotalInfo
+        {
+            public BonusType bonus;
+            public ModifyType mod;
+            public GroupType restrict;
+            public float posTotal;
+            public int posTotalLevel;
+            public float negTotal;
+            public int negTotalLevel;
+
+            public NodeTotalInfo(BonusType bonus, ModifyType mod, GroupType r)
+            {
+                this.bonus = bonus;
+                this.mod = mod;
+                this.restrict = r;
+            }
+        }
+
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+
+            TextBox textBox = sender as TextBox;
+
+            if (textBox.Text == null)
+                return;
+
+            DrawCanvas();
+        }
     }
 
     public class EmptyBoolConverter : IValueConverter
@@ -706,5 +809,4 @@ namespace loot_td_editor.Editors
             throw new NotImplementedException();
         }
     }
-
 }

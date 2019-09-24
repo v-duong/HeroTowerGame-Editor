@@ -1,0 +1,12 @@
+﻿<Window x:Class="loot_td_editor.TotalsDisplay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:loot_td_editor"
+        mc:Ignorable="d"
+        Title="TotalsDisplay" Height="900" Width="400" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <ScrollViewer Content="" Name="scroller" Padding="10"></ScrollViewer>
+    </Grid>
+</Window>

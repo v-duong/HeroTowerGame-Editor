@@ -49,5 +49,9 @@
             <Button Grid.Row="2" Grid.Column="0" Content="SET ALL DEF" Click="ValueButton_Click" />
         </Grid>
         <local:EquipBaseFields Grid.Column="1" Grid.ColumnSpan="2" x:Name="BaseFields" SelectedBase="{Binding ElementName=EquipList, Path=SelectedItem}" />
+        <StackPanel Grid.Column="3">
+            <Label FontWeight="Bold" Content="Potential DPS" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Padding="4"></Label>
+            <TextBlock HorizontalAlignment="Center" Padding="4" Name="PotDPS" Text="{Binding ElementName=EquipList, Path=SelectedItem.PotentialDps}"></TextBlock>
+        </StackPanel>
     </Grid>
 </UserControl>

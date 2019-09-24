@@ -252,14 +252,24 @@ namespace loot_td
 
     }
 
-    public class AffixWeight
+    public class AffixWeight: BindableBase
     {
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty]
-        public GroupType type { get; set; }
+        public AffixWeight()
+        {
+        }
+
+        private GroupType _type;
 
         [JsonProperty]
-        public int weight { get; set; }
+        private int _weight;
+
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public GroupType type { get => _type; set => SetProperty(ref _type, value); }
+
+        [JsonProperty]
+        public int weight { get => _weight; set => SetProperty(ref _weight, value); }
+
 
         public AffixWeight CloneWeight()
         {

@@ -61,16 +61,16 @@ namespace loot_td
         public int SellValue { get => _regen; set => SetProperty(ref _regen, value); }
 
         [JsonProperty]
-        public int MinDamage { get => _minDamage; set => SetProperty(ref _minDamage, value); }
+        public int MinDamage { get => _minDamage; set { SetProperty(ref _minDamage, value); RaisePropertyChanged("PotentialDps"); } }
 
         [JsonProperty]
-        public int MaxDamage { get => _maxDamage; set => SetProperty(ref _maxDamage, value); }
+        public int MaxDamage { get => _maxDamage; set { SetProperty(ref _maxDamage, value); RaisePropertyChanged("PotentialDps"); } }
 
         [JsonProperty]
         public float CriticalChance { get => _criticalChance; set => SetProperty(ref _criticalChance, value); }
 
         [JsonProperty]
-        public float AttackSpeed { get => _attackSpeed; set => SetProperty(ref _attackSpeed, value); }
+        public float AttackSpeed { get => _attackSpeed; set { SetProperty(ref _attackSpeed, value); RaisePropertyChanged("PotentialDps"); } }
 
         [JsonProperty]
         public float WeaponRange { get => _weaponRange; set => SetProperty(ref _weaponRange, value); }
@@ -104,10 +104,59 @@ namespace loot_td
         [JsonProperty]
         public int SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
 
+        [JsonIgnore]
+        public string PotentialDps { get => CalcPotentialDps(); }
+
         public EquipmentBase()
         {
             Description = "";
             IdName = "";
+        }
+
+        public string CalcPotentialDps()
+        {
+            float additionalMin, additionalMax, multiplier, speedMulti;
+
+            switch (Group)
+            {
+                case GroupType.ONE_HANDED_SWORD:
+                case GroupType.ONE_HANDED_AXE:
+                case GroupType.ONE_HANDED_MACE:
+                case GroupType.ONE_HANDED_GUN:
+                case GroupType.WAND:
+                case GroupType.CROSSBOW:
+                case GroupType.FIST:
+                    additionalMax = 85;
+                    additionalMin = 43;
+                    multiplier = 3.00f;
+                    speedMulti = 1.40f;
+                    break;
+                case GroupType.BOW:
+                case GroupType.SPEAR:
+                case GroupType.STAFF:
+                case GroupType.TWO_HANDED_SWORD:
+                case GroupType.TWO_HANDED_MACE:
+                case GroupType.TWO_HANDED_GUN:
+                case GroupType.TWO_HANDED_AXE:
+                    additionalMax = 140;
+                    additionalMin = 85;
+                    multiplier = 3.55f;
+                    speedMulti = 1.27f;
+                    break;
+                default:
+                    additionalMax = 0;
+                    additionalMin = 0;
+                    multiplier = 0;
+                    speedMulti = 0;
+                    break;
+            }
+            float min = (MinDamage + additionalMin) * multiplier;
+            float max = (MaxDamage + additionalMax) * multiplier;
+            float min2 = (MinDamage + additionalMin) * (multiplier + 0.55f);
+            float max2 = (MaxDamage + additionalMax) * (multiplier + 0.55f);
+            float damageAvg = (min + max) / 2f;
+            float damageAvg2 = (min2 + max2) / 2f;
+            return (damageAvg * AttackSpeed * speedMulti).ToString("N2") + "    " + (damageAvg2 * AttackSpeed * speedMulti).ToString("N2");
         }
 
         public EquipmentBase(EquipmentBase a)
@@ -194,7 +243,7 @@ namespace loot_td
                                 s += Localization.GetGroupTypeRestriction(b.Restriction) + ", ";
                             }
 
-                            s += Localization.GetLocalizationText("bonusType." + b.BonusType.ToString().Replace("_MIN","")) + " ";
+                            s += Localization.GetLocalizationText("bonusType." + b.BonusType.ToString().Replace("_MIN", "")) + " ";
                             s += "+(" + b.MinValue + "-" + b.MaxValue + ")-(" + b2.MinValue + "-" + b2.MaxValue + ")\n";
 
                             continue;
@@ -208,7 +257,6 @@ namespace loot_td
                 {
                     s += Localization.GetLocalizationText_TriggeredEffect(added, added.EffectMinValue);
                 }
-
             }
             return s;
         }

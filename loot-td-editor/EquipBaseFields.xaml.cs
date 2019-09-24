@@ -1,19 +1,9 @@
-﻿using System;
+﻿using loot_td;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using loot_td_editor;
-using loot_td;
 
 namespace loot_td_editor
 {
@@ -34,8 +24,6 @@ namespace loot_td_editor
         public static float hybridFactor = 0.75f;
         public static int startingAttr = 5;
 
-
-
         public EquipmentBase SelectedBase
         {
             get { return (EquipmentBase)GetValue(SelectedBaseProperty); }
@@ -45,8 +33,6 @@ namespace loot_td_editor
         // Using a DependencyProperty as the backing store for SelectedBase.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty SelectedBaseProperty =
             DependencyProperty.Register("SelectedBase", typeof(EquipmentBase), typeof(EquipBaseFields));
-
-
 
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList(); } }
         public IList<EquipSlotType> EquipSlotTypes { get { return Enum.GetValues(typeof(EquipSlotType)).Cast<EquipSlotType>().ToList(); } }
@@ -67,7 +53,6 @@ namespace loot_td_editor
             dps = ((SelectedBase.MinDamage + SelectedBase.MaxDamage) / 2d) * SelectedBase.AttackSpeed;
             DPSLabel.Content = dps;
         }
-
 
         private void HasInnateBox_Checked(object sender, RoutedEventArgs e)
         {
@@ -241,6 +226,11 @@ namespace loot_td_editor
                     b.AgilityReq = (int)(hybridmain * 0.8f);
                     break;
 
+                case GroupType.ONE_HANDED_AXE:
+                    b.StrengthReq = (int)(mainreq);
+                    b.AgilityReq = (int)(hybridmain * 0.2f);
+                    break;
+
                 case GroupType.BOW:
                     b.AgilityReq = (int)(mainreq * 1.1f);
                     break;
@@ -249,13 +239,33 @@ namespace loot_td_editor
                     b.StrengthReq = (int)(mainreq * 1.1f);
                     b.AgilityReq = (int)(hybridmain * 0.4f);
                     break;
+
                 case GroupType.TWO_HANDED_SWORD:
                     b.StrengthReq = (int)(mainreq * 1.05f);
                     b.AgilityReq = (int)(hybridmain * 0.5f);
                     break;
+
+                case GroupType.TWO_HANDED_AXE:
+                    b.StrengthReq = (int)(mainreq * 1.25f);
+                    break;
+
                 case GroupType.ONE_HANDED_GUN:
                     b.AgilityReq = (int)(mainreq);
                     break;
+
+                case GroupType.TWO_HANDED_GUN:
+                    b.AgilityReq = (int)(mainreq * 1.1f);
+                    break;
+
+                case GroupType.WAND:
+                    b.IntelligenceReq = (int)(mainreq);
+                    break;
+
+                case GroupType.STAFF:
+                    b.IntelligenceReq = (int)(mainreq);
+                    b.StrengthReq = (int)(hybridmain * 0.3f);
+                    break;
+
                 default:
                     return;
             }
@@ -278,7 +288,6 @@ namespace loot_td_editor
 
         private void UseScalingBox_Checked(object sender, RoutedEventArgs e)
         {
-
             if (ScalingMult != null)
                 ScalingMult.Value = 1;
 

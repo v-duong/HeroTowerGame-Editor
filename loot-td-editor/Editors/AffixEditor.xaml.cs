@@ -290,6 +290,13 @@ namespace loot_td_editor
             Affixes = new ObservableCollection<AffixBase>(Affixes.OrderBy(x => x.IdName, new NaturalStringComparer2()));
             AffixesList.ItemsSource = Affixes;
         }
+
+        private void FilterBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox b = sender as ComboBox;
+            b.IsTextSearchEnabled = false;
+            b.ItemsSource = GroupTypes;
+        }
     }
 
     public class BonusDataValidationRule : ValidationRule

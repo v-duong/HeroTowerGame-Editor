@@ -52,7 +52,6 @@ namespace loot_td_editor
             ComboBox box = sender as ComboBox;
             box.IsTextSearchEnabled = false;
             box.ItemsSource = BonusTypes.ToList();
-            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(box.ItemsSource);
         }
     }
 }

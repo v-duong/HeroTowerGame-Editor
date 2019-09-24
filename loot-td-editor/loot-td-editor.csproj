@@ -181,6 +181,9 @@
     <Compile Include="SpawnWeightEntryWindow.xaml.cs">
       <DependentUpon>SpawnWeightEntryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TotalsDisplay.xaml.cs">
+      <DependentUpon>TotalsDisplay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Types\Class1.cs" />
     <Page Include="Editors\AbilityEditor.xaml">
       <SubType>Designer</SubType>
@@ -245,6 +248,10 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="TotalsDisplay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

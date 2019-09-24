@@ -349,6 +349,7 @@ namespace loot_td
         ON_FIRST_HIT,
         ON_FINAL_HIT,
         TIME,
+        TIME_REPEAT,
         ON_FADE,
     }
 
@@ -366,7 +367,8 @@ namespace loot_td
         RADIAL_AOE,
         NOVA_AOE,
         NOVA_ARC_AOE,
-        LINEAR_AOE
+        LINEAR_AOE,
+        PROJECTILE_NOVA
     }
 
     public enum AbilityTargetType

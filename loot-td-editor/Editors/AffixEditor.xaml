@@ -84,7 +84,41 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Button Content="COPY ALL" Click="CopyWeight_Click"></Button>
-            <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged}" Name="WeightGrid"  SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" />
+            <DataGrid Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=AffixesList, Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged}" Name="WeightGrid"  SelectionMode="Single" SelectionUnit="FullRow" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" ColumnWidth="*" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" CanUserAddRows="True">
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="GroupType" Width="3*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding type}" Padding="2" />
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <local:FilterBox SelectedValue="{Binding type, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Loaded="FilterBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                    <local:FilterBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
+                                            </VirtualizingStackPanel>
+                                        </ItemsPanelTemplate>
+                                    </local:FilterBox.ItemsPanel>
+                                </local:FilterBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="weight" Width="*">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <xctk:IntegerUpDown Value="{Binding weight , UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Increment="50"></xctk:IntegerUpDown>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                        <DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <xctk:IntegerUpDown Value="{Binding weight , UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Increment="50"></xctk:IntegerUpDown>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
         </Grid>
         <Grid Grid.Column="3">
             <Grid.RowDefinitions>
