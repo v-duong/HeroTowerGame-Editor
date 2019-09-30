@@ -103,6 +103,14 @@ namespace loot_td_editor.Editors
         {
             if (ArchetypesList.SelectedItem == null)
                 return;
+
+            string name = ((ArchetypeBase)ArchetypesList.SelectedItem).IdName;
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.No)
+                return;
+
             Archetypes.Remove((ArchetypeBase)ArchetypesList.SelectedItem);
             //ArchetypesList.Items.Refresh();
         }
@@ -251,34 +259,26 @@ namespace loot_td_editor.Editors
 
             foreach (ArchetypeSkillNode node in selected.NodeList)
             {
+                r = new Rectangle
+                {
+                    Height = 50,
+                    Width = 50,
+                    Stroke = System.Windows.Media.Brushes.Black,
+                    Fill = System.Windows.Media.Brushes.LightGray
+                };
+
+                if (node.InitialLevel > 0)
+                {
+                    r.Fill = System.Windows.Media.Brushes.LightGreen;
+                }
+                if (SearchBox.Text != "" && node.Bonuses.ToList().FindAll(x => x.bonusType.ToString().ToLower().Contains(SearchBox.Text.ToLower())).Any())
+                {
+                    r.Fill = System.Windows.Media.Brushes.LightSkyBlue;
+                }
+
                 if (node.Id == selectedNodeId)
                 {
-                    r = new Rectangle
-                    {
-                        Height = 50,
-                        Width = 50,
-                        Stroke = System.Windows.Media.Brushes.Red,
-                        Fill = System.Windows.Media.Brushes.LightGray
-                    };
-                }
-                else if (SearchBox.Text != "" && node.Bonuses.ToList().FindAll(x=>x.bonusType.ToString().ToLower().Contains(SearchBox.Text.ToLower())).Any())
-                {
-                    r = new Rectangle
-                    {
-                        Height = 50,
-                        Width = 50,
-                        Stroke = System.Windows.Media.Brushes.Black,
-                        Fill = System.Windows.Media.Brushes.LightSkyBlue
-                    };
-                } else
-                {
-                    r = new Rectangle
-                    {
-                        Height = 50,
-                        Width = 50,
-                        Stroke = System.Windows.Media.Brushes.Black,
-                        Fill = System.Windows.Media.Brushes.LightGray
-                    };
+                    r.Stroke = System.Windows.Media.Brushes.Red;
                 }
 
                 r.MouseLeftButtonDown += mouseDown;

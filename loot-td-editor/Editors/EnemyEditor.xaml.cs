@@ -66,6 +66,14 @@ namespace loot_td_editor.Editors
         {
             if (EnemyListView.SelectedItem == null)
                 return;
+
+            string name = ((EnemyBase)EnemyListView.SelectedItem).IdName;
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.No)
+                return;
+
             EnemyBaseList.Remove((EnemyBase)EnemyListView.SelectedItem);
         }
 

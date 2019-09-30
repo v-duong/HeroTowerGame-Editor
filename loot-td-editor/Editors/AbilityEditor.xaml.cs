@@ -239,6 +239,22 @@ namespace loot_td_editor.Editors
                 BaseCriticalBox.IsEnabled = true;
                 FlatDamageMultiBox.IsEnabled = true;
             }
+
+            if (b.AbilityShotType.ToString().Contains("ARC"))
+            {
+                ProjSpreadLabel.Content = "Arc Angle";
+            } else
+            {
+                ProjSpreadLabel.Content = "Proj Sprd Angle";
+            }
+
+            if (b.AbilityShotType.ToString().Contains("FORWARD_MOVING"))
+            {
+                ProjLifetimeLabel.Content = "Move Duration";
+            } else
+            {
+                ProjLifetimeLabel.Content = "Proj Lifetime";
+            }
         }
     }
 }

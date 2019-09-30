@@ -147,16 +147,18 @@
                         </Grid.ColumnDefinitions>
 
                         <Label Content="Projectile Values" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
-                        <Label Content="Proj Speed" Grid.Column="0" Grid.Row="1"></Label>
-                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-                        <Label Content="Proj Size" Grid.Column="0" Grid.Row="2"></Label>
-                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-                        <Label Content="Proj Count" Grid.Column="0" Grid.Row="3"></Label>
-                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
+                        <Label Content="Proj Speed" Grid.Column="0" Grid.Row="1"  Name="ProjSpeedLabel"></Label>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpeed, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2"  Name="ProjSpeedValue"></xctk:DoubleUpDown>
+                        <Label Content="Proj Size" Grid.Column="0" Grid.Row="2" Name="ProjSizeLabel"></Label>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSize, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="ProjSizeValue"></xctk:DoubleUpDown>
+                        <Label Content="Proj Count" Grid.Column="0" Grid.Row="3" Name="ProjCountLabel"></Label>
+                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Name="ProjCountValue" ></xctk:IntegerUpDown>
                         <Label Content="Proj Spread?" Grid.Column="0" Grid.Row="4"></Label>
                         <CheckBox Grid.Column="1" Grid.Row="4" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.DoesProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ></CheckBox>
-                        <Label Content="Proj Sprd Angle" Grid.Column="0" Grid.Row="5"></Label>
-                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ></xctk:IntegerUpDown>
+                        <Label Content="Proj Sprd Angle" Grid.Column="0" Grid.Row="5" Name="ProjSpreadLabel"></Label>
+                        <xctk:IntegerUpDown Grid.Column="1" Grid.Row="5" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileSpread, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Name="ProjSpreadValue" ></xctk:IntegerUpDown>
+                        <Label Content="Proj Lifetime" Grid.Column="0" Grid.Row="6" Name="ProjLifetimeLabel"></Label>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="6" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.ProjectileLifespanMulti, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Name="ProjLifetimeValue" FormatString="F3"></xctk:DoubleUpDown>
 
                         <Label Content="AoE Values" Grid.Column="3" Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
                         <Label Content="Area Radius" Grid.Column="3" Grid.Row="1"></Label>
@@ -166,7 +168,7 @@
 
                         <Label Content="Hitscan Values" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center" FontWeight="Bold"></Label>
                         <Label Content="HitscanDelay" Grid.Column="0" Grid.Row="8"></Label>
-                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.05"></xctk:DoubleUpDown>
+                        <xctk:DoubleUpDown Grid.Column="1" Grid.Row="8" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.HitscanDelay, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.05" FormatString="F3"></xctk:DoubleUpDown>
 
                         <Label Content="Weapon Skill Values" Grid.Column="3" Grid.Row="5" Grid.ColumnSpan="2" FontWeight="Bold" HorizontalAlignment="Center"></Label>
                         <Label Content="BaseMult" Grid.Column="3" Grid.Row="6"></Label>
@@ -217,7 +219,7 @@
                         <ColumnDefinition Width="1*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.RowSpan="2">
+                    <Grid Grid.RowSpan="2" Grid.ColumnSpan="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="26" />
                             <RowDefinition Height="*" />
@@ -227,9 +229,9 @@
                         <Label Content="Ability Bonus Properties" FontWeight="Bold"></Label>
                         <Label Grid.Row="2" Content="Applied Buff/Debuff Effects" FontWeight="Bold"></Label>
                         <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
-                        <DataGrid Grid.Row="3" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
+                        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
                     </Grid>
-                    <Grid Grid.Column="1" Grid.Row="0" Margin="5,5,5,5">
+                    <Grid Grid.Column="2" Grid.Row="0"  Margin="5,5,5,5">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="5" />
                             <RowDefinition Height="25" />

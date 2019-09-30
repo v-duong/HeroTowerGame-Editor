@@ -156,6 +156,14 @@ namespace loot_td_editor
         {
             if (AffixesList.SelectedItem == null)
                 return;
+
+            string name = ((AffixBase)AffixesList.SelectedItem).IdName;
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.No)
+                return;
+
             Affixes.Remove((AffixBase)AffixesList.SelectedItem);
             //AffixesList.Items.Refresh();
         }

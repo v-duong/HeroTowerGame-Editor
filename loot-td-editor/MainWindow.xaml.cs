@@ -210,6 +210,8 @@ namespace loot_td_editor
             s = Properties.Settings.Default.JsonSavePath + "\\abilities\\abilities.editor.json";
             o = JsonConvert.SerializeObject(AbilityEditor.Abilities.ToList());
             TrySave(s, o);
+
+            saveAbility = true;
         }
 
         private void SaveArchetypesJson()
@@ -628,6 +630,7 @@ namespace loot_td_editor
                     localization.Add(localizationKey, "");
                 else
                     keys.Remove(localizationKey);
+
                 localizationKey = "ability." + a.IdName + ".text";
                 if (!localization.ContainsKey(localizationKey))
                     localization.Add(localizationKey, "");

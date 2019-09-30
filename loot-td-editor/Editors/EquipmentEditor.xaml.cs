@@ -100,6 +100,14 @@ namespace loot_td_editor
         {
             if (EquipList.SelectedItem == null)
                 return;
+
+            string name = ((EquipmentBase)EquipList.SelectedItem).IdName;
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.No)
+                return;
+
             Equipments.Remove((EquipmentBase)EquipList.SelectedItem);
         }
 

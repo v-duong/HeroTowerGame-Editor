@@ -64,6 +64,14 @@ namespace loot_td_editor.Editors
         {
             if (StageListView.SelectedItem == null)
                 return;
+
+            string name = ((StageInfoCollection)StageListView.SelectedItem).IdName;
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.No)
+                return;
+
             Stages.Remove((StageInfoCollection)StageListView.SelectedItem);
         }
 

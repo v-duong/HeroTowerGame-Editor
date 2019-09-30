@@ -23,6 +23,7 @@ namespace loot_td
         private int projectileCount;
         private int projectileSpread;
         private bool projectileDoesNotSpread;
+        private float projectileLife;
 
         private float areaRadius;
         private float areaLength;
@@ -83,6 +84,9 @@ namespace loot_td
 
         [JsonProperty]
         public float ProjectileSize { get => projectileSize; set => SetProperty(ref projectileSize, value); }
+
+        [JsonProperty]
+        public float ProjectileLifespanMulti { get => projectileLife; set => SetProperty(ref projectileLife, value); }
 
         [JsonProperty]
         public int ProjectileCount { get => projectileCount; set => SetProperty(ref projectileCount, value); }
@@ -363,12 +367,16 @@ namespace loot_td
     {
         PROJECTILE,
         HITSCAN_SINGLE,
+        HITSCAN_MULTI,
         ARC_AOE,
+        FORWARD_MOVING_ARC,
         RADIAL_AOE,
+        FORWARD_MOVING_RADIAL,
         NOVA_AOE,
         NOVA_ARC_AOE,
         LINEAR_AOE,
-        PROJECTILE_NOVA
+        FORWARD_MOVING_LINEAR,
+        PROJECTILE_NOVA,
     }
 
     public enum AbilityTargetType

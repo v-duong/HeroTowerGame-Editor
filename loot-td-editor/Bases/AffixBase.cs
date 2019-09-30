@@ -295,7 +295,11 @@ namespace loot_td
         ON_KILL,
         HEALTH_THRESHOLD,
         SHIELD_THRESHOLD,
-        SOULPOINT_THRESHOLD
+        SOULPOINT_THRESHOLD,
+        ON_BLOCK,
+        ON_DODGE,
+        ON_PARRY,
+        ON_PHASING,
     }
 
     public enum ModifyType

@@ -25,6 +25,10 @@ namespace loot_td_editor
                 case TriggerType.WHEN_HITTING:
                     s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
                     break;
+                case TriggerType.ON_BLOCK:
+                    s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
+
+                    break;
             }
 
             return s;
