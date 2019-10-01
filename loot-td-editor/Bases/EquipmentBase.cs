@@ -253,7 +253,7 @@ namespace loot_td
                     s += Localization.GetBonusTypeString(b.BonusType, b.ModifyType, b.MinValue, b.MaxValue, b.Restriction);
                 }
 
-                foreach (AddedEffectBonusProperty added in affixBase.TriggeredEffects)
+                foreach (TriggeredEffectProperty added in affixBase.TriggeredEffects)
                 {
                     s += Localization.GetLocalizationText_TriggeredEffect(added, added.EffectMinValue);
                 }

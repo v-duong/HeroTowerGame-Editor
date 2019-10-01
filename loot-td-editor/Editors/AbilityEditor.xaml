@@ -92,8 +92,8 @@
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="3">
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.AttacksPerSec, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="AttacksPerSecBox"></xctk:DoubleUpDown>
-                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="FlatDamageMultiBox"/>
-                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="BaseCriticalBox"/>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.FlatDamageMultiplier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="FlatDamageMultiBox" />
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.BaseCritical, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.1" FormatString="F2" Name="BaseCriticalBox" />
                             <Label Height="13"></Label>
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetRange, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
                             <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.TargetType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}}"></ComboBox>
@@ -225,11 +225,15 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="26" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="26" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <Label Content="Ability Bonus Properties" FontWeight="Bold"></Label>
                         <Label Grid.Row="2" Content="Applied Buff/Debuff Effects" FontWeight="Bold"></Label>
+                        <Label Grid.Row="4" Content="TriggeredEffects" FontWeight="Bold"></Label>
                         <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
                         <DataGrid Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
+                        <DataGrid Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.TriggeredEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
                     </Grid>
                     <Grid Grid.Column="2" Grid.Row="0"  Margin="5,5,5,5">
                         <Grid.RowDefinitions>

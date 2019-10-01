@@ -45,6 +45,7 @@ namespace loot_td
         private string effectSprite;
         private LinkedAbilityData linkedAbility;
         private ObservableCollection<AbilityAppliedEffect> appliedEffects;
+        private ObservableCollection<TriggeredEffectProperty> triggeredEffects;
         private bool hasLinkedAbility;
         private bool useWeaponRange;
         private bool useWeaponRangeAoe;
@@ -143,6 +144,9 @@ namespace loot_td
         public ObservableCollection<AbilityAppliedEffect> AppliedEffects { get => appliedEffects; set => SetProperty(ref appliedEffects, value); }
 
         [JsonProperty]
+        public ObservableCollection<TriggeredEffectProperty> TriggeredEffects { get => triggeredEffects; set => SetProperty(ref triggeredEffects, value); }
+
+        [JsonProperty]
         public bool HasLinkedAbility { get => hasLinkedAbility; set => SetProperty(ref hasLinkedAbility, value); }
 
         [JsonProperty]
@@ -173,6 +177,7 @@ namespace loot_td
             WeaponRestrictions = new ObservableCollection<GroupType>();
             BonusProperties = new ObservableCollection<ScalingBonusProperty_Float>();
             AppliedEffects = new ObservableCollection<AbilityAppliedEffect>();
+            TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
             LinkedAbility = new LinkedAbilityData();
             effectSprite = "";
         }

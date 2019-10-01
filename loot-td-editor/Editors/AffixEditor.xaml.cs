@@ -109,7 +109,7 @@ namespace loot_td_editor
                 if (k.IdName == null)
                     k.IdName = "";
                 if (k.TriggeredEffects == null)
-                    k.TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
+                    k.TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
             }
             AffixesList.ItemsSource = Affixes;
         }

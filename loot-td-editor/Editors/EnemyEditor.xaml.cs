@@ -138,8 +138,8 @@ namespace loot_td_editor.Editors
                 return;
             EnemyBase enemy = EnemyListView.SelectedItem as EnemyBase;
             HealthLabel1.Content = "Level " + enemy.Level;
-            HealthValue1.Content = Helpers.EnemyScalingFormula(enemy.Level) * 15 * enemy.HealthScaling;
-            HealthValue2.Content = Helpers.EnemyScalingFormula(100) * 15 * enemy.HealthScaling;
+            HealthValue1.Content = Helpers.EnemyHealthScalingFormula(enemy.Level) * enemy.HealthScaling;
+            HealthValue2.Content = Helpers.EnemyHealthScalingFormula(100) * enemy.HealthScaling;
         }
     }
 }

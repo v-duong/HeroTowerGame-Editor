@@ -9,7 +9,7 @@ namespace loot_td_editor
         private static Dictionary<string, string> localization;
 
 
-        public static string GetLocalizationText_TriggeredEffect(AddedEffectBonusProperty triggeredEffect, float value)
+        public static string GetLocalizationText_TriggeredEffect(TriggeredEffectProperty triggeredEffect, float value)
         {
             localization.TryGetValue("triggerType." + triggeredEffect.TriggerType.ToString(), out string s);
             string restrictionString = "";

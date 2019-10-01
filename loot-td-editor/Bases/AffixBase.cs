@@ -15,7 +15,7 @@ namespace loot_td
         private int _spawnLevel;
         private ObservableCollection<AffixBonus> _affixBonuses;
         private ObservableCollection<AffixWeight> _spawnWeight;
-        private ObservableCollection<AddedEffectBonusProperty> addedEffects;
+        private ObservableCollection<TriggeredEffectProperty> addedEffects;
         private ObservableCollection<GroupType> _groupTypes;
 
         [JsonProperty]
@@ -35,7 +35,7 @@ namespace loot_td
         public ObservableCollection<AffixBonus> AffixBonuses { get => _affixBonuses; set { SetProperty(ref _affixBonuses, value); } }
 
         [JsonProperty]
-        public ObservableCollection<AddedEffectBonusProperty> TriggeredEffects { get => addedEffects; set { SetProperty(ref addedEffects, value); } }
+        public ObservableCollection<TriggeredEffectProperty> TriggeredEffects { get => addedEffects; set { SetProperty(ref addedEffects, value); } }
 
         [JsonProperty]
         public ObservableCollection<AffixWeight> SpawnWeight { get => _spawnWeight; set => SetProperty(ref _spawnWeight, value); }
@@ -55,7 +55,7 @@ namespace loot_td
             AffixBonuses = new ObservableCollection<AffixBonus>();
             SpawnWeight = new ObservableCollection<AffixWeight>();
             GroupTypes = new ObservableCollection<GroupType>();
-            TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
+            TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
         }
 
         public AffixBase(AffixBase a)
@@ -89,7 +89,7 @@ namespace loot_td
                 SpawnWeight.Add(w);
             }
 
-            TriggeredEffects = new ObservableCollection<AddedEffectBonusProperty>();
+            TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
 
             GroupTypes = new ObservableCollection<GroupType>(a.GroupTypes);
         }
@@ -183,7 +183,7 @@ namespace loot_td
         }
     }
 
-    public class AddedEffectBonusProperty : BindableBase
+    public class TriggeredEffectProperty : BindableBase
     {
         private TriggerType applicationType;
 
@@ -300,6 +300,7 @@ namespace loot_td
         ON_DODGE,
         ON_PARRY,
         ON_PHASING,
+        ON_DEATH,
     }
 
     public enum ModifyType

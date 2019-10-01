@@ -38,6 +38,15 @@ namespace loot_td_editor
             return ret1;
         }
 
+        public static double EnemyHealthScalingFormula(double level)
+        {
+            // formula
+            // (Scaling*(EnemyScaling))^(level/1.5 - 22) * (level*levelFactor) + level*2
+            double enemyFactor = Math.Pow(SCALING_FACTOR * ENEMY_SCALING, level * 1.1 - 23) * level * LEVEL_SCALING_FACTOR * 5 + level * 2;
+
+            return enemyFactor * 15;
+        }
+
         public static double AbilityScalingFormula(double level, double abilityScaling, double abilityBaseFactor)
         {
             // formula

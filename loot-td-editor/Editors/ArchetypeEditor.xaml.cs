@@ -143,6 +143,18 @@ namespace loot_td_editor.Editors
             ArchetypeSkillNode selectedNode = (ArchetypeSkillNode)NodesList.SelectedItem;
             ArchetypeSkillNode temp = Helpers.DeepClone(selectedNode);
             temp.Id = selected.NodeList.Count;
+            string s = new string(temp.IdName.Where(c => char.IsDigit(c)).ToArray());
+            if (s.Length > 0)
+            {
+                if (Int32.TryParse(new string(temp.IdName.Where(c => char.IsDigit(c)).ToArray()), out int res))
+                {
+                    temp.IdName = temp.IdName.TrimEnd(s.ToCharArray());
+                    temp.IdName += (res+1);
+                }
+            } else
+            {
+                temp.IdName += 1.ToString();
+            }
             selected.NodeList.Add(temp);
             //NodesList.Items.Refresh();
             //ChildNumRefresh();
