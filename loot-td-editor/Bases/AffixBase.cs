@@ -207,6 +207,8 @@ namespace loot_td
 
         private float effectDuration;
 
+        private ElementType effectElement;
+
         private bool _readAsFloat;
 
         [JsonConverter(typeof(StringEnumConverter))]
@@ -246,6 +248,9 @@ namespace loot_td
 
         [JsonProperty]
         public float EffectDuration { get => effectDuration; set => SetProperty(ref effectDuration, value); }
+        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonProperty]
+        public ElementType EffectElement { get => effectElement; set => SetProperty(ref effectElement, value); }
 
         [JsonProperty]
         public bool ReadAsFloat { get => _readAsFloat; set => SetProperty(ref _readAsFloat, value); }
@@ -293,6 +298,7 @@ namespace loot_td
         WHEN_HIT_BY,
         WHEN_HITTING,
         ON_KILL,
+        ON_HIT_KILL,
         HEALTH_THRESHOLD,
         SHIELD_THRESHOLD,
         SOULPOINT_THRESHOLD,

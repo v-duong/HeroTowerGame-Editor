@@ -149,9 +149,10 @@ namespace loot_td_editor.Editors
                 if (Int32.TryParse(new string(temp.IdName.Where(c => char.IsDigit(c)).ToArray()), out int res))
                 {
                     temp.IdName = temp.IdName.TrimEnd(s.ToCharArray());
-                    temp.IdName += (res+1);
+                    temp.IdName += (res + 1);
                 }
-            } else
+            }
+            else
             {
                 temp.IdName += 1.ToString();
             }
@@ -721,8 +722,9 @@ namespace loot_td_editor.Editors
                     string s = prop.bonusType + "#" + prop.modifyType + "#" + prop.restriction;
 
                     if (!nodeDict.ContainsKey(s))
+                    {
                         nodeDict[s] = new NodeTotalInfo(prop.bonusType, prop.modifyType, prop.restriction);
-
+                    }
                     NodeTotalInfo totalInfo = nodeDict[s];
                     float finalStat;
 
@@ -731,15 +733,31 @@ namespace loot_td_editor.Editors
                     else
                         finalStat = prop.growthValue * (node.MaxLevel - 1) + prop.finalLevelValue;
 
-                    if (finalStat < 0)
+                    if (prop.modifyType != ModifyType.MULTIPLY)
                     {
-                        totalInfo.negTotal += finalStat;
-                        totalInfo.negTotalLevel += node.MaxLevel;
+                        if (finalStat < 0)
+                        {
+                            totalInfo.negTotal += finalStat;
+                            totalInfo.negTotalLevel += node.MaxLevel;
+                        }
+                        else
+                        {
+                            totalInfo.posTotal += finalStat;
+                            totalInfo.posTotalLevel += node.MaxLevel;
+                        }
                     }
                     else
                     {
-                        totalInfo.posTotal += finalStat;
-                        totalInfo.posTotalLevel += node.MaxLevel;
+                        if (finalStat < 0)
+                        {
+                            totalInfo.negTotal *= (1f + finalStat / 100f);
+                            totalInfo.negTotalLevel += node.MaxLevel;
+                        }
+                        else
+                        {
+                            totalInfo.posTotal *= (1f + finalStat / 100f);
+                            totalInfo.posTotalLevel += node.MaxLevel;
+                        }
                     }
                 }
             }
@@ -749,18 +767,35 @@ namespace loot_td_editor.Editors
 
             foreach (NodeTotalInfo nodeInfo in list)
             {
-                if (nodeInfo.mod == ModifyType.MULTIPLY || nodeInfo.mod == ModifyType.FIXED_TO)
+                if (nodeInfo.mod == ModifyType.FIXED_TO)
                     continue;
-                if (nodeInfo.posTotal > 0)
+                if (nodeInfo.mod != ModifyType.MULTIPLY)
                 {
-                    float posAvg = nodeInfo.posTotal / nodeInfo.posTotalLevel;
+                    if (nodeInfo.posTotal > 0)
+                    {
+                        float posAvg = nodeInfo.posTotal / nodeInfo.posTotalLevel;
 
-                    display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.posTotal, nodeInfo.posTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.posTotalLevel + ", Avg: " + posAvg.ToString("n2") + "\n\n";
-                }
-                if (nodeInfo.negTotal < 0)
+                        display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.posTotal, nodeInfo.posTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.posTotalLevel + ", Avg: " + posAvg.ToString("n2") + "\n\n";
+                    }
+                    if (nodeInfo.negTotal < 0)
+                    {
+                        float negAvg = nodeInfo.negTotal / nodeInfo.negTotalLevel;
+                        display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.negTotal, nodeInfo.negTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.negTotalLevel + ", Avg: " + negAvg.ToString("n2") + "\n\n";
+                    }
+                } else
                 {
-                    float negAvg = nodeInfo.negTotal / nodeInfo.negTotalLevel;
-                    display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.negTotal, nodeInfo.negTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.negTotalLevel + ", Avg: " + negAvg.ToString("n2") + "\n\n";
+                    if (nodeInfo.posTotal > 100f)
+                    {
+                        float posAvg = nodeInfo.posTotal / nodeInfo.posTotalLevel;
+                        nodeInfo.posTotal -= 100f;
+                        display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.posTotal, nodeInfo.posTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.posTotalLevel + ", Avg: " + posAvg.ToString("n2") + "\n\n";
+                    }
+                    if (nodeInfo.negTotal < 100f)
+                    {
+                        float negAvg = nodeInfo.negTotal / nodeInfo.negTotalLevel;
+                        nodeInfo.negTotal -= 100f;
+                        display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.negTotal, nodeInfo.negTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.negTotalLevel + ", Avg: " + negAvg.ToString("n2") + "\n\n";
+                    }
                 }
             }
 
@@ -784,6 +819,11 @@ namespace loot_td_editor.Editors
                 this.bonus = bonus;
                 this.mod = mod;
                 this.restrict = r;
+                if (mod == ModifyType.MULTIPLY)
+                {
+                    negTotal = 100f;
+                    posTotal = 100f;
+                }
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿class HeroArchetypeData
 {
-    public const int LocalBonusStart = 0x900;
+    public const int SpecialBonusStart = 0x900;
 }
 
 

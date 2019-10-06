@@ -86,6 +86,14 @@ namespace loot_td_editor.Editors
         {
             if (AbilitiesList.SelectedItem == null)
                 return;
+
+            string name = ((AbilityBase)AbilitiesList.SelectedItem).IdName;
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+
+            if (res == MessageBoxResult.No)
+                return;
+
             Abilities.Remove((AbilityBase)AbilitiesList.SelectedItem);
             //ArchetypesList.Items.Refresh();
         }
