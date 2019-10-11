@@ -17,7 +17,6 @@ namespace loot_td_editor
     /// </summary>
     public partial class EquipmentEditor : UserControl
     {
-
         public ObservableCollection<AffixBase> innatesList { get; set; }
         public ObservableCollection<EquipmentBase> Equipments;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList(); } }
@@ -111,8 +110,6 @@ namespace loot_td_editor
             Equipments.Remove((EquipmentBase)EquipList.SelectedItem);
         }
 
-
-
         private GridViewColumnHeader _lastHeaderClicked = null;
         private ListSortDirection _lastDirection = ListSortDirection.Ascending;
 
@@ -172,6 +169,15 @@ namespace loot_td_editor
         private void SortButton_Click(object sender, RoutedEventArgs e)
         {
             Equipments = new ObservableCollection<EquipmentBase>(Equipments.OrderBy(x => x.IdName, new NaturalStringComparer2()));
+            Dictionary<string, int> nameDict = new Dictionary<string, int>();
+            foreach(EquipmentBase item in Equipments)
+            {
+                string chars = new String(item.IdName.Where(c => c != '-' && (c < '0' || c > '9')).ToArray());
+                if (!nameDict.ContainsKey(chars))
+                    nameDict.Add(chars, 0);
+                nameDict[chars]++;
+                item.IdName = chars + nameDict[chars];
+            }
             EquipList.ItemsSource = Equipments;
         }
 
@@ -179,7 +185,7 @@ namespace loot_td_editor
         {
             foreach (EquipmentBase equipment in Equipments)
             {
-                BaseFields.CalculateReqValues(equipment);
+                EquipBaseFields.CalculateReqValues(equipment);
             }
         }
 
@@ -187,8 +193,101 @@ namespace loot_td_editor
         {
             foreach (EquipmentBase equipment in Equipments)
             {
-                BaseFields.CalculateArmorValues(equipment);
+                EquipBaseFields.CalculateArmorValues(equipment);
             }
+        }
+
+        private void CreateOtherArmorsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (EquipList.SelectedItem == null || EquipList.SelectedItems.Count == 0)
+                return;
+
+            foreach (EquipmentBase item in EquipList.SelectedItems)
+            {
+                if (item.EquipSlot != EquipSlotType.BODY_ARMOR)
+                    continue;
+
+                EquipmentBase helm = Helpers.DeepClone(item);
+                helm.IdName = helm.IdName.Replace("Armor", "Helm");
+                helm.EquipSlot = EquipSlotType.HEADGEAR;
+                EquipBaseFields.CalculateArmorValues(helm);
+                EquipBaseFields.CalculateReqValues(helm);
+
+                Equipments.Add(helm);
+
+                EquipmentBase boots = Helpers.DeepClone(item);
+                boots.IdName = boots.IdName.Replace("Armor", "Boots");
+                boots.EquipSlot = EquipSlotType.BOOTS;
+                EquipBaseFields.CalculateArmorValues(boots);
+                EquipBaseFields.CalculateReqValues(boots);
+
+                Equipments.Add(boots);
+
+                EquipmentBase gloves = Helpers.DeepClone(item);
+                gloves.IdName = gloves.IdName.Replace("Armor", "Gloves");
+                gloves.EquipSlot = EquipSlotType.GLOVES;
+                EquipBaseFields.CalculateArmorValues(gloves);
+                EquipBaseFields.CalculateReqValues(gloves);
+
+                Equipments.Add(gloves);
+            }
+        }
+
+        private void CreateHybridStr_Click(object sender, RoutedEventArgs e)
+        {
+            if (EquipList.SelectedItem == null || EquipList.SelectedItems.Count == 0)
+                return;
+
+            foreach (EquipmentBase item in EquipList.SelectedItems)
+            {
+
+
+                CreateHybrid(item,"Str","StrAgi", GroupType.STR_AGI_ARMOR);
+                CreateHybrid(item, "Str", "StrInt", GroupType.STR_INT_ARMOR);
+            }
+        }
+
+        private void CreateHybridAgi_Click(object sender, RoutedEventArgs e)
+        {
+            if (EquipList.SelectedItem == null || EquipList.SelectedItems.Count == 0)
+                return;
+
+            foreach (EquipmentBase item in EquipList.SelectedItems)
+            {
+
+
+                CreateHybrid(item, "Agi", "IntAgi", GroupType.INT_AGI_ARMOR);
+                CreateHybrid(item, "Agi", "StrAgi", GroupType.STR_AGI_ARMOR);
+            }
+        }
+
+        private void CreateHybridInt_Click(object sender, RoutedEventArgs e)
+        {
+            if (EquipList.SelectedItem == null || EquipList.SelectedItems.Count == 0)
+                return;
+
+            foreach (EquipmentBase item in EquipList.SelectedItems)
+            {
+
+
+                CreateHybrid(item, "Int", "StrInt", GroupType.STR_INT_ARMOR);
+                CreateHybrid(item, "Int", "IntAgi", GroupType.INT_AGI_ARMOR);
+            }
+        }
+
+        private void CreateHybrid(EquipmentBase item, string oldVal, string newVal, GroupType group)
+        {
+            EquipmentBase hybrid = Helpers.DeepClone(item);
+            hybrid.IdName = hybrid.IdName.Replace(oldVal, newVal);
+            if (Equipments.ToList().Find(x=>x.IdName == hybrid.IdName) != null)
+            {
+                return;
+            }
+            hybrid.Group = group;
+            EquipBaseFields.CalculateArmorValues(hybrid);
+            EquipBaseFields.CalculateReqValues(hybrid);
+
+            Equipments.Add(hybrid);
         }
     }
 }

@@ -255,6 +255,11 @@ namespace loot_td
         [JsonProperty]
         public bool ReadAsFloat { get => _readAsFloat; set => SetProperty(ref _readAsFloat, value); }
 
+        public TriggeredEffectProperty()
+        {
+
+        }
+
     }
 
     public class AffixWeight: BindableBase

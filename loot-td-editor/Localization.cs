@@ -27,7 +27,22 @@ namespace loot_td_editor
                     break;
                 case TriggerType.ON_BLOCK:
                     s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
-
+                    break;
+                case TriggerType.ON_HIT:
+                case TriggerType.WHEN_HIT_BY:
+                case TriggerType.ON_KILL:
+                case TriggerType.ON_HIT_KILL:
+                case TriggerType.HEALTH_THRESHOLD:
+                case TriggerType.SHIELD_THRESHOLD:
+                case TriggerType.SOULPOINT_THRESHOLD:
+                case TriggerType.ON_DODGE:
+                    s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
+                    break;
+                case TriggerType.ON_PARRY:
+                    break;
+                case TriggerType.ON_PHASING:
+                    break;
+                case TriggerType.ON_DEATH:
                     break;
             }
 

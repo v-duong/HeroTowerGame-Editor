@@ -85,7 +85,7 @@ namespace loot_td_editor
             CalculateReqValues(SelectedBase);
         }
 
-        private int GetScaledDefense(int droplevel, int hybridtype, float scaling)
+        public static int GetScaledDefense(int droplevel, int hybridtype, float scaling)
         {
             if (hybridtype == 0)
             {
@@ -102,56 +102,92 @@ namespace loot_td_editor
             return 0;
         }
 
-        public void CalculateArmorValues(EquipmentBase b)
+        public static void CalculateArmorValues(EquipmentBase b)
         {
-            float scalingMulti = 1;
-            if (ScalingMult.Value != null)
-                scalingMulti = (float)ScalingMult.Value;
             b.Armor = 0;
             b.Shield = 0;
             b.DodgeRating = 0;
             b.ResolveRating = 0;
             b.SellValue = 0;
+
+            float scalingMulti = 1;
+            /*
+            if (ScalingMult.Value != null)
+                scalingMulti = (float)ScalingMult.Value;
+                */
+
+            switch (b.EquipSlot)
+            {
+                case EquipSlotType.OFF_HAND:
+                    scalingMulti = 0.8f;
+                    break;
+
+                case EquipSlotType.HEADGEAR:
+                    scalingMulti = 0.4f;
+                    break;
+
+                case EquipSlotType.GLOVES:
+                    scalingMulti = 0.25f;
+                    break;
+
+                case EquipSlotType.BOOTS:
+                    scalingMulti = 0.3f;
+                    break;
+
+                default:
+                    scalingMulti = 1f;
+                    break;
+            }
+
             switch (b.Group)
             {
                 case GroupType.STR_ARMOR:
+                case GroupType.STR_SHIELD:
                     b.Armor = (int)(GetScaledDefense(b.DropLevel, 0, armorScaling) * scalingMulti);
                     break;
 
                 case GroupType.INT_ARMOR:
+                case GroupType.INT_SHIELD:
                     b.Shield = (int)(GetScaledDefense(b.DropLevel, 0, shieldScaling) * scalingMulti);
                     break;
 
                 case GroupType.AGI_ARMOR:
+                case GroupType.AGI_SHIELD:
                     b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti);
                     break;
 
                 case GroupType.STR_AGI_ARMOR:
+                case GroupType.STR_AGI_SHIELD:
                     b.Armor = (int)(GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti);
                     b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 1, dodgeRatingScaling) * scalingMulti);
                     break;
 
                 case GroupType.STR_WILL_ARMOR:
+                case GroupType.STR_WILL_SHIELD:
                     b.Armor = (int)(GetScaledDefense(b.DropLevel, 2, armorScaling) * scalingMulti);
                     b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
                     break;
 
                 case GroupType.STR_INT_ARMOR:
+                case GroupType.STR_INT_SHIELD:
                     b.Armor = (int)(GetScaledDefense(b.DropLevel, 1, armorScaling) * scalingMulti);
                     b.Shield = (int)(GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti);
                     break;
 
                 case GroupType.INT_AGI_ARMOR:
+                case GroupType.INT_AGI_SHIELD:
                     b.Shield = (int)(GetScaledDefense(b.DropLevel, 1, shieldScaling) * scalingMulti);
                     b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 0, dodgeRatingScaling) * scalingMulti);
                     break;
 
                 case GroupType.INT_WILL_ARMOR:
+                case GroupType.INT_WILL_SHIELD:
                     b.Shield = (int)(GetScaledDefense(b.DropLevel, 2, shieldScaling) * scalingMulti);
                     b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
                     break;
 
                 case GroupType.AGI_WILL_ARMOR:
+                case GroupType.AGI_WILL_SHIELD:
                     b.DodgeRating = (int)(GetScaledDefense(b.DropLevel, 2, dodgeRatingScaling) * scalingMulti);
                     b.ResolveRating = (int)(ResolveRatingValue(b.DropLevel) * scalingMulti);
                     break;
@@ -161,21 +197,50 @@ namespace loot_td_editor
             }
         }
 
-        private int ResolveRatingValue(int level)
+        private static int ResolveRatingValue(int level)
         {
             return (int)(level * resolveRatingScaling);
         }
 
-        public void CalculateReqValues(EquipmentBase b)
+        public static void CalculateReqValues(EquipmentBase b)
         {
             b.StrengthReq = 0;
             b.AgilityReq = 0;
             b.IntelligenceReq = 0;
             b.WillReq = 0;
 
-            int mainreq = (int)Math.Floor(Math.Pow(b.DropLevel, 1.13) * mainAttrScaling + startingAttr);
-            int hybridmain = (int)Math.Floor(Math.Pow(b.DropLevel, 1.13) * mainAttrScaling * hybridFactor + startingAttr);
-            int hybridsub = (int)Math.Floor(Math.Pow(b.DropLevel, 1.13) * subAttrScaling + startingAttr);
+            float scalingMulti = 1;
+            /*
+            if (ScalingMult.Value != null)
+                scalingMulti = (float)ScalingMult.Value;
+                */
+
+            switch (b.EquipSlot)
+            {
+                case EquipSlotType.OFF_HAND:
+                    scalingMulti = 0.85f;
+                    break;
+
+                case EquipSlotType.HEADGEAR:
+                    scalingMulti = 0.65f;
+                    break;
+
+                case EquipSlotType.GLOVES:
+                    scalingMulti = 0.4f;
+                    break;
+
+                case EquipSlotType.BOOTS:
+                    scalingMulti = 0.5f;
+                    break;
+
+                default:
+                    scalingMulti = 1f;
+                    break;
+            }
+
+            int mainreq = (int)Math.Floor((Math.Pow(b.DropLevel, 1.13) * mainAttrScaling + startingAttr) * scalingMulti);
+            int hybridmain = (int)Math.Floor((Math.Pow(b.DropLevel, 1.13) * mainAttrScaling * hybridFactor + startingAttr) * scalingMulti);
+            int hybridsub = (int)Math.Floor((Math.Pow(b.DropLevel, 1.13) * subAttrScaling + startingAttr) * scalingMulti);
 
             switch (b.Group)
             {
@@ -257,6 +322,14 @@ namespace loot_td_editor
                     b.AgilityReq = (int)(mainreq * 1.1f);
                     break;
 
+                case GroupType.ONE_HANDED_MACE:
+                    b.StrengthReq = (int)(mainreq);
+                    break;
+
+                case GroupType.TWO_HANDED_MACE:
+                    b.StrengthReq = (int)(mainreq * 1.1f);
+                    break;
+
                 case GroupType.WAND:
                     b.IntelligenceReq = (int)(mainreq);
                     break;
@@ -264,6 +337,48 @@ namespace loot_td_editor
                 case GroupType.STAFF:
                     b.IntelligenceReq = (int)(mainreq);
                     b.StrengthReq = (int)(hybridmain * 0.3f);
+                    break;
+
+                case GroupType.STR_SHIELD:
+                    b.StrengthReq = (int)(mainreq * 0.8f);
+                    break;
+
+                case GroupType.INT_SHIELD:
+                    b.IntelligenceReq = (int)(mainreq * 0.8f);
+                    break;
+
+                case GroupType.AGI_SHIELD:
+                    b.AgilityReq = (int)(mainreq * 0.8f);
+                    break;
+
+                case GroupType.STR_AGI_SHIELD:
+                    b.StrengthReq = (int)(hybridmain * 0.8f);
+                    b.AgilityReq = (int)(hybridmain * 0.8f);
+                    break;
+
+                case GroupType.STR_WILL_SHIELD:
+                    b.StrengthReq = (int)(hybridmain * 0.8f);
+                    b.WillReq = (int)(hybridsub * 0.8f);
+                    break;
+
+                case GroupType.STR_INT_SHIELD:
+                    b.StrengthReq = (int)(hybridmain * 0.8f);
+                    b.IntelligenceReq = (int)(hybridmain * 0.8f);
+                    break;
+
+                case GroupType.INT_AGI_SHIELD:
+                    b.IntelligenceReq = (int)(hybridmain * 0.8f);
+                    b.AgilityReq = (int)(hybridmain * 0.8f);
+                    break;
+
+                case GroupType.INT_WILL_SHIELD:
+                    b.IntelligenceReq = (int)(hybridmain * 0.8f);
+                    b.WillReq = (int)(hybridsub * 0.8f);
+                    break;
+
+                case GroupType.AGI_WILL_SHIELD:
+                    b.AgilityReq = (int)(hybridmain * 0.8f);
+                    b.WillReq = (int)(hybridsub * 0.8f);
                     break;
 
                 default:
@@ -301,6 +416,35 @@ namespace loot_td_editor
         private void UseScalingBox_Unchecked(object sender, RoutedEventArgs e)
         {
             ScalingMult.Value = 1;
+        }
+
+        private void GroupTypeBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (SelectedBase == null)
+                return;
+            ComboBox box = sender as ComboBox;
+            switch ((GroupType)box.SelectedItem)
+            {
+                case GroupType.STR_SHIELD:
+                case GroupType.AGI_SHIELD:
+                case GroupType.SHIELD:
+                case GroupType.INT_SHIELD:
+                case GroupType.WILL_SHIELD:
+                case GroupType.STR_INT_SHIELD:
+                case GroupType.STR_AGI_SHIELD:
+                case GroupType.STR_WILL_SHIELD:
+                case GroupType.INT_AGI_SHIELD:
+                case GroupType.INT_WILL_SHIELD:
+                case GroupType.AGI_WILL_SHIELD:
+                    AttackSpeedLabel.Content = "Shield Prot";
+                    CritChanceLabel.Content = "Shield Block";
+                    break;
+
+                default:
+                    AttackSpeedLabel.Content = "AttackSpeed";
+                    CritChanceLabel.Content = "CritChance";
+                    break;
+            }
         }
     }
 }

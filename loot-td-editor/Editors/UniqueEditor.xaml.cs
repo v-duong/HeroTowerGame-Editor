@@ -197,7 +197,7 @@ namespace loot_td_editor
         {
             foreach (UniqueBase equipment in Uniques)
             {
-                BaseFields.CalculateReqValues(equipment);
+                EquipBaseFields.CalculateReqValues(equipment);
             }
         }
 
@@ -205,7 +205,7 @@ namespace loot_td_editor
         {
             foreach (UniqueBase equipment in Uniques)
             {
-                BaseFields.CalculateArmorValues(equipment);
+                EquipBaseFields.CalculateArmorValues(equipment);
             }
         }
 

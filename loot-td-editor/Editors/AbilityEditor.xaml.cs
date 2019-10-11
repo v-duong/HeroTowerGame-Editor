@@ -124,8 +124,8 @@ namespace loot_td_editor.Editors
             if (GroupList.SelectedItem == null || AbilitiesList.SelectedItem == null)
                 return;
             AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
-            if (!temp.WeaponRestrictions.Contains((GroupType)GroupList.SelectedItem))
-                temp.WeaponRestrictions.Add((GroupType)GroupList.SelectedItem);
+            if (!temp.RequiredRestrictions.Contains((GroupType)GroupList.SelectedItem))
+                temp.RequiredRestrictions.Add((GroupType)GroupList.SelectedItem);
             else
                 return;
             //GroupTagList.Items.Refresh();
@@ -136,7 +136,28 @@ namespace loot_td_editor.Editors
             if (RestrictionList.SelectedItem == null || AbilitiesList.SelectedItem == null)
                 return;
             AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
-            temp.WeaponRestrictions.Remove((GroupType)RestrictionList.SelectedItem);
+            temp.RequiredRestrictions.Remove((GroupType)RestrictionList.SelectedItem);
+            //GroupTagList.Items.Refresh();
+        }
+
+        private void SingleRestrictAddButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (GroupList.SelectedItem == null || AbilitiesList.SelectedItem == null)
+                return;
+            AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
+            if (!temp.SingleRequireRestrictions.Contains((GroupType)GroupList.SelectedItem))
+                temp.SingleRequireRestrictions.Add((GroupType)GroupList.SelectedItem);
+            else
+                return;
+            //GroupTagList.Items.Refresh();
+        }
+
+        private void SingleRestrictRemoveButtonClick(object sender, RoutedEventArgs e)
+        {
+            if (SingleRestrictionList.SelectedItem == null || AbilitiesList.SelectedItem == null)
+                return;
+            AbilityBase temp = (AbilityBase)AbilitiesList.SelectedItem;
+            temp.SingleRequireRestrictions.Remove((GroupType)SingleRestrictionList.SelectedItem);
             //GroupTagList.Items.Refresh();
         }
 

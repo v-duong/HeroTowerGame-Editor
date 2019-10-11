@@ -44,7 +44,7 @@
             <Label Content="EquipSlot" Grid.Column="3"></Label>
             <ComboBox ItemsSource="{Binding}" Name="EquipSlotBox" Grid.Column="4" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.EquipSlot, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"  ></ComboBox>
             <Label Content="Type" Grid.Column="3" Grid.Row="1"></Label>
-            <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.Group, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="GroupTypeBox" Grid.Column="4" Grid.Row="1"></ComboBox>
+            <ComboBox ItemsSource="{Binding}" SelectedValue="{Binding ElementName=BaseFields,Path=SelectedBase.Group, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="GroupTypeBox" Grid.Column="4" Grid.Row="1" SelectionChanged="GroupTypeBox_SelectionChanged"></ComboBox>
             <Label Content="Has Innate?" Grid.Column="3" Grid.Row="3"></Label>
             <CheckBox Grid.Column="4" Grid.Row="3" VerticalAlignment="Center" Name="HasInnateBox" Checked="HasInnateBox_Checked" Unchecked="HasInnateBox_Unchecked" IsChecked="{Binding ElementName=BaseFields,Path=SelectedBase.HasInnate, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
             <Label Content="InnateAffix" Grid.Column="3" Grid.Row="4"></Label>
@@ -92,8 +92,8 @@
             <StackPanel Grid.Row="2" Grid.Column="2" Margin="2">
                 <Label Content="minDamage" Height="27"></Label>
                 <Label Content="maxDamage" Height="27"></Label>
-                <Label Content="CriticalChance" Height="27"></Label>
-                <Label Content="AttackSpeed" Height="27"></Label>
+                <Label Content="CriticalChance" Height="27" Name="CritChanceLabel"></Label>
+                <Label Content="AttackSpeed" Height="27" Name="AttackSpeedLabel"></Label>
                 <Label Content="WeaponRange" Height="27"></Label>
             </StackPanel>
             <StackPanel Grid.Column="3" Grid.Row="2" Margin="2">

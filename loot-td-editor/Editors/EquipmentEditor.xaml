@@ -53,5 +53,12 @@
             <Label FontWeight="Bold" Content="Potential DPS" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Padding="4"></Label>
             <TextBlock HorizontalAlignment="Center" Padding="4" Name="PotDPS" Text="{Binding ElementName=EquipList, Path=SelectedItem.PotentialDps}"></TextBlock>
         </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Margin="5px">
+            <Label Content="OPTIONS" HorizontalContentAlignment="Center" FontWeight="Bold"></Label>
+            <Button Content="Create Matching Helm, Boots, Gloves" Height="30" Click="CreateOtherArmorsButton_Click"></Button>
+            <Button Content="Create Str Hybrid" Height="30" Click="CreateHybridStr_Click"></Button>
+            <Button Content="Create Agi Hybrid" Height="30" Click="CreateHybridAgi_Click"></Button>
+            <Button Content="Create Int Hybrid" Height="30" Click="CreateHybridInt_Click"></Button>
+        </StackPanel>
     </Grid>
 </UserControl>

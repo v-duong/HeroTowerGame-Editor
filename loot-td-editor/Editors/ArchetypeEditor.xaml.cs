@@ -284,6 +284,10 @@ namespace loot_td_editor.Editors
                 {
                     r.Fill = System.Windows.Media.Brushes.LightGreen;
                 }
+                if (node.Type == NodeType.GREATER)
+                {
+                    r.Fill = System.Windows.Media.Brushes.PaleGoldenrod;
+                }
                 if (SearchBox.Text != "" && node.Bonuses.ToList().FindAll(x => x.bonusType.ToString().ToLower().Contains(SearchBox.Text.ToLower())).Any())
                 {
                     r.Fill = System.Windows.Media.Brushes.LightSkyBlue;

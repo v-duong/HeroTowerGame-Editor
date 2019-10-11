@@ -106,6 +106,7 @@ namespace loot_td_editor
 
             foreach (AffixBase k in Affixes)
             {
+                k.AffixType = affixContext;
                 if (k.IdName == null)
                     k.IdName = "";
                 if (k.TriggeredEffects == null)
