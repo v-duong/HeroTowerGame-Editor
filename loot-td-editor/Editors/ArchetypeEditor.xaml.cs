@@ -279,7 +279,10 @@ namespace loot_td_editor.Editors
                     Stroke = System.Windows.Media.Brushes.Black,
                     Fill = System.Windows.Media.Brushes.LightGray
                 };
-
+                if (node.Type == NodeType.ABILITY)
+                {
+                    r.Fill = System.Windows.Media.Brushes.PaleTurquoise;
+                }
                 if (node.InitialLevel > 0)
                 {
                     r.Fill = System.Windows.Media.Brushes.LightGreen;
@@ -288,6 +291,7 @@ namespace loot_td_editor.Editors
                 {
                     r.Fill = System.Windows.Media.Brushes.PaleGoldenrod;
                 }
+
                 if (SearchBox.Text != "" && node.Bonuses.ToList().FindAll(x => x.bonusType.ToString().ToLower().Contains(SearchBox.Text.ToLower())).Any())
                 {
                     r.Fill = System.Windows.Media.Brushes.LightSkyBlue;

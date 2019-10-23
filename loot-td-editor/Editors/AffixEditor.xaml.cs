@@ -143,29 +143,40 @@ namespace loot_td_editor
 
         private void CopyButtonClick(object sender, RoutedEventArgs e)
         {
-            if (AffixesList.SelectedItem == null)
+            if (AffixesList.SelectedItem == null || AffixesList.SelectedItems == null)
                 return;
             //AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem);
 
-            AffixBase temp = Helpers.DeepClone<AffixBase>((AffixBase)AffixesList.SelectedItem);
-            Affixes.Add(temp);
+            foreach (AffixBase temp in AffixesList.SelectedItems)
+            {
+                var newItem = Helpers.DeepClone<AffixBase>(temp);
+                Affixes.Add(newItem);
+            }
             //AffixesList.Items.Refresh();
             currentID++;
         }
 
         private void RemoveButtonClick(object sender, RoutedEventArgs e)
         {
-            if (AffixesList.SelectedItem == null)
+            if (AffixesList.SelectedItem == null || AffixesList.SelectedItems == null)
                 return;
 
-            string name = ((AffixBase)AffixesList.SelectedItem).IdName;
+            string names= "";
 
-            MessageBoxResult res = System.Windows.MessageBox.Show("Delete " + name + "?", "Confirmation", MessageBoxButton.YesNo);
+            foreach (AffixBase temp in AffixesList.SelectedItems)
+            {
+                names += temp.IdName + "\n";
+            }
+
+            MessageBoxResult res = System.Windows.MessageBox.Show("Delete the following? \n\n" + names + "", "Confirmation", MessageBoxButton.YesNo);
 
             if (res == MessageBoxResult.No)
                 return;
 
-            Affixes.Remove((AffixBase)AffixesList.SelectedItem);
+            foreach (AffixBase temp in AffixesList.SelectedItems)
+            {
+                Affixes.Remove(temp);
+            }
             //AffixesList.Items.Refresh();
         }
 
@@ -304,7 +315,50 @@ namespace loot_td_editor
         {
             ComboBox b = sender as ComboBox;
             b.IsTextSearchEnabled = false;
-            b.ItemsSource = GroupTypes;
+            b.ItemsSource = GroupTypes.ToList();
+        }
+
+        private void FilterBox_Loaded2(object sender, RoutedEventArgs e)
+        {
+            ComboBox b = sender as ComboBox;
+            b.IsTextSearchEnabled = false;
+            b.ItemsSource = BonusTypes.ToList();
+        }
+
+        private void ReplaceButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (AffixesList.SelectedItem == null || AffixesList.SelectedItems == null)
+                return;
+            //AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem);
+            string toFind = FindReplaceBox.Text;
+            string toReplace = ReplaceWithBox.Text;
+
+            if (toFind.Length == 0 || toReplace.Length == 0)
+                return;
+
+            foreach (AffixBase temp in AffixesList.SelectedItems)
+            {
+                temp.IdName = temp.IdName.Replace(toFind, toReplace);
+            }
+        }
+
+        private void ReplaceBonusButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (AffixesList.SelectedItem == null || AffixesList.SelectedItems == null || FindReplaceBonusBox.SelectedValue == null || ReplaceWithBonusBox.SelectedValue == null)
+                return;
+            //AffixBase temp = new AffixBase((AffixBase)AffixesList.SelectedItem);
+            BonusType toFind = (BonusType)FindReplaceBonusBox.SelectedValue;
+            BonusType toReplace = (BonusType)ReplaceWithBonusBox.SelectedValue;
+
+
+            foreach (AffixBase temp in AffixesList.SelectedItems)
+            {
+                foreach(AffixBonus bonus in temp.AffixBonuses)
+                {
+                    if (bonus.BonusType == toFind)
+                        bonus.BonusType = toReplace;
+                }
+            }
         }
     }
 

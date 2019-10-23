@@ -259,7 +259,6 @@ namespace loot_td
         {
 
         }
-
     }
 
     public class AffixWeight: BindableBase
@@ -304,6 +303,7 @@ namespace loot_td
         WHEN_HITTING,
         ON_KILL,
         ON_HIT_KILL,
+        ON_CRIT,
         HEALTH_THRESHOLD,
         SHIELD_THRESHOLD,
         SOULPOINT_THRESHOLD,

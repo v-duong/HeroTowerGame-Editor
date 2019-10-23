@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -294,6 +295,16 @@ namespace loot_td_editor.Editors
 
             SpawnerInfo spawnerInfo = SpawnersComboBox.SelectedItem as SpawnerInfo;
             GoalComboBox.ItemsSource = spawnerInfo.PossibleGoals;
+        }
+
+        private void EnemyWaveView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EnemyWaveItemOptions.IsEnabled = EnemyWaveView.SelectedItem != null;
+        }
+
+        private void WaveItemView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            EnemyListItemOptions.IsEnabled = WaveItemView.SelectedItem != null;
         }
     }
 }

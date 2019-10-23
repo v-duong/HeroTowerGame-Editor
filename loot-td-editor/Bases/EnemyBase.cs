@@ -15,6 +15,7 @@ namespace loot_td
         private float movementSpeed;
         private int[] resistances;
         private EnemyType enemyType;
+        private TargetingPriorityType targetingPriorityType;
         private ObservableCollection<EnemyAbilityBase> abilitiesList;
         private string spriteName;
         private int actNumber;
@@ -48,6 +49,10 @@ namespace loot_td
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
         public EnemyType EnemyType { get => enemyType; set => SetProperty(ref enemyType, value); }
+
+        [JsonProperty]
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TargetingPriorityType TargetingPriority { get => targetingPriorityType; set => SetProperty(ref targetingPriorityType, value); }
 
         [JsonProperty]
         public ObservableCollection<EnemyAbilityBase> AbilitiesList { get => abilitiesList; set => SetProperty(ref abilitiesList, value); }
@@ -134,5 +139,16 @@ namespace loot_td
             element = e;
             resistance = value;
         }
+    }
+
+    public enum TargetingPriorityType
+    {
+        CLOSEST,
+        FURTHEST,
+        FIRST,
+        RANDOM,
+        LEAST_HEALTH,
+        MOST_HEALTH,
+        PRIORITIZE_RARITY
     }
 }
