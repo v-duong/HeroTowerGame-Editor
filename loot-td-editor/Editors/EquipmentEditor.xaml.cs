@@ -170,6 +170,7 @@ namespace loot_td_editor
         {
             Equipments = new ObservableCollection<EquipmentBase>(Equipments.OrderBy(x => x.IdName, new NaturalStringComparer2()));
             Dictionary<string, int> nameDict = new Dictionary<string, int>();
+            /*
             foreach(EquipmentBase item in Equipments)
             {
                 string chars = new String(item.IdName.Where(c => c != '-' && (c < '0' || c > '9')).ToArray());
@@ -178,6 +179,7 @@ namespace loot_td_editor
                 nameDict[chars]++;
                 item.IdName = chars + nameDict[chars];
             }
+            */
             EquipList.ItemsSource = Equipments;
         }
 

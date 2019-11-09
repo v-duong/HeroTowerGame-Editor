@@ -31,7 +31,7 @@
             <Button Content="ADD" Click="AddButtonClick" />
             <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClick" />
             <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClick" />
-            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AbilitiesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler">
+            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="AbilitiesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" GridViewColumnHeader.Click="GridViewColumnHeaderClickedHandler" SelectionChanged="AbilitiesList_SelectionChanged">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="150" />
@@ -206,6 +206,7 @@
                         <ComboBox  Height="25"  SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityLinkType}}}" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></ComboBox>
                         <xctk:DoubleUpDown Height="25"  Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.LinkedAbility.Time, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  Increment="0.01" FormatString="F2" IsEnabled="{Binding ElementName=AbilitiesList,Path=SelectedItem.HasLinkedAbility}"></xctk:DoubleUpDown>
                     </VirtualizingStackPanel>
+                    <TextBlock Grid.Column="5" Grid.ColumnSpan="2" Padding="10" Name="ArchetypeUseList"></TextBlock>
                 </Grid>
             </TabItem>
             <TabItem Header="_Second">

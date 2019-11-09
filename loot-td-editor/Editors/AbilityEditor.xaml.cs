@@ -285,5 +285,24 @@ namespace loot_td_editor.Editors
                 ProjLifetimeLabel.Content = "Proj Lifetime";
             }
         }
+
+        private void AbilitiesList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (AbilitiesList.SelectedItem == null)
+                return;
+
+            AbilityBase abilityBase = AbilitiesList.SelectedItem as AbilityBase;
+
+            string s = "";
+            foreach(ArchetypeBase archetypeBase in Helpers.archetypeEditor.Archetypes)
+            {
+                if (archetypeBase.NodeList.ToList().FindAll(x=>x.Type == NodeType.ABILITY && x.AbilityId == abilityBase.IdName).Any())
+                {
+                    s += archetypeBase.IdName + "\n";
+                    continue;
+                }
+            }
+            ArchetypeUseList.Text = s;
+        }
     }
 }

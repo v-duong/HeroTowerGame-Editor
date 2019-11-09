@@ -168,15 +168,17 @@
                     <Label Content="Spawner" Height="26" ></Label>
                     <Label Content="Goal"  Height="26" ></Label>
                     <Label Content="IsBoss"  Height="26" ></Label>
+                    <Label Content="Rarity" Height="26" ></Label>
                     <Label Content="StartDelay"  Height="26" ></Label>
                 </VirtualizingStackPanel>
                 <VirtualizingStackPanel Grid.Column="1" Name="EnemyListItemOptions" IsEnabled="False">
                     <ComboBox Height="26"  ItemsSource="{Binding}" SelectedValue="{Binding SelectedItem.EnemyName, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="EnemyComboBox" Grid.Column="1" SelectedValuePath="IdName" DisplayMemberPath="IdName"/>
-                    <xctk:IntegerUpDown  Height="26"  Value="{Binding SelectedItem.EnemyCount, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <xctk:IntegerUpDown  Height="26"  Value="{Binding SelectedItem.EnemyCount, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1"/>
                     <ComboBox Height="26"   SelectedValue="{Binding SelectedItem.SpawnerIndex, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SelectedValuePath="Spawner" Name="SpawnersComboBox" ItemsSource="{Binding SelectedItem.SpawnerInfos, ElementName=StageListView, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Spawner" SelectionChanged="SpawnersComboBox_SelectionChanged" />
                     <ComboBox  Height="26"  SelectedValue="{Binding SelectedItem.GoalIndex, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="GoalComboBox"/>
                     <CheckBox   Height="26"  VerticalAlignment="Center" VerticalContentAlignment="Center"  IsChecked="{Binding SelectedItem.IsBossOverride, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <xctk:DoubleUpDown  Height="26"  Value="{Binding SelectedItem.StartDelay, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Increment="0.125"/>
+                    <ComboBox Height="26"  ItemsSource="{Binding}" SelectedValue="{Binding SelectedItem.EnemyRarity, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="EnemyRarityBox" Grid.Column="1"/>
+                    <xctk:DoubleUpDown  Height="26"  Value="{Binding SelectedItem.StartDelay, ElementName=WaveItemView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Increment="0.125" FormatString="N4"/>
 
                 </VirtualizingStackPanel>
 

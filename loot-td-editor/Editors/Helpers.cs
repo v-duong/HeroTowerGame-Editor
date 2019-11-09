@@ -1,4 +1,5 @@
 ﻿using loot_td;
+using loot_td_editor.Editors;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -13,6 +14,9 @@ namespace loot_td_editor
         public static double SCALING_FACTOR = 1.042;
         public static double LEVEL_SCALING_FACTOR = 0.402;
         public static double ENEMY_SCALING = 1.012;
+
+        public static ArchetypeEditor archetypeEditor;
+        public static AbilityEditor abilityEditor;
 
         public static T DeepClone<T>(T o)
         {

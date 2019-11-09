@@ -146,9 +146,11 @@ namespace loot_td
         CLOSEST,
         FURTHEST,
         FIRST,
-        RANDOM,
+        LAST,
         LEAST_HEALTH,
         MOST_HEALTH,
-        PRIORITIZE_RARITY
+        LOWEST_HEALTH_PERCENT,
+        HIGHEST_HEALTH_PERCENT,
+        RANDOM,
     }
 }

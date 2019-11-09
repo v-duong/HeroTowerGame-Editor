@@ -75,6 +75,7 @@ namespace loot_td_editor.Editors
         {
             InitializeComponent();
             InitializeList();
+            Helpers.archetypeEditor = this;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)

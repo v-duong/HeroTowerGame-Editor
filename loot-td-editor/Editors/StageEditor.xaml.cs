@@ -13,6 +13,7 @@ namespace loot_td_editor.Editors
     public partial class StageEditor : UserControl
     {
         public IList<DifficultyType> DifficultyTypes { get { return Enum.GetValues(typeof(DifficultyType)).Cast<DifficultyType>().ToList<DifficultyType>(); } }
+        public IList<RarityType> RarityTypes { get { return Enum.GetValues(typeof(RarityType)).Cast<RarityType>().ToList<RarityType>(); } }
         public ObservableCollection<StageInfoCollection> Stages;
 
         public void InitializeList()
@@ -41,6 +42,7 @@ namespace loot_td_editor.Editors
             InitializeComponent();
             InitializeList();
             DifficultyBox.ItemsSource = DifficultyTypes;
+            EnemyRarityBox.ItemsSource = RarityTypes;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
