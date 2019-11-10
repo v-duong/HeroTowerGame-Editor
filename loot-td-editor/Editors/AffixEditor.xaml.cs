@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
+
 namespace loot_td_editor
 {
     /// <summary>
@@ -163,9 +164,12 @@ namespace loot_td_editor
 
             string names= "";
 
+            List<AffixBase> toDelete = new List<AffixBase>();
+
             foreach (AffixBase temp in AffixesList.SelectedItems)
             {
                 names += temp.IdName + "\n";
+                toDelete.Add(temp);
             }
 
             MessageBoxResult res = System.Windows.MessageBox.Show("Delete the following? \n\n" + names + "", "Confirmation", MessageBoxButton.YesNo);
@@ -173,7 +177,7 @@ namespace loot_td_editor
             if (res == MessageBoxResult.No)
                 return;
 
-            foreach (AffixBase temp in AffixesList.SelectedItems)
+            foreach (AffixBase temp in toDelete)
             {
                 Affixes.Remove(temp);
             }

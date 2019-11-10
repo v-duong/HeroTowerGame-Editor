@@ -12,6 +12,7 @@ namespace loot_td
         private int experience;
         private bool isBoss;
         private float healthScaling;
+        private float sizeScaling;
         private float movementSpeed;
         private int[] resistances;
         private EnemyType enemyType;
@@ -39,6 +40,8 @@ namespace loot_td
 
         [JsonProperty]
         public float HealthScaling { get => healthScaling; set => SetProperty(ref healthScaling, value); }
+        [JsonProperty]
+        public float SizeScaling { get => sizeScaling; set => SetProperty(ref sizeScaling, value); }
 
         [JsonProperty]
         public float MovementSpeed { get => movementSpeed; set => SetProperty(ref movementSpeed, value); }

@@ -77,6 +77,8 @@
             <CheckBox Grid.Column="1" Grid.Row="3" Grid.ColumnSpan="1" IsChecked="{Binding ElementName=EnemyListView,Path=SelectedItem.IsBoss, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
             <Label Content="HealthScaling" Grid.Column="3" />
             <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding ElementName=EnemyListView,Path=SelectedItem.HealthScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" DefaultValue="1" ValueChanged="Health_ValueChanged" FormatString="F3"/>
+            <Label Content="SizeScaling" Grid.Column="3" Grid.Row="1" />
+            <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Grid.Row="1"   Value="{Binding ElementName=EnemyListView,Path=SelectedItem.SizeScaling, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" DefaultValue="1" FormatString="F3"/>
             <Label Content="MovementSpeed" Grid.Column="3" Grid.Row="2" />
             <xctk:DoubleUpDown Grid.Column="4" Grid.ColumnSpan="1" Value="{Binding SelectedItem.MovementSpeed, ElementName=EnemyListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Grid.Row="2" Increment="0.1" DefaultValue="1" FormatString="F2"/>
             <Label Content="TargetRange" Grid.Column="3" Grid.Row="3" />
