@@ -218,45 +218,7 @@ namespace loot_td
             string s = "";
             foreach (AffixBase affixBase in FixedUniqueAffixes)
             {
-                List<int> bonusesToSkip = new List<int>();
-
-                for (int i = 0; i < affixBase.AffixBonuses.Count; i++)
-                {
-                    if (bonusesToSkip.Contains(i))
-                    {
-                        continue;
-                    }
-                    AffixBonus b = affixBase.AffixBonuses[i];
-
-                    if (b.BonusType.ToString().Contains("DAMAGE_MIN") && b.ModifyType == ModifyType.FLAT_ADDITION)
-                    {
-                        BonusType maxType = (BonusType)Enum.Parse(typeof(BonusType), b.BonusType.ToString().Replace("_MIN", "_MAX"));
-                        int matchedIndex = affixBase.AffixBonuses.ToList().FindIndex(x => x.BonusType == maxType);
-
-                        if (matchedIndex > 0 && affixBase.AffixBonuses[matchedIndex].ModifyType == ModifyType.FLAT_ADDITION)
-                        {
-                            bonusesToSkip.Add(matchedIndex);
-                            AffixBonus b2 = affixBase.AffixBonuses[matchedIndex];
-
-                            if (b.Restriction != GroupType.NO_GROUP)
-                            {
-                                s += Localization.GetGroupTypeRestriction(b.Restriction) + ", ";
-                            }
-
-                            s += Localization.GetLocalizationText("bonusType." + b.BonusType.ToString().Replace("_MIN", "")) + " ";
-                            s += "+(" + b.MinValue + "-" + b.MaxValue + ")-(" + b2.MinValue + "-" + b2.MaxValue + ")\n";
-
-                            continue;
-                        }
-                    }
-
-                    s += Localization.GetBonusTypeString(b.BonusType, b.ModifyType, b.MinValue, b.MaxValue, b.Restriction);
-                }
-
-                foreach (TriggeredEffectProperty added in affixBase.TriggeredEffects)
-                {
-                    s += Localization.GetLocalizationText_TriggeredEffect(added, added.EffectMinValue);
-                }
+                s += affixBase.GetAffixString();
             }
             return s;
         }

@@ -112,7 +112,14 @@ namespace loot_td_editor
                     k.IdName = "";
                 if (k.TriggeredEffects == null)
                     k.TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
+
+                k.AffixBonuses.CollectionChanged += k.RaiseListStringChanged;
+                k.TriggeredEffects.CollectionChanged += k.RaiseListStringChanged;
+                foreach (AffixBonus bonus in k.AffixBonuses) {
+                    bonus.PropertyChanged += k.RaiseListStringChanged_;
+                }
             }
+
             AffixesList.ItemsSource = Affixes;
         }
 
@@ -138,6 +145,11 @@ namespace loot_td_editor
                 Tier = 1
             };
             Affixes.Add(temp);
+
+
+            temp.AffixBonuses.CollectionChanged += temp.RaiseListStringChanged;
+            temp.TriggeredEffects.CollectionChanged += temp.RaiseListStringChanged;
+
             //AffixesList.Items.Refresh();
             currentID++;
         }
@@ -152,7 +164,11 @@ namespace loot_td_editor
             {
                 var newItem = Helpers.DeepClone<AffixBase>(temp);
                 Affixes.Add(newItem);
+                newItem.AffixBonuses.CollectionChanged += newItem.RaiseListStringChanged;
+                newItem.TriggeredEffects.CollectionChanged += newItem.RaiseListStringChanged;
             }
+
+
             //AffixesList.Items.Refresh();
             currentID++;
         }

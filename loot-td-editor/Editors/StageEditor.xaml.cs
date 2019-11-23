@@ -3,10 +3,10 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using Xceed.Wpf.Toolkit;
 
 namespace loot_td_editor.Editors
 {
@@ -43,6 +43,7 @@ namespace loot_td_editor.Editors
             InitializeList();
             DifficultyBox.ItemsSource = DifficultyTypes;
             EnemyRarityBox.ItemsSource = RarityTypes;
+            requirementComboBox.ItemsSource = Stages;
         }
 
         private void AddButtonClick(object sender, RoutedEventArgs e)
@@ -307,6 +308,12 @@ namespace loot_td_editor.Editors
         private void WaveItemView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EnemyListItemOptions.IsEnabled = WaveItemView.SelectedItem != null;
+        }
+
+        private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            IntegerUpDown upDown = sender as IntegerUpDown;
+            AffixRerollCost.Content = ((int)upDown.Value * 15 * 3).ToString();
         }
     }
 }

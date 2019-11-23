@@ -63,14 +63,16 @@
                     <Label Content="Difficulty" Height="26"></Label>
                     <Label Content="SceneAct" Height="26"></Label>
                     <Label Content="SceneStage" Height="26"></Label>
+                    <Label Content="Requirement" Height="26"></Label>
                 </StackPanel>
                 <StackPanel Grid.Column="1">
                     <TextBox Text="{Binding SelectedItem.IdName, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26"></TextBox>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.Act, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.Stage, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
-                    <ComboBox SelectedItem="{Binding SelectedItem.Difficulty, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="DifficultyBox"></ComboBox>
+                    <ComboBox SelectedItem="{Binding SelectedItem.Difficulty, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="DifficultyBox" Height="26"></ComboBox>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.SceneAct, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.SceneStage, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Height="26"></xctk:IntegerUpDown>
+                    <ComboBox SelectedValue="{Binding SelectedItem.RequiredToUnlock, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding}" Name="requirementComboBox" SelectedValuePath="IdName" DisplayMemberPath="IdName" Height="26"></ComboBox>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Grid.RowSpan="2">
                     <Label Content="Monster Level" Height="26"></Label>
@@ -78,17 +80,19 @@
                     <Label Content="Exp Multiplier" Height="26"></Label>
                     <Label Content="Equipment Drop Min" Height="26"></Label>
                     <Label Content="Equipment Drop Max" Height="26"></Label>
-                    <Label Content="Consumable Drop Min" Height="26"></Label>
-                    <Label Content="Consumable Drop Max" Height="26"></Label>
+                    <Label Content="Fragments Drop Min" Height="26"></Label>
+                    <Label Content="Fragments Drop Max" Height="26"></Label>
+                    <Label Content="Cost for 3 Rare Reroll @ lvl" Height="26"></Label>
                 </StackPanel>
                 <StackPanel Grid.Column="3" Grid.RowSpan="2">
-                    <xctk:IntegerUpDown Value="{Binding SelectedItem.MonsterLevel, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="150" Height="26"></xctk:IntegerUpDown>
+                    <xctk:IntegerUpDown Value="{Binding SelectedItem.MonsterLevel, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="1" Maximum="150" Height="26" ValueChanged="IntegerUpDown_ValueChanged"></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.BaseExperience, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
                     <xctk:DoubleUpDown Value="{Binding SelectedItem.ExpMultiplier, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Increment="0.1" Height="26" FormatString="F2"></xctk:DoubleUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.EquipmentDropCountMin, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.EquipmentDropCountMax, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Minimum="0" Height="26"></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.ConsumableDropCountMin, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Height="26"></xctk:IntegerUpDown>
                     <xctk:IntegerUpDown Value="{Binding SelectedItem.ConsumableDropCountMax, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Minimum="0" Height="26"></xctk:IntegerUpDown>
+                    <Label Content="Cost for 3 Rare Reroll @ lvl" Height="26" Name="AffixRerollCost"></Label>
                 </StackPanel>
             </Grid>
         </Border>

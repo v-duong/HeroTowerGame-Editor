@@ -25,6 +25,7 @@ namespace loot_td
         private int consumableDropCountMax;
         private ObservableCollection<EnemyWave> enemyWaves;
         private ObservableCollection<SpawnerInfo> spawnerInfos;
+        private string requiredToUnlock;
 
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]
@@ -68,14 +69,21 @@ namespace loot_td
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
+
         [JsonProperty]
         public int Act { get => act; set => SetProperty(ref act, value); }
+
         [JsonProperty]
         public int Stage { get => stage; set => SetProperty(ref stage, value); }
+
         [JsonProperty]
         public int SceneAct { get => sceneAct; set => SetProperty(ref sceneAct, value); }
+
         [JsonProperty]
         public int SceneStage { get => sceneStage; set => SetProperty(ref sceneStage, value); }
+
+        [JsonProperty]
+        public string RequiredToUnlock { get => requiredToUnlock; set => SetProperty(ref requiredToUnlock, value); }
 
         public StageInfoCollection()
         {

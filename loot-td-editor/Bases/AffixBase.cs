@@ -1,9 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using loot_td_editor;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Prism.Mvvm;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 
 namespace loot_td
 {
@@ -48,6 +52,9 @@ namespace loot_td
 
         [JsonIgnore]
         public string GetBonusCountString { get { return AffixBonuses.Count.ToString(); } }
+
+        [JsonIgnore]
+        public string AffixString => GetAffixString();
 
         public AffixBase()
         {
@@ -102,6 +109,11 @@ namespace loot_td
                 x += a.BonusType.ToString();
                 x += ", ";
             }
+            foreach(var b in TriggeredEffects)
+            {
+                x += b.EffectType + " " + b.EffectTargetType;
+                x += ", ";
+            }
             x = x.TrimEnd(' ');
             x = x.TrimEnd(',');
             return x;
@@ -128,6 +140,7 @@ namespace loot_td
         public void RaiseListStringChanged_(object sender, PropertyChangedEventArgs e)
         {
             RaisePropertyChanged("ListString");
+            RaisePropertyChanged("AffixString");
         }
 
         public static int WeightContainsType(ObservableCollection<AffixWeight> s, GroupType type)
@@ -140,6 +153,52 @@ namespace loot_td
                 i++;
             }
             return -1;
+        }
+
+        public string GetAffixString()
+        {
+            string s = "";
+            List<int> bonusesToSkip = new List<int>();
+
+            for (int i = 0; i < this.AffixBonuses.Count; i++)
+            {
+                if (bonusesToSkip.Contains(i))
+                {
+                    continue;
+                }
+                AffixBonus b = this.AffixBonuses[i];
+
+                if (b.BonusType.ToString().Contains("DAMAGE_MIN") && b.ModifyType == ModifyType.FLAT_ADDITION)
+                {
+                    BonusType maxType = (BonusType)Enum.Parse(typeof(BonusType), b.BonusType.ToString().Replace("_MIN", "_MAX"));
+                    int matchedIndex = this.AffixBonuses.ToList().FindIndex(x => x.BonusType == maxType);
+
+                    if (matchedIndex > 0 && this.AffixBonuses[matchedIndex].ModifyType == ModifyType.FLAT_ADDITION)
+                    {
+                        bonusesToSkip.Add(matchedIndex);
+                        AffixBonus b2 = this.AffixBonuses[matchedIndex];
+
+                        if (b.Restriction != GroupType.NO_GROUP)
+                        {
+                            s += Localization.GetGroupTypeRestriction(b.Restriction) + ", ";
+                        }
+
+                        s += Localization.GetLocalizationText("bonusType." + b.BonusType.ToString().Replace("_MIN", "")) + " ";
+                        s += "+(" + b.MinValue + "-" + b.MaxValue + ")-(" + b2.MinValue + "-" + b2.MaxValue + ")\n";
+
+                        continue;
+                    }
+                }
+
+                s += Localization.GetBonusTypeString(b.BonusType, b.ModifyType, b.MinValue, b.MaxValue, b.Restriction);
+            }
+
+            foreach (TriggeredEffectProperty added in this.TriggeredEffects)
+            {
+                s += Localization.GetLocalizationText_TriggeredEffect(added, added.EffectMinValue);
+            }
+
+            return s;
         }
 
         public string GetStringId()

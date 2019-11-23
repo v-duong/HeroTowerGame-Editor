@@ -51,9 +51,7 @@
                 <ColumnDefinition Width="0.75*" />
                 <ColumnDefinition Width="1.5*" />
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="3*" />
             </Grid.ColumnDefinitions>
             <VirtualizingStackPanel>
                 <Label Height="26" Content="IdName" />
@@ -68,6 +66,9 @@
                 <Label Height="26" />
                 <xctk:IntegerUpDown Height="26"  Text="{Binding ElementName=AffixesList,Path=SelectedItem.Tier, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="TierText" Minimum="0"></xctk:IntegerUpDown>
                 <xctk:IntegerUpDown Height="26"  Text="{Binding ElementName=AffixesList,Path=SelectedItem.SpawnLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Name="SpawnLevelText" Minimum="0"></xctk:IntegerUpDown>
+            </VirtualizingStackPanel>
+            <VirtualizingStackPanel Grid.Column="3">
+                <TextBlock Text="{Binding ElementName=AffixesList,Path=SelectedItem.AffixString}" Height="auto"></TextBlock>
             </VirtualizingStackPanel>
         </Grid>
         <local:AffixBonusPropGrid Grid.Row="2" Grid.Column="1" SelectedAffix="{Binding ElementName=AffixesList,Path=SelectedItem}"/>

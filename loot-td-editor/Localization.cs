@@ -8,7 +8,6 @@ namespace loot_td_editor
     {
         private static Dictionary<string, string> localization;
 
-
         public static string GetLocalizationText_TriggeredEffect(TriggeredEffectProperty triggeredEffect, float value)
         {
             localization.TryGetValue("triggerType." + triggeredEffect.TriggerType.ToString(), out string s);
@@ -19,32 +18,43 @@ namespace loot_td_editor
                 string[] split = restrictionString.Split(' ');
                 restrictionString = restrictionString.Replace(split[0], split[0].ToLower());
             }
-            s = string.Format(s, restrictionString);
+
+            string effectTypeString;
+
             switch (triggeredEffect.TriggerType)
             {
                 case TriggerType.WHEN_HITTING:
-                    s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
+                    effectTypeString = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n');
                     break;
-                case TriggerType.ON_BLOCK:
-                    s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
-                    break;
-                case TriggerType.ON_HIT:
-                case TriggerType.WHEN_HIT_BY:
-                case TriggerType.ON_KILL:
-                case TriggerType.ON_HIT_KILL:
-                case TriggerType.HEALTH_THRESHOLD:
-                case TriggerType.SHIELD_THRESHOLD:
-                case TriggerType.SOULPOINT_THRESHOLD:
-                case TriggerType.ON_DODGE:
-                    s = GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n') + " " + s;
-                    break;
-                case TriggerType.ON_PARRY:
-                    break;
-                case TriggerType.ON_PHASING:
-                    break;
-                case TriggerType.ON_DEATH:
+
+                default:
+                    localization.TryGetValue("effectType.bonusProp." + triggeredEffect.EffectType.ToString(), out effectTypeString);
+                    effectTypeString = effectTypeString.Replace("{TARGET}", triggeredEffect.EffectTargetType.ToString());
+                    effectTypeString = effectTypeString.Replace("{VALUE}", "(" + triggeredEffect.EffectMinValue + "-" + triggeredEffect.EffectMaxValue + ")");
+
+                    if (triggeredEffect.EffectType != EffectType.BUFF && triggeredEffect.EffectType != EffectType.DEBUFF)
+                    {
+                        effectTypeString = effectTypeString.Replace("{ELEMENT}", triggeredEffect.EffectElement.ToString());
+                    }
+                    else
+                    {
+                        effectTypeString = effectTypeString.Replace("{BONUS}", GetBonusTypeString(triggeredEffect.StatBonusType, triggeredEffect.StatModifyType, value, value, GroupType.NO_GROUP).TrimEnd('\n'));
+                    }
+
+                    if (triggeredEffect.EffectDuration > 0)
+                    {
+                        effectTypeString += " for " + triggeredEffect.EffectDuration.ToString("N1") + "s";
+                    }
+
                     break;
             }
+
+            if (triggeredEffect.TriggerChance < 1)
+            {
+                s = triggeredEffect.TriggerChance.ToString("P0") + " to " + s;
+            }
+
+            s = string.Format(s, restrictionString, effectTypeString) + '\n';
 
             return s;
         }
@@ -85,9 +95,11 @@ namespace loot_td_editor
                 case ModifyType.FLAT_ADDITION:
                     s += sign + val;
                     break;
+
                 case ModifyType.ADDITIVE:
                     s += sign + val + "%";
                     break;
+
                 case ModifyType.MULTIPLY:
                     {
                         if (min == max)
@@ -195,7 +207,7 @@ namespace loot_td_editor
             }
 
             string json = System.IO.File.ReadAllText(filePath);
-            localization = JsonConvert.DeserializeObject<Dictionary<string,string>>(json);
+            localization = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
     }
 }
