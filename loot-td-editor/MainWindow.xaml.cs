@@ -20,6 +20,7 @@ namespace loot_td_editor
     public partial class MainWindow : Window
     {
         public static List<string> locales = new List<string>() { "en-US" };
+        public bool saveUnique = true;
         public bool saveEquips = true;
         public bool saveAbility = true;
         public bool saveArchetype = true;
@@ -488,6 +489,39 @@ namespace loot_td_editor
             TrySave(filepath, o);
         }
 
+        private void SaveLocalizationUnique(string locale)
+        {
+            if (!saveUnique)
+                return;
+            string filepath = Properties.Settings.Default.JsonSavePath + "\\localization\\unique." + locale + ".json";
+            InitializeLocalizationSaving(locale, filepath, out SortedDictionary<string, string> localization, out HashSet<string> keys);
+
+            List<UniqueBase> equips = UniqueItemEditor.Uniques.ToList();
+
+            foreach (UniqueBase equipment in equips)
+            {
+                string localizationKey = "unique." + equipment.IdName;
+                if (!localization.ContainsKey(localizationKey))
+                    localization.Add(localizationKey, "");
+                else
+                    keys.Remove(localizationKey);
+
+                string localizationKey2 = "unique." + equipment.IdName +".text";
+                if (!localization.ContainsKey(localizationKey2))
+                    localization.Add(localizationKey2, "");
+                else
+                    keys.Remove(localizationKey2);
+            }
+
+            foreach (string key in keys)
+            {
+                localization.Remove(key);
+            }
+
+            string o = JsonConvert.SerializeObject(localization);
+            TrySave(filepath, o);
+        }
+
         private void SaveLocalizationEquipment(string locale)
         {
             if (!saveEquips)
@@ -677,6 +711,7 @@ namespace loot_td_editor
                 SaveLocalizationArchetype(locale);
                 SaveLocalizationEnemy(locale);
                 SaveLocalizationStage(locale);
+                SaveLocalizationUnique(locale);
                 /*
                 List<AffixBase> affixes = PrefixEditor.Affixes.ToList();
                 affixes.AddRange(SuffixEditor.Affixes.ToList());

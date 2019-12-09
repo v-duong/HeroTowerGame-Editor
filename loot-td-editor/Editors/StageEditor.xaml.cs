@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -88,6 +89,12 @@ namespace loot_td_editor.Editors
 
             temp.EnemyWaves.Add(new EnemyWave());
 
+            ReorderWaves(temp);
+        }
+
+        private  void ReorderWaves(StageInfoCollection temp)
+        {
+            EnemyWaveView.Items.Refresh();
             int i = 0;
             foreach (EnemyWave wave in temp.EnemyWaves)
             {
@@ -106,11 +113,7 @@ namespace loot_td_editor.Editors
             EnemyWave temp2 = Helpers.DeepClone((EnemyWave)EnemyWaveView.SelectedItem);
             temp.EnemyWaves.Add(temp2);
 
-            int i = 0;
-            foreach (EnemyWave wave in temp.EnemyWaves)
-            {
-                wave.Id = i++;
-            }
+            ReorderWaves(temp);
         }
 
         private void DelButtonClickWave(object sender, RoutedEventArgs e)
@@ -123,11 +126,19 @@ namespace loot_td_editor.Editors
             StageInfoCollection temp = StageListView.SelectedItem as StageInfoCollection;
             temp.EnemyWaves.Remove((EnemyWave)EnemyWaveView.SelectedItem);
 
-            int i = 0;
-            foreach (EnemyWave wave in temp.EnemyWaves)
-            {
-                wave.Id = i++;
-            }
+            ReorderWaves(temp);
+        }
+
+        private void OrderButtonClickWave(object sender, RoutedEventArgs e)
+        {
+            if (StageListView.SelectedItem == null)
+                return;
+            if (EnemyWaveView.SelectedItem == null)
+                return;
+
+            StageInfoCollection temp = StageListView.SelectedItem as StageInfoCollection;
+
+            ReorderWaves(temp);
         }
 
         private void AddButtonClickWaveItem(object sender, RoutedEventArgs e)
@@ -308,12 +319,23 @@ namespace loot_td_editor.Editors
         private void WaveItemView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             EnemyListItemOptions.IsEnabled = WaveItemView.SelectedItem != null;
+
+            if (WaveItemView.SelectedItem != null && EnemyWaveView.SelectedItem != null)
+            {
+                EnemyWave b = EnemyWaveView.SelectedItem as EnemyWave;
+                EnemyWaveItem a = WaveItemView.SelectedItem as EnemyWaveItem;
+
+                totalTime.Content = a.EnemyCount * b.DelayBetweenSpawns + a.StartDelay;
+            }
         }
 
         private void IntegerUpDown_ValueChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             IntegerUpDown upDown = sender as IntegerUpDown;
-            AffixRerollCost.Content = ((int)upDown.Value * 15 * 3).ToString();
+            if (upDown.Value != null)
+                AffixRerollCost.Content = ((int)upDown.Value * 15 * 3 * 5).ToString();
+            else
+                AffixRerollCost.Content = "";
         }
     }
 }

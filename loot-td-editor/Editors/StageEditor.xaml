@@ -7,6 +7,7 @@
              xmlns:localx="clr-namespace:loot_td_editor"
              xmlns:loottd="clr-namespace:loot_td"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1600">
     <Grid Background="White">
@@ -110,13 +111,14 @@
                 <Button Width="40" Content="ADD" Click="AddButtonClickWave" ></Button>
                 <Button Width="40" Content="COPY" Click="CopyButtonClickWave"></Button>
                 <Button Width="40" Content="DEL" Click="DelButtonClickWave"></Button>
+                <Button Width="40" Content="ORD" Click="OrderButtonClickWave"></Button>
             </DockPanel>
             <DockPanel Grid.Column="1">
                 <Button Width="50" Content="ADD" Click="AddButtonClickWaveItem" ></Button>
                 <Button Width="50" Content="COPY" Click="CopyButtonClickWaveItem"></Button>
                 <Button Width="50" Content="DEL" Click="DelButtonClickWaveItem"></Button>
             </DockPanel>
-            <ListView Grid.Row="1" ItemsSource="{Binding SelectedItem.EnemyWaves, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="EnemyWaveView" SelectionChanged="EnemyWaveView_SelectionChanged">
+            <ListView Grid.Row="1" ItemsSource="{Binding SelectedItem.EnemyWaves, ElementName=StageListView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="EnemyWaveView" SelectionChanged="EnemyWaveView_SelectionChanged" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
                 <ListView.View>
                     <GridView AllowsColumnReorder="False">
                         <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="35" />
@@ -142,10 +144,12 @@
                 <StackPanel>
                     <Label Content="delayBetween" Height="26"></Label>
                     <Label Content="delayUntil" Height="26"></Label>
+                    <Label Content="totalTime" Height="26"></Label>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Name="EnemyWaveItemOptions" IsEnabled="False">
                     <xctk:DoubleUpDown Value="{Binding SelectedItem.DelayBetweenSpawns, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26" Minimum="0" FormatString="F3" Increment="0.125"></xctk:DoubleUpDown>
                     <xctk:DoubleUpDown Value="{Binding SelectedItem.DelayUntilNextWave, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="26" Minimum="0" FormatString="F3" Increment="0.125"></xctk:DoubleUpDown>
+                    <Label Content="0" Height="26" x:Name="totalTime"></Label>
                 </StackPanel>
                 <ListView Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding SelectedItem.EnemyList, ElementName=EnemyWaveView, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="WaveItemView"  SelectionChanged="WaveItemView_SelectionChanged" >
                     <ListView.View>
@@ -153,6 +157,7 @@
                             <GridViewColumn DisplayMemberBinding="{Binding Path=EnemyName}" Header="enemyName" Width="100" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=EnemyCount}" Header="count" Width="35" />
                             <GridViewColumn DisplayMemberBinding="{Binding Path=SpawnerIndex}" Header="index" Width="35" />
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=StartDelay}" Header="delay" Width="35" />
                         </GridView>
                     </ListView.View>
                 </ListView>
