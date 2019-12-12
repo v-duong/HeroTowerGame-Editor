@@ -4,6 +4,7 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -55,7 +56,19 @@ namespace loot_td_editor
             AccessoryEditor.BaseFields.InnateBox.ItemsSource = InnateEditor.Affixes;
 
             ArchetypeEditor.NodeAbilityList.ItemsSource = AbilityEditor.Abilities;
+            var soulAbilities = new CollectionViewSource
+            {
+                Source = AbilityEditor.Abilities
+            };
+            soulAbilities.View.Filter = x => ((AbilityBase)x).IsSoulAbility;
+            var tester  = soulAbilities.View as ICollectionViewLiveShaping;
+            tester.LiveFilteringProperties.Add("IsSoulAbility");
+            tester.IsLiveFiltering = true;
+
+            ArchetypeEditor.SoulAbilityList.ItemsSource = soulAbilities.View;
+
             EnemyEditor.DataGridAbilityName.ItemsSource = AbilityEditor.Abilities;
+
 
             StageEditor.EnemyComboBox.ItemsSource = EnemyEditor.EnemyBaseList;
 

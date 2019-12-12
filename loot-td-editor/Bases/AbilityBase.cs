@@ -24,6 +24,9 @@ namespace loot_td
         private int projectileSpread;
         private bool projectileDoesNotSpread;
         private float projectileLife;
+        private float soulCost;
+        private float cooldownTime;
+        private bool isSoulAbility;
 
         private float areaRadius;
         private float areaLength;
@@ -113,6 +116,15 @@ namespace loot_td
 
         [JsonProperty]
         public float WeaponMultiplierScaling { get => weaponMultiplierScaling; set => SetProperty(ref weaponMultiplierScaling, value); }
+
+        [JsonProperty]
+        public bool IsSoulAbility { get => isSoulAbility; set => SetProperty(ref isSoulAbility, value); }
+
+        [JsonProperty]
+        public float SoulCost { get => soulCost; set => SetProperty(ref soulCost, value); }
+
+        [JsonProperty]
+        public float CooldownTime { get => cooldownTime; set => SetProperty(ref cooldownTime, value); }
 
         [JsonProperty]
         public Dictionary<ElementType, AbilityDamageBase> DamageLevels { get => damageLevels; set => SetProperty(ref damageLevels, value); }

@@ -16,6 +16,7 @@ namespace loot_td
         private float intelligenceGrowth;
         private float agilityGrowth;
         private float willGrowth;
+        private string soulAbilityId;
         private ObservableCollection<ArchetypeSkillNode> nodeList;
 
         [JsonProperty]
@@ -46,6 +47,9 @@ namespace loot_td
         public float WillGrowth { get => willGrowth; set => SetProperty(ref willGrowth, value); }
 
         [JsonProperty]
+        public string SoulAbilityId{ get => soulAbilityId; set => SetProperty(ref soulAbilityId, value); }
+
+        [JsonProperty]
         public int SpawnWeight { get => spawnWeight; set => SetProperty(ref spawnWeight, value); }
 
         [JsonProperty]
@@ -54,6 +58,7 @@ namespace loot_td
         public ArchetypeBase()
         {
             IdName = "";
+            SoulAbilityId = "";
             NodeList = new ObservableCollection<ArchetypeSkillNode>();
             DropLevel = 1;
             Stars = 1;

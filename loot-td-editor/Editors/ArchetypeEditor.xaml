@@ -71,7 +71,7 @@
             <Label Content="IdName" Grid.Row="0" />
             <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
 
-            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2">
+            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="75" />
                     <ColumnDefinition Width="1*" />
@@ -79,14 +79,21 @@
                     <ColumnDefinition Width="55" />
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <Label Content="DropLevel" Grid.Column="0"></Label>
                 <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
                 <Label Content="Stars" Grid.Column="3"></Label>
                 <xctk:IntegerUpDown Grid.Column="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Stars, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"></xctk:IntegerUpDown>
+                <Label Content="SpawnWeight" Grid.Column="0" Grid.Row="1"></Label>
+                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"></xctk:IntegerUpDown>
+                <Label Content="SoulAbility" Grid.Column="3" Grid.Row="1"></Label>
+                <ComboBox Grid.Column="4" Grid.Row="4" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=ArchetypesList,Path=SelectedItem.SoulAbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="SoulAbilityList" DisplayMemberPath="IdName"/>
             </Grid>
 
-            <Label Content="SpawnWeight" Grid.Column="0" Grid.Row="3"></Label>
-            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"></xctk:IntegerUpDown>
+
             <Label Content="Search" Grid.Row="4"/>
             <TextBox x:Name="SearchBox" Grid.Column="1" Grid.Row="4" TextChanged="SearchBox_TextChanged"></TextBox>
             <Button Grid.Column="0" Grid.Row="6" Content="Totals" Click="ArchetypeTotalsClick"></Button>

@@ -71,12 +71,19 @@
                             <Label Content="Sprite" Height="26" />
                             <Label Content="AbilityType" Height="26"></Label>
                             <Label Content="ShotType" Height="26"></Label>
+                            <Label Content="IsSoulAbility" Height="26"></Label>
+                            <Label Content="SoulCost" Height="26"></Label>
+                            <Label Content="CooldownTime" Height="26"></Label>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="1">
                             <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
                             <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.EffectSprite, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
                             <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityType}}}" SelectionChanged="AbilityTypeChanged"></ComboBox>
                             <ComboBox Height="26" SelectedValue="{Binding ElementName=AbilitiesList,Path=SelectedItem.AbilityShotType, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:AbilityShotType}}}"></ComboBox>
+                            <CheckBox Height="26" VerticalContentAlignment="Center" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.IsSoulAbility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.SoulCost, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.CooldownTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="2">
                             <Label Content="Attacks per sec" Height="26"></Label>
