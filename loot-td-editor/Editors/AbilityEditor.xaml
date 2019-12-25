@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:loot_td_editor.Editors"
              xmlns:localx="clr-namespace:loot_td_editor"
              xmlns:loottd="clr-namespace:loot_td"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1850">
@@ -74,6 +75,8 @@
                             <Label Content="IsSoulAbility" Height="26"></Label>
                             <Label Content="SoulCost" Height="26"></Label>
                             <Label Content="CooldownTime" Height="26"></Label>
+                            <Label Content="SoulEffectDuration" Height="26"></Label>
+                            <Label Content="UseAreaAround" Height="26"></Label>
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="1">
                             <TextBox Height="26" Text="{Binding ElementName=AbilitiesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
@@ -83,6 +86,8 @@
                             <CheckBox Height="26" VerticalContentAlignment="Center" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.IsSoulAbility, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.SoulCost, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
                             <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.CooldownTime, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                            <xctk:DoubleUpDown Height="26" Value="{Binding ElementName=AbilitiesList,Path=SelectedItem.SoulAbilityDuration, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                            <CheckBox Height="26" VerticalContentAlignment="Center" IsChecked="{Binding ElementName=AbilitiesList,Path=SelectedItem.UseAreaAroundTarget, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></CheckBox>
 
                         </VirtualizingStackPanel>
                         <VirtualizingStackPanel Grid.Column="2">
@@ -239,8 +244,205 @@
                         <Label Content="Ability Bonus Properties" FontWeight="Bold"></Label>
                         <Label Grid.Row="2" Content="Applied Buff/Debuff Effects" FontWeight="Bold"></Label>
                         <Label Grid.Row="4" Content="TriggeredEffects" FontWeight="Bold"></Label>
-                        <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"  HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" ColumnWidth="*" AutoGenerateColumns="True" ></DataGrid>
-                        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.BonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="BonusType" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding bonusType}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                                <localx:FilterBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
+                                                        </VirtualizingStackPanel>
+                                                    </ItemsPanelTemplate>
+                                                </localx:FilterBox.ItemsPanel>
+                                            </localx:FilterBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="ModifyType" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding modifyType}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Restriction" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding restriction}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding restriction , UpdateSourceTrigger=PropertyChanged}" Loaded="GroupComboBoxLoaded"></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="initValue" Width="90">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding initialValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding initialValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="growValue" Width="90">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <DataGrid Grid.Row="3" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.AppliedEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="EffectType" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding effectType}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding effectType , UpdateSourceTrigger=PropertyChanged}" Loaded="EffectBox_Loaded" ></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="BonusType" Width="2*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding bonusType}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                                <localx:FilterBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
+                                                        </VirtualizingStackPanel>
+                                                    </ItemsPanelTemplate>
+                                                </localx:FilterBox.ItemsPanel>
+                                            </localx:FilterBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="ModifyType" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding modifyType}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="TargetType" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding targetType}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding targetType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:AbilityTargetType}}" ></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="chance" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding chance, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding chance, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="initValue" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding initialValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding initialValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="growValue" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="duration" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding duration, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding duration, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="stacks" Width="70">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding stacks, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:IntegerUpDown Value="{Binding stacks, UpdateSourceTrigger=PropertyChanged}" Increment="1"></xctk:IntegerUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="useLastRoll" Width="50">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding useLastRoll, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Padding="2" ></CheckBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
                         <DataGrid Grid.Row="5" Grid.ColumnSpan="2" ItemsSource="{Binding ElementName=AbilitiesList, Path=SelectedItem.TriggeredEffects , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False"    AutoGenerateColumns="True" CanUserAddRows="True"></DataGrid>
                     </Grid>
                     <Grid Grid.Column="2" Grid.Row="0"  Margin="5,5,5,5">

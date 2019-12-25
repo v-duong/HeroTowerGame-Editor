@@ -21,6 +21,19 @@ namespace loot_td_editor.Editors
         public ObservableCollection<AbilityBase> Abilities;
         private int currentID;
         public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
+        public IList<EffectType> EffectTypes { get { return Enum.GetValues(typeof(EffectType)).Cast<EffectType>().ToList<EffectType>(); } }
+
+        private IList<BonusType> _bonusTypes;
+
+        public IList<BonusType> BonusTypes
+        {
+            get
+            {
+                if (_bonusTypes == null)
+                    _bonusTypes = Enum.GetValues(typeof(BonusType)).Cast<BonusType>().ToList<BonusType>();
+                return _bonusTypes;
+            }
+        }
 
         public void InitializeList()
         {
@@ -303,6 +316,25 @@ namespace loot_td_editor.Editors
                 }
             }
             ArchetypeUseList.Text = s;
+        }
+
+        private void GroupComboBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.ItemsSource = GroupTypes.ToList();
+        }
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.IsTextSearchEnabled = false;
+            box.ItemsSource = BonusTypes.ToList();
+        }
+
+        private void EffectBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.ItemsSource = EffectTypes.ToList();
         }
     }
 }

@@ -136,6 +136,7 @@ namespace loot_td
         private int spawnerIndex; // which spawn point to spawn from
         private int goalIndex;
         private float startDelay;
+        private float delayBetweenOverride;
 
         [JsonProperty]
         public string EnemyName { get => enemyType; set => SetProperty(ref enemyType, value); }
@@ -155,6 +156,9 @@ namespace loot_td
 
         [JsonProperty]
         public float StartDelay { get => startDelay; set => SetProperty(ref startDelay, value); }
+
+        [JsonProperty]
+        public float DelayBetweenOverride { get => delayBetweenOverride; set => SetProperty(ref delayBetweenOverride, value); }
 
         [JsonProperty]
         public int EnemyCount { get => enemyCount; set => SetProperty(ref enemyCount, value); }

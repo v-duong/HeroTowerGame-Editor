@@ -7,6 +7,7 @@
              xmlns:localx="clr-namespace:loot_td_editor"
              xmlns:loottd="clr-namespace:loot_td"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1600">
     <Grid Background="White">
@@ -144,6 +145,77 @@
                 <DataGridTextColumn Header="Damage Multiplier" Binding="{Binding DamageMultiplier}"></DataGridTextColumn>
                 <DataGridTextColumn Header="Attack Per Sec Multiplier" Binding="{Binding AttackPerSecMultiplier}" ></DataGridTextColumn>
                 <DataGridCheckBoxColumn Header="Use Ability Scaling" Binding="{Binding UseAbilityScaling}"></DataGridCheckBoxColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <DataGrid Grid.Row="1" Grid.Column="1" ItemsSource="{Binding ElementName=EnemyListView, Path=SelectedItem.LeveledBonusProperties , UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single" SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="True" EnableRowVirtualization="True" AutoGenerateColumns="False" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" EnableColumnVirtualization="True" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.IsContainerVirtualizable="True" VirtualizingPanel.VirtualizationMode="Recycling">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="BonusType" Width="2*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding bonusType}" Padding="2" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=PropertyChanged}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                <localx:FilterBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
+                                        </VirtualizingStackPanel>
+                                    </ItemsPanelTemplate>
+                                </localx:FilterBox.ItemsPanel>
+                            </localx:FilterBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="ModifyType" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding modifyType}" Padding="2" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Restriction" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding restriction}" Padding="2" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox SelectedValue="{Binding restriction , UpdateSourceTrigger=PropertyChanged}" Loaded="GroupComboBoxLoaded"></ComboBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="initValue" Width="90">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding initialValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2" ></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <xctk:DoubleUpDown Value="{Binding initialValue, UpdateSourceTrigger=PropertyChanged}" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="growValue" Width="90">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <xctk:DoubleUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}"  Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
 

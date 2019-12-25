@@ -325,7 +325,14 @@ namespace loot_td_editor.Editors
                 EnemyWave b = EnemyWaveView.SelectedItem as EnemyWave;
                 EnemyWaveItem a = WaveItemView.SelectedItem as EnemyWaveItem;
 
-                totalTime.Content = a.EnemyCount * b.DelayBetweenSpawns + a.StartDelay;
+
+
+                float delayBetweenSpawns = b.DelayBetweenSpawns;
+
+                if (a.DelayBetweenOverride != 0)
+                    delayBetweenSpawns = a.DelayBetweenOverride;
+
+                totalTime.Content = a.EnemyCount * delayBetweenSpawns + a.StartDelay;
             }
         }
 

@@ -1,7 +1,10 @@
 ﻿using loot_td;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,6 +16,21 @@ namespace loot_td_editor.Editors
     /// </summary>
     public partial class EnemyEditor : UserControl
     {
+        public IList<GroupType> GroupTypes { get { return Enum.GetValues(typeof(GroupType)).Cast<GroupType>().ToList<GroupType>(); } }
+        public IList<EffectType> EffectTypes { get { return Enum.GetValues(typeof(EffectType)).Cast<EffectType>().ToList<EffectType>(); } }
+
+        private IList<BonusType> _bonusTypes;
+
+        public IList<BonusType> BonusTypes
+        {
+            get
+            {
+                if (_bonusTypes == null)
+                    _bonusTypes = Enum.GetValues(typeof(BonusType)).Cast<BonusType>().ToList<BonusType>();
+                return _bonusTypes;
+            }
+        }
+
         public ObservableCollection<EnemyBase> EnemyBaseList;
 
         public void InitializeList()
@@ -140,6 +158,19 @@ namespace loot_td_editor.Editors
             HealthLabel1.Content = "Level " + enemy.Level;
             HealthValue1.Content = Helpers.EnemyHealthScalingFormula(enemy.Level) * enemy.HealthScaling;
             HealthValue2.Content = Helpers.EnemyHealthScalingFormula(100) * enemy.HealthScaling;
+        }
+
+        private void GroupComboBoxLoaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.ItemsSource = GroupTypes.ToList();
+        }
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            ComboBox box = sender as ComboBox;
+            box.IsTextSearchEnabled = false;
+            box.ItemsSource = BonusTypes.ToList();
         }
     }
 }

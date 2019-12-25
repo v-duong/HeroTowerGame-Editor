@@ -26,7 +26,9 @@ namespace loot_td
         private float projectileLife;
         private float soulCost;
         private float cooldownTime;
+        private float soulAbilityDuration;
         private bool isSoulAbility;
+        private bool useAreaAroundTarget;
 
         private float areaRadius;
         private float areaLength;
@@ -121,10 +123,17 @@ namespace loot_td
         public bool IsSoulAbility { get => isSoulAbility; set => SetProperty(ref isSoulAbility, value); }
 
         [JsonProperty]
+        public bool UseAreaAroundTarget { get => useAreaAroundTarget; set => SetProperty(ref useAreaAroundTarget, value); }
+
+        [JsonProperty]
         public float SoulCost { get => soulCost; set => SetProperty(ref soulCost, value); }
 
         [JsonProperty]
         public float CooldownTime { get => cooldownTime; set => SetProperty(ref cooldownTime, value); }
+
+
+        [JsonProperty]
+        public float SoulAbilityDuration { get => soulAbilityDuration; set => SetProperty(ref soulAbilityDuration, value); }
 
         [JsonProperty]
         public Dictionary<ElementType, AbilityDamageBase> DamageLevels { get => damageLevels; set => SetProperty(ref damageLevels, value); }
@@ -359,6 +368,8 @@ namespace loot_td
         SPELL,
         AURA,
         SELF_BUFF,
+        AREA_BUFF,
+        NON_ABILITY,
     }
 
     public enum DamageType

@@ -18,6 +18,7 @@ namespace loot_td
         private EnemyType enemyType;
         private TargetingPriorityType targetingPriorityType;
         private ObservableCollection<EnemyAbilityBase> abilitiesList;
+        private ObservableCollection<ScalingBonusProperty_Float> leveledBonusProperties;
         private string spriteName;
         private int actNumber;
         private float attackTargetRange;
@@ -59,6 +60,8 @@ namespace loot_td
 
         [JsonProperty]
         public ObservableCollection<EnemyAbilityBase> AbilitiesList { get => abilitiesList; set => SetProperty(ref abilitiesList, value); }
+        [JsonProperty]
+        public ObservableCollection<ScalingBonusProperty_Float> LeveledBonusProperties { get => leveledBonusProperties; set => SetProperty(ref leveledBonusProperties, value); }
 
         [JsonProperty]
         public string SpriteName { get => spriteName; set => SetProperty(ref spriteName, value); }
@@ -91,6 +94,7 @@ namespace loot_td
             movementSpeed = 2.5f;
             resistances = new int[(int)ElementType.VOID+1];
             abilitiesList = new ObservableCollection<EnemyAbilityBase>();
+            leveledBonusProperties = new ObservableCollection<ScalingBonusProperty_Float>();
             spriteName = "";
             actNumber = 0;
         }
