@@ -11,7 +11,7 @@
              mc:Ignorable="d"
              d:DesignHeight="900" d:DesignWidth="1700">
     <UserControl.Resources>
-        <local:EmptyBoolConverter x:Key="EmptyBool"/>
+        <local:EmptyBoolConverter x:Key="EmptyBool" />
     </UserControl.Resources>
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -48,275 +48,312 @@
                 </ListView.View>
             </ListView>
         </Grid>
+        <TabControl Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2">
+            <TabItem Header="_Main">
+                <Grid Background="White">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="3*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2.1*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="25" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="1.25*" />
+                            <ColumnDefinition Width="5" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="60" />
+                        </Grid.ColumnDefinitions>
+                        <Label Content="IdName" Grid.Row="0" />
+                        <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-                <RowDefinition Height="25" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="1.25*" />
-                <ColumnDefinition Width="5" />
-                <ColumnDefinition Width="110" />
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="60" />
-            </Grid.ColumnDefinitions>
-            <Label Content="IdName" Grid.Row="0" />
-            <TextBox Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding ElementName=ArchetypesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></TextBox>
+                        <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="75" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="5" />
+                                <ColumnDefinition Width="55" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Label Content="DropLevel" Grid.Column="0"></Label>
+                            <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
+                            <Label Content="Stars" Grid.Column="3"></Label>
+                            <xctk:IntegerUpDown Grid.Column="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Stars, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"></xctk:IntegerUpDown>
+                            <Label Content="SpawnWeight" Grid.Column="0" Grid.Row="1"></Label>
+                            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"></xctk:IntegerUpDown>
+                            <Label Content="SoulAbility" Grid.Column="3" Grid.Row="1"></Label>
+                            <ComboBox Grid.Column="4" Grid.Row="4" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=ArchetypesList,Path=SelectedItem.SoulAbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="SoulAbilityList" DisplayMemberPath="IdName" />
+                        </Grid>
 
-            <Grid Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="75" />
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="55" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Label Content="DropLevel" Grid.Column="0"></Label>
-                <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.DropLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1"></xctk:IntegerUpDown>
-                <Label Content="Stars" Grid.Column="3"></Label>
-                <xctk:IntegerUpDown Grid.Column="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.Stars, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="5"></xctk:IntegerUpDown>
-                <Label Content="SpawnWeight" Grid.Column="0" Grid.Row="1"></Label>
-                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SpawnWeight, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"></xctk:IntegerUpDown>
-                <Label Content="SoulAbility" Grid.Column="3" Grid.Row="1"></Label>
-                <ComboBox Grid.Column="4" Grid.Row="4" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=ArchetypesList,Path=SelectedItem.SoulAbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="SoulAbilityList" DisplayMemberPath="IdName"/>
-            </Grid>
+                        <Label Content="Search" Grid.Row="4" />
+                        <TextBox x:Name="SearchBox" Grid.Column="1" Grid.Row="4" TextChanged="SearchBox_TextChanged"></TextBox>
+                        <Button Grid.Column="0" Grid.Row="6" Content="Totals" Click="ArchetypeTotalsClick"></Button>
+                        <Label Content="HealthGrowth" Grid.Column="3"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.HealthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="HpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="SoulPointGrowth" Grid.Column="3" Grid.Row="1"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SoulPointGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="SpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="StrengthGrowth" Grid.Column="3" Grid.Row="2"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.StrengthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="StrGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="IntelligenceGrowth" Grid.Column="3" Grid.Row="3"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.IntelligenceGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="IntGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="AgilityGrowth" Grid.Column="3" Grid.Row="4"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.AgilityGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="AgiGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
+                        <Label Content="WillGrowth" Grid.Column="3" Grid.Row="5"></Label>
+                        <xctk:DoubleUpDown Grid.Column="4" Grid.Row="5" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.WillGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="WillGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
 
-
-            <Label Content="Search" Grid.Row="4"/>
-            <TextBox x:Name="SearchBox" Grid.Column="1" Grid.Row="4" TextChanged="SearchBox_TextChanged"></TextBox>
-            <Button Grid.Column="0" Grid.Row="6" Content="Totals" Click="ArchetypeTotalsClick"></Button>
-            <Label Content="HealthGrowth" Grid.Column="3"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="0" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.HealthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="HpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="SoulPointGrowth" Grid.Column="3" Grid.Row="1"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="1" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.SoulPointGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="SpGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="StrengthGrowth" Grid.Column="3" Grid.Row="2"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="2" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.StrengthGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="StrGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="IntelligenceGrowth" Grid.Column="3" Grid.Row="3"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="3" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.IntelligenceGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="IntGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="AgilityGrowth" Grid.Column="3" Grid.Row="4"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="4" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.AgilityGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="AgiGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-            <Label Content="WillGrowth" Grid.Column="3" Grid.Row="5"></Label>
-            <xctk:DoubleUpDown Grid.Column="4" Grid.Row="5" Value="{Binding ElementName=ArchetypesList,Path=SelectedItem.WillGrowth, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" ValueChanged="DoubleUpDown_ValueChanged" Name="WillGrow" Increment="0.1" FormatString="F2"></xctk:DoubleUpDown>
-
-            <Label Name="HealthL" Content="" FontWeight="Bold" Grid.Column="5"></Label>
-            <Label Name="SoulL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="1"></Label>
-            <Label Name="StrL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="2"></Label>
-            <Label Name="IntL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="3"></Label>
-            <Label Name="AgiL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="4"></Label>
-            <Label Name="WillL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="5"></Label>
-            <Label Content="Total Growth" FontWeight="Bold" Grid.Column="3" Grid.Row="6"></Label>
-            <Label Name="TotalL" Content="" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="6" ContentStringFormat="F2"></Label>
-            <Label Content="Total Skill Points" FontWeight="Bold" Grid.Column="3" Grid.Row="7"></Label>
-            <Label Name="TotalSkillPoints" Content="" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="7"></Label>
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25" />
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="25" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Button Content="ADD" Click="AddButtonClickNode" />
-                <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClickNode" />
-                <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClickNode" />
-                <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="NodesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="NodesList_Selected">
-                    <ListView.View>
-                        <GridView AllowsColumnReorder="False">
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="30" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="170" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=MaxLevel}" Header="MaxLevel" Width="40" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityId}" Header="AbilityId" Width="80" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=HasError, Converter={StaticResource EmptyBool}}" Header="Error" Width="40" />
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-                <Button Content="Shift All" Grid.Column="0" Grid.Row="2" Click="ShiftAllClick"/>
-                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Name="ShiftX" DefaultValue="0"></xctk:IntegerUpDown>
-                <xctk:IntegerUpDown Grid.Column="2" Grid.Row="2" Name="ShiftY" DefaultValue="0"></xctk:IntegerUpDown>
-            </Grid>
-            <Grid Grid.Column="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+                        <Label Name="HealthL" Content="" FontWeight="Bold" Grid.Column="5"></Label>
+                        <Label Name="SoulL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="1"></Label>
+                        <Label Name="StrL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="2"></Label>
+                        <Label Name="IntL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="3"></Label>
+                        <Label Name="AgiL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="4"></Label>
+                        <Label Name="WillL" Content="" FontWeight="Bold" Grid.Column="5" Grid.Row="5"></Label>
+                        <Label Content="Total Growth" FontWeight="Bold" Grid.Column="3" Grid.Row="6"></Label>
+                        <Label Name="TotalL" Content="" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="6" ContentStringFormat="F2"></Label>
+                        <Label Content="Total Skill Points" FontWeight="Bold" Grid.Column="3" Grid.Row="7"></Label>
+                        <Label Name="TotalSkillPoints" Content="" FontWeight="Bold" Grid.Column="4" Grid.ColumnSpan="2" Grid.Row="7"></Label>
+                    </Grid>
+                    <Grid Grid.Column="0" Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="25" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Button Content="ADD" Click="AddButtonClickNode" />
+                            <Button Grid.Column="1" Content="ADD COPY" Click="CopyButtonClickNode" />
+                            <Button Grid.Column="2" Content="REMOVE" Click="RemoveButtonClickNode" />
+                            <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto" Name="NodesList" Margin="0,10,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" SelectionChanged="NodesList_Selected">
+                                <ListView.View>
+                                    <GridView AllowsColumnReorder="False">
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=Id}" Header="Id" Width="30" />
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=IdName}" Header="IdName" Width="170" />
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=MaxLevel}" Header="MaxLevel" Width="40" />
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=AbilityId}" Header="AbilityId" Width="80" />
+                                        <GridViewColumn DisplayMemberBinding="{Binding Path=HasError, Converter={StaticResource EmptyBool}}" Header="Error" Width="40" />
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <Button Content="Shift All" Grid.Column="0" Grid.Row="2" Click="ShiftAllClick" />
+                            <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Name="ShiftX" DefaultValue="0"></xctk:IntegerUpDown>
+                            <xctk:IntegerUpDown Grid.Column="2" Grid.Row="2" Name="ShiftY" DefaultValue="0"></xctk:IntegerUpDown>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="25" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="1.5*" />
+                                </Grid.ColumnDefinitions>
+                                <Label Content="Id" />
+                                <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=NodesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  ValueChanged="CanvasEdit" />
+                                <Label Content="IdName" Grid.Row="1" />
+                                <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=NodesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <Label Content="Type" Grid.Column="2" />
+                                <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="TypeBox_SelectionChanged" />
+                                <Label Content="initalLevel" Grid.Row="2" />
+                                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=NodesList,Path=SelectedItem.InitialLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" />
+                                <Label Content="maxLevel" Grid.Row="2"   Grid.Column="2" />
+                                <xctk:IntegerUpDown Grid.Column="3" Grid.Row="2" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="10" ValueChanged="MaxLevelChanged" />
+                                <Label Content="PosX" Grid.Row="3"   Grid.Column="0" />
+                                <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit" Name="Px" />
+                                <Label Content="PosY" Grid.Row="3"   Grid.Column="2" />
+                                <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit" Name="Py" />
+                                <Label Content="Ability" Grid.Row="4"   Grid.Column="0" />
+                                <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName" />
+                            </Grid>
+                            <TextBlock Grid.Row="1" Name="InfoBlock" Margin="10" Text="{Binding ElementName=NodesList,Path=SelectedItem.BonusString}" />
+                            <Grid Grid.Row="2">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="25" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="125" />
+                                </Grid.ColumnDefinitions>
+                                <Button Content="ADD" Click="AddButtonClickChild" />
+                                <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClickChild" />
+                                <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="NumIdName"></ComboBox>
+                                <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Children, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,5,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Name="ChildList" SelectionChanged="ArchetypesList_SelectionChanged">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <WrapPanel>
+                                                <TextBlock Text="{Binding}" Loaded="TextBlock_Loaded"></TextBlock>
+                                            </WrapPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid Grid.Column="1" Grid.RowSpan="2" Grid.ColumnSpan="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <xctk:Zoombox ZoomModifiers="" KeepContentInBounds="True" Position="-350,-700" Name="ScrollViewer">
+                            <Canvas  Name="NodeTree" ClipToBounds="True" Width="1600" Height="1600" />
+                        </xctk:Zoombox>
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single"  SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="BonusType" Width="3*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding bonusType}" Padding="2"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=LostFocus}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
+                                                <localx:FilterBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
+                                                        </VirtualizingStackPanel>
+                                                    </ItemsPanelTemplate>
+                                                </localx:FilterBox.ItemsPanel>
+                                            </localx:FilterBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="ModifyType" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding modifyType}" Padding="2"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="Restriction" Width="*">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding restriction}" Padding="2" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <ComboBox SelectedValue="{Binding restriction , UpdateSourceTrigger=PropertyChanged}" Loaded="GroupComboBoxLoaded"></ComboBox>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="growth" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged" Increment="1"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="final" Width="60">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                    <DataGridTemplateColumn.CellEditingTemplate>
+                                        <DataTemplate>
+                                            <xctk:DoubleUpDown Value="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged" Increment="1"></xctk:DoubleUpDown>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellEditingTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="sum" Binding="{Binding sum, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="perpoint" Binding="{Binding perPoint, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat={}0.00}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <DataGrid Grid.Row="2" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.TriggeredEffects, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single"  SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="True" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True" />
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="_Infusion">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="25" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="50" />
                         <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="1.5*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Label Content="Id" />
-                    <xctk:IntegerUpDown Grid.Column="1" Value="{Binding ElementName=NodesList,Path=SelectedItem.Id, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"  ValueChanged="CanvasEdit"/>
-                    <Label Content="IdName" Grid.Row="1" />
-                    <TextBox Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Text="{Binding ElementName=NodesList,Path=SelectedItem.IdName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-                    <Label Content="Type" Grid.Column="2" />
-                    <ComboBox Grid.Column="3" ItemsSource="{Binding Source={localx:EnumBindingSource {x:Type loottd:NodeType}}}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.Type, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectionChanged="TypeBox_SelectionChanged"/>
-                    <Label Content="initalLevel" Grid.Row="2"/>
-                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="2" Value="{Binding ElementName=NodesList,Path=SelectedItem.InitialLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0"/>
-                    <Label Content="maxLevel" Grid.Row="2"   Grid.Column="2"/>
-                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="2" Value="{Binding ElementName=NodesList,Path=SelectedItem.MaxLevel, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="1" Maximum="10" ValueChanged="MaxLevelChanged"/>
-                    <Label Content="PosX" Grid.Row="3"   Grid.Column="0"/>
-                    <xctk:IntegerUpDown Grid.Column="1" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.x, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="-10" Maximum="10" ValueChanged="CanvasEdit" Name="Px"/>
-                    <Label Content="PosY" Grid.Row="3"   Grid.Column="2"/>
-                    <xctk:IntegerUpDown Grid.Column="3" Grid.Row="3" Value="{Binding ElementName=NodesList,Path=SelectedItem.NodePosition.y, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Minimum="0" Maximum="20"  ValueChanged="CanvasEdit" Name="Py"/>
-                    <Label Content="Ability" Grid.Row="4"   Grid.Column="0"/>
-                    <ComboBox Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="3" ItemsSource="{Binding}" SelectedValue="{Binding ElementName=NodesList,Path=SelectedItem.AbilityId, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" SelectedValuePath="IdName" Name="NodeAbilityList" DisplayMemberPath="IdName"/>
-                </Grid>
-                <TextBlock Grid.Row="1" Name="InfoBlock" Margin="10" Text="{Binding ElementName=NodesList,Path=SelectedItem.BonusString}" />
-                <Grid Grid.Row="2">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="25" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="125" />
-                    </Grid.ColumnDefinitions>
-                    <Button Content="ADD" Click="AddButtonClickChild" />
-                    <Button Grid.Column="1" Content="REMOVE" Click="RemoveButtonClickChild" />
-                    <ComboBox Grid.Column="2" Name="ChildNum" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.NodeList}" SelectedValuePath="Id" DisplayMemberPath="NumIdName"></ComboBox>
-                    <ListView Grid.Row="1" Grid.ColumnSpan="3" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Children, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.VerticalScrollBarVisibility="Auto"  Margin="0,5,0,0" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" Name="ChildList" SelectionChanged="ArchetypesList_SelectionChanged">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <WrapPanel>
-                                    <TextBlock Text="{Binding}" Loaded="TextBlock_Loaded"></TextBlock>
-                                </WrapPanel>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
+                    <ListView Grid.Row="0" ItemsSource="{Binding ElementName=ArchetypesList,Path=SelectedItem.InfusionAffixes_Editor, UpdateSourceTrigger=PropertyChanged}" Name="infusionList" DisplayMemberPath="IdName">
                     </ListView>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="1*" />
+                        </Grid.RowDefinitions>
+                        <Button Content="Add" Click="AddAffix_Click"></Button>
+                        <Button Grid.Row="1" Content="Remove" Click="RemoveAffixClick"></Button>
+                    </Grid>
+                    <ListView  Grid.Column="2" ItemsSource="{Binding}" Name="affixList" DisplayMemberPath="IdName" ></ListView>
                 </Grid>
-            </Grid>
-        </Grid>
-        <Grid Grid.Column="2" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="5*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <xctk:Zoombox ZoomModifiers="" KeepContentInBounds="True" Position="-350,-700" Name="ScrollViewer">
-                <Canvas  Name="NodeTree" ClipToBounds="True" Width="1600" Height="1600" />
-            </xctk:Zoombox>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.Bonuses, UpdateSourceTrigger=PropertyChanged}"  Name="BonusGrid" SelectionMode="Single"  SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="False" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True">
-                <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="BonusType" Width="3*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding bonusType}" Padding="2"></TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <localx:FilterBox SelectedValue="{Binding bonusType, UpdateSourceTrigger=LostFocus}" IsEditable="True" Loaded="ComboBox_Loaded" IsTextSearchEnabled="False" StaysOpenOnEdit="True" IsSynchronizedWithCurrentItem="False">
-                                    <localx:FilterBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel VirtualizingPanel.VirtualizationMode="Recycling">
-                                            </VirtualizingStackPanel>
-                                        </ItemsPanelTemplate>
-                                    </localx:FilterBox.ItemsPanel>
-                                </localx:FilterBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="ModifyType" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding modifyType}" Padding="2"></TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox SelectedValue="{Binding modifyType , UpdateSourceTrigger=PropertyChanged}" ItemsSource="{localx:EnumBindingSource {x:Type loottd:ModifyType}}" ></ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Restriction" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding restriction}" Padding="2"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <ComboBox SelectedValue="{Binding restriction , UpdateSourceTrigger=PropertyChanged}" Loaded="GroupComboBoxLoaded"></ComboBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="growth" Width="60">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <xctk:DoubleUpDown Value="{Binding growthValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged" Increment="1"></xctk:DoubleUpDown>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="final" Width="60">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Right" Padding="2"></TextBlock>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                        <DataGridTemplateColumn.CellEditingTemplate>
-                            <DataTemplate>
-                                <xctk:DoubleUpDown Value="{Binding finalLevelValue, UpdateSourceTrigger=PropertyChanged}" ValueChanged="IntegerUpDown_ValueChanged" Increment="1"></xctk:DoubleUpDown>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellEditingTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="sum" Binding="{Binding sum, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Header="perpoint" Binding="{Binding perPoint, UpdateSourceTrigger=PropertyChanged, Mode=OneWay, StringFormat={}0.00}" IsReadOnly="True" Width="40" TextBlock.FontWeight="Bold">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Right"></Setter>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-
-                </DataGrid.Columns>
-            </DataGrid>
-            <DataGrid Grid.Row="2" ItemsSource="{Binding ElementName=NodesList, Path=SelectedItem.TriggeredEffects, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Single"  SelectionUnit="FullRow" CanUserReorderColumns="False" CanUserSortColumns="False" AutoGenerateColumns="True" CanUserAddRows="True" LoadingRow="BonusGrid_LoadingRow" dd:DragDrop.IsDragSource="True" dd:DragDrop.IsDropTarget="True"/> 
-        </Grid>
-
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>

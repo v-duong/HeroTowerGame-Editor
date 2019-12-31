@@ -6,11 +6,17 @@ namespace loot_td_editor
 {
     internal static class Localization
     {
-        private static Dictionary<string, string> localization;
+        private static Dictionary<string, string> _localization;
+
+        public static Dictionary<string, string> LocalizationDict { get {
+                if (_localization == null)
+                    LoadStrings();
+                return _localization;
+            } }
 
         public static string GetLocalizationText_TriggeredEffect(TriggeredEffectProperty triggeredEffect, float value)
         {
-            localization.TryGetValue("triggerType." + triggeredEffect.TriggerType.ToString(), out string s);
+            LocalizationDict.TryGetValue("triggerType." + triggeredEffect.TriggerType.ToString(), out string s);
             string restrictionString = "";
             if (triggeredEffect.Restriction != GroupType.NO_GROUP)
             {
@@ -28,7 +34,7 @@ namespace loot_td_editor
                     break;
 
                 default:
-                    localization.TryGetValue("effectType.bonusProp." + triggeredEffect.EffectType.ToString(), out effectTypeString);
+                    LocalizationDict.TryGetValue("effectType.bonusProp." + triggeredEffect.EffectType.ToString(), out effectTypeString);
                     effectTypeString = effectTypeString.Replace("{TARGET}", triggeredEffect.EffectTargetType.ToString());
                     effectTypeString = effectTypeString.Replace("{VALUE}", "(" + triggeredEffect.EffectMinValue + "-" + triggeredEffect.EffectMaxValue + ")");
 
@@ -61,10 +67,9 @@ namespace loot_td_editor
 
         public static string GetBonusTypeString(BonusType b, ModifyType m, float min, float max, GroupType restriction)
         {
-            if (localization == null)
-                LoadStrings();
+
             string key = "bonusType." + b.ToString();
-            if (localization.TryGetValue(key, out string s))
+            if (LocalizationDict.TryGetValue(key, out string s))
             {
                 if (s == "")
                     s = b.ToString();
@@ -126,10 +131,9 @@ namespace loot_td_editor
 
         public static string GetGroupTypeRestriction(GroupType g)
         {
-            if (localization == null)
-                LoadStrings();
+
             string stringId = g.ToString();
-            if (localization.TryGetValue("groupType." + stringId + ".restriction", out string value))
+            if (LocalizationDict.TryGetValue("groupType." + stringId + ".restriction", out string value))
             {
                 if (value == "")
                     return stringId;
@@ -149,10 +153,9 @@ namespace loot_td_editor
 
         public static string GetGroupType(GroupType g)
         {
-            if (localization == null)
-                LoadStrings();
+
             string stringId = g.ToString();
-            if (localization.TryGetValue("groupType." + stringId, out string value))
+            if (LocalizationDict.TryGetValue("groupType." + stringId, out string value))
             {
                 if (value == "")
                     return stringId;
@@ -166,10 +169,9 @@ namespace loot_td_editor
 
         public static string GetGroupTypePlural(GroupType g)
         {
-            if (localization == null)
-                LoadStrings();
+
             string stringId = g.ToString();
-            if (localization.TryGetValue("groupType." + stringId + ".plural", out string value))
+            if (LocalizationDict.TryGetValue("groupType." + stringId + ".plural", out string value))
             {
                 if (value == "")
                     return stringId;
@@ -183,9 +185,8 @@ namespace loot_td_editor
 
         public static string GetLocalizationText(string stringId)
         {
-            if (localization == null)
-                LoadStrings();
-            if (localization.TryGetValue(stringId, out string value))
+
+            if (LocalizationDict.TryGetValue(stringId, out string value))
             {
                 if (value == "")
                     return stringId;
@@ -207,7 +208,7 @@ namespace loot_td_editor
             }
 
             string json = System.IO.File.ReadAllText(filePath);
-            localization = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            _localization = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
         }
     }
 }

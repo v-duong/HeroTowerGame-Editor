@@ -56,8 +56,6 @@ namespace loot_td_editor.Editors
                     k.IdName = "";
                 if (k.LinkedAbility == null)
                     k.LinkedAbility = new LinkedAbilityData();
-
-                Debug.Print(k.AppliedEffects.ToString());
             }
 
             AbilitiesList.ItemsSource = Abilities;

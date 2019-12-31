@@ -4,6 +4,9 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -17,6 +20,73 @@ namespace loot_td_editor
 
         public static ArchetypeEditor archetypeEditor;
         public static AbilityEditor abilityEditor;
+        public static Dictionary<AffixType,ObservableCollection<AffixBase>> affixLists = new Dictionary<AffixType, ObservableCollection<AffixBase>>();
+
+
+        public static void LoadAffixes()
+        {
+            foreach(AffixType affixType in Enum.GetValues(typeof(AffixType)))
+            {
+                LoadAffixes(affixType);
+            }
+        }
+
+        public static void LoadAffixes(AffixType affixContext)
+        {
+            string fileName;
+            if (Properties.Settings.Default.JsonLoadPath == "")
+                return;
+            switch (affixContext)
+            {
+                case AffixType.PREFIX:
+                    fileName = "prefix.json";
+                    break;
+
+                case AffixType.SUFFIX:
+                    fileName = "suffix.json";
+                    break;
+
+                case AffixType.ENCHANTMENT:
+                    fileName = "enchantment.json";
+                    break;
+
+                case AffixType.INNATE:
+                    fileName = "innate.json";
+                    break;
+
+                case AffixType.MONSTERMOD:
+                    fileName = "monstermod.json";
+                    break;
+
+                default:
+                    return;
+            }
+            string filePath = Properties.Settings.Default.JsonLoadPath + "\\affixes\\" + fileName;
+            Debug.WriteLine("Initialized " + fileName);
+            affixLists[affixContext] = new ObservableCollection<AffixBase>();
+            if (!System.IO.File.Exists(filePath))
+            {
+                return;
+            }
+            string json = System.IO.File.ReadAllText(filePath);
+            affixLists[affixContext] = JsonConvert.DeserializeObject<ObservableCollection<AffixBase>>(json);
+
+            foreach (AffixBase k in affixLists[affixContext])
+            {
+                k.AffixType = affixContext;
+                if (k.IdName == null)
+                    k.IdName = "";
+                if (k.TriggeredEffects == null)
+                    k.TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
+
+                k.AffixBonuses.CollectionChanged += k.RaiseListStringChanged;
+                k.TriggeredEffects.CollectionChanged += k.RaiseListStringChanged;
+                foreach (AffixBonus bonus in k.AffixBonuses)
+                {
+                    bonus.PropertyChanged += k.RaiseListStringChanged_;
+                }
+            }
+        }
 
         public static T DeepClone<T>(T o)
         {

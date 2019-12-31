@@ -63,9 +63,11 @@
                     <TabItem Header="_Enemy">
                         <local:AffixEditor AffixProp="MONSTERMOD" x:Name="EnemyAffixEditor" />
                     </TabItem>
+                    <!--=
                     <TabItem Header="_Unique">
                         <local:AffixEditor AffixProp="UNIQUE" x:Name="UniqueAffixEditor" />
                     </TabItem>
+                    -->
                 </TabControl>
             </TabItem>
             <TabItem Header="_Enemies">

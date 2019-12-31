@@ -98,7 +98,6 @@ namespace loot_td_editor.Editors
 
                 BindBase.DamageLevels.Add(element, a);
                 BindAbilityDamage = BindBase.DamageLevels[element];
-                Debug.WriteLine("added new damagebase");
             }
         }
 

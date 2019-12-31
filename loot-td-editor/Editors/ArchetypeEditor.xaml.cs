@@ -44,7 +44,6 @@ namespace loot_td_editor.Editors
             if (Properties.Settings.Default.JsonLoadPath == "")
                 return;
             string filePath = Properties.Settings.Default.JsonLoadPath + "\\Archetypes\\archetypes.json";
-            Debug.WriteLine("Initialized archetypes");
             if (!System.IO.File.Exists(filePath))
             {
                 Archetypes = new ObservableCollection<ArchetypeBase>();
@@ -62,10 +61,17 @@ namespace loot_td_editor.Editors
                     }
                 });
 
+            var affixes = Helpers.affixLists[AffixType.ENCHANTMENT].ToList();
+
             foreach (ArchetypeBase k in Archetypes)
             {
                 if (k.IdName == null)
                     k.IdName = "";
+
+                foreach(string affixName in k.InfusionAffixes)
+                {
+                    k.InfusionAffixes_Editor.Add(affixes.Find(x=>x.IdName == affixName));
+                }
             }
 
             ArchetypesList.ItemsSource = Archetypes;
@@ -791,7 +797,8 @@ namespace loot_td_editor.Editors
                         float negAvg = nodeInfo.negTotal / nodeInfo.negTotalLevel;
                         display += Localization.GetBonusTypeString(nodeInfo.bonus, nodeInfo.mod, nodeInfo.negTotal, nodeInfo.negTotal, nodeInfo.restrict) + "Levels: " + nodeInfo.negTotalLevel + ", Avg: " + negAvg.ToString("n2") + "\n\n";
                     }
-                } else
+                }
+                else
                 {
                     if (nodeInfo.posTotal > 100f)
                     {
@@ -847,6 +854,38 @@ namespace loot_td_editor.Editors
                 return;
 
             DrawCanvas();
+        }
+
+        private void AddAffix_Click(object sender, RoutedEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+            if (affixList.SelectedItem == null || affixList.SelectedItems.Count == 0)
+                return;
+
+            ArchetypeBase archetypeBase = ArchetypesList.SelectedItem as ArchetypeBase;
+
+            foreach (AffixBase affixBase in affixList.SelectedItems)
+            {
+                if (!archetypeBase.InfusionAffixes_Editor.Contains(affixBase))
+                    archetypeBase.InfusionAffixes_Editor.Add(affixBase);
+            }
+        }
+
+        private void RemoveAffixClick(object sender, RoutedEventArgs e)
+        {
+            if (ArchetypesList.SelectedItem == null)
+                return;
+            if (infusionList.SelectedItem == null || infusionList.SelectedItems.Count == 0)
+                return;
+
+            ArchetypeBase archetypeBase = ArchetypesList.SelectedItem as ArchetypeBase;
+
+            for (int i = infusionList.SelectedItems.Count - 1; i >= 0; i--)
+            {
+                AffixBase affixBase = (AffixBase)infusionList.SelectedItems[i];
+                archetypeBase.InfusionAffixes_Editor.Remove(affixBase);
+            }
         }
     }
 

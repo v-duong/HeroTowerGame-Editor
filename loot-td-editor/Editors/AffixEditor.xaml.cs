@@ -66,60 +66,7 @@ namespace loot_td_editor
                 Enum.TryParse(AffixProp, out AffixType aff);
                 affixContext = aff;
             }
-            string fileName;
-            if (Properties.Settings.Default.JsonLoadPath == "")
-                return;
-            switch (affixContext)
-            {
-                case AffixType.PREFIX:
-                    fileName = "prefix.json";
-                    break;
-
-                case AffixType.SUFFIX:
-                    fileName = "suffix.json";
-                    break;
-
-                case AffixType.ENCHANTMENT:
-                    fileName = "enchantment.json";
-                    break;
-
-                case AffixType.INNATE:
-                    fileName = "innate.json";
-                    break;
-
-                case AffixType.MONSTERMOD:
-                    fileName = "monstermod.json";
-                    break;
-
-                default:
-                    return;
-            }
-            string filePath = Properties.Settings.Default.JsonLoadPath + "\\affixes\\" + fileName;
-            Debug.WriteLine("Initialized " + fileName);
-            if (!System.IO.File.Exists(filePath))
-            {
-                Affixes = new ObservableCollection<AffixBase>();
-                AffixesList.ItemsSource = Affixes;
-                return;
-            }
-            string json = System.IO.File.ReadAllText(filePath);
-            Affixes = JsonConvert.DeserializeObject<ObservableCollection<AffixBase>>(json);
-
-            foreach (AffixBase k in Affixes)
-            {
-                k.AffixType = affixContext;
-                if (k.IdName == null)
-                    k.IdName = "";
-                if (k.TriggeredEffects == null)
-                    k.TriggeredEffects = new ObservableCollection<TriggeredEffectProperty>();
-
-                k.AffixBonuses.CollectionChanged += k.RaiseListStringChanged;
-                k.TriggeredEffects.CollectionChanged += k.RaiseListStringChanged;
-                foreach (AffixBonus bonus in k.AffixBonuses) {
-                    bonus.PropertyChanged += k.RaiseListStringChanged_;
-                }
-            }
-
+            Affixes = Helpers.affixLists[affixContext];
             AffixesList.ItemsSource = Affixes;
         }
 

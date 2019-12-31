@@ -42,6 +42,7 @@ namespace loot_td_editor
 
         public MainWindow()
         {
+            Helpers.LoadAffixes();
             InitializeComponent();
             saveCommand.InputGestures.Add(new KeyGesture(Key.S, ModifierKeys.Control));
             CommandBindings.Add(new CommandBinding(saveCommand, SaveJsonAll));
@@ -56,6 +57,7 @@ namespace loot_td_editor
             AccessoryEditor.BaseFields.InnateBox.ItemsSource = InnateEditor.Affixes;
 
             ArchetypeEditor.NodeAbilityList.ItemsSource = AbilityEditor.Abilities;
+            ArchetypeEditor.affixList.ItemsSource = EnchantmentEditor.Affixes;
             var soulAbilities = new CollectionViewSource
             {
                 Source = AbilityEditor.Abilities
@@ -249,15 +251,15 @@ namespace loot_td_editor
             foreach (ArchetypeBase archetype in ArchetypeEditor.Archetypes.ToList())
             {
                 archetype.NodeList = new ObservableCollection<ArchetypeSkillNode>(archetype.NodeList.OrderBy(x => x.Id));
+                archetype.InfusionAffixes.Clear();
+                foreach(var x in archetype.InfusionAffixes_Editor)
+                {
+                    archetype.InfusionAffixes.Add(x.IdName);
+                }
             }
 
             string s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.json";
             string o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList(), settings);
-            TrySave(s, o);
-            
-
-            s = Properties.Settings.Default.JsonSavePath + "\\archetypes\\archetypes.editor.json";
-            o = JsonConvert.SerializeObject(ArchetypeEditor.Archetypes.ToList());
             TrySave(s, o);
 
             saveArchetype = true;

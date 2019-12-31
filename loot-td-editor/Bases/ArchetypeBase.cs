@@ -18,6 +18,8 @@ namespace loot_td
         private float willGrowth;
         private string soulAbilityId;
         private ObservableCollection<ArchetypeSkillNode> nodeList;
+        private ObservableCollection<string> infusionAffixes;
+        private ObservableCollection<AffixBase> infusionAffixes_edit;
 
         [JsonProperty]
         public string IdName { get => idName; set => SetProperty(ref idName, value); }
@@ -54,12 +56,18 @@ namespace loot_td
 
         [JsonProperty]
         public ObservableCollection<ArchetypeSkillNode> NodeList { get => nodeList; set => SetProperty(ref nodeList, value); }
+        [JsonProperty]
+        public ObservableCollection<string> InfusionAffixes { get => infusionAffixes; set => SetProperty(ref infusionAffixes, value); }
+        [JsonIgnore]
+        public ObservableCollection<AffixBase> InfusionAffixes_Editor { get => infusionAffixes_edit; set => SetProperty(ref infusionAffixes_edit, value); }
 
         public ArchetypeBase()
         {
             IdName = "";
             SoulAbilityId = "";
             NodeList = new ObservableCollection<ArchetypeSkillNode>();
+            InfusionAffixes = new ObservableCollection<string>();
+            InfusionAffixes_Editor = new ObservableCollection<AffixBase>();
             DropLevel = 1;
             Stars = 1;
         }
